@@ -2,23 +2,25 @@
 
 //SFML sample code - try to run
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Twixt Game");
+    window.setFramerateLimit(60);
 
-    while (window.isOpen())
-    {
+    // Main game loop
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
         }
 
-        window.clear();
-        window.draw(shape);
+        // Clear the window
+        window.clear(sf::Color::White);
+
+        // Draw your start menu options here
+
+        // Display what you have drawn
         window.display();
     }
 

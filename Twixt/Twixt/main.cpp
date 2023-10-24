@@ -12,6 +12,15 @@ int main() {
     startButton.setFillColor(sf::Color::Cyan);
     startButton.setPosition(860, 490);
 
+    // Declare the text for the "Start" button
+    sf::Font font;
+    font.loadFromFile("ARIAL.TTF");
+    sf::Text startButtonText("Play!", font, 24);
+    startButtonText.setFillColor(sf::Color::Blue);
+    // Center the text on the button
+    startButtonText.setPosition(startButton.getPosition().x + (startButton.getSize().x - startButtonText.getGlobalBounds().width) / 2,
+        startButton.getPosition().y + (startButton.getSize().y - startButtonText.getGlobalBounds().height) / 2);
+ 
     // Main game loop
     while (window.isOpen()) {
         sf::Event event;
@@ -26,6 +35,7 @@ int main() {
 
         // Add button
         window.draw(startButton);
+        window.draw(startButtonText);
 
         // Display what you have drawn
         window.display();

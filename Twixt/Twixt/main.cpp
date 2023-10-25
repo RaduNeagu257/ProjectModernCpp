@@ -13,12 +13,15 @@ int main() {
     startButton.setPosition(860, 490);
     startButton.setOutlineColor(sf::Color::Black);
     startButton.setOutlineThickness(5);
+
+
     ///Declare the "Instructions" button
     sf::RectangleShape instructionButton(sf::Vector2f(200, 50));
     instructionButton.setFillColor(sf::Color::Red);
     instructionButton.setOutlineColor(sf::Color::Black);
     instructionButton.setOutlineThickness(5);
     instructionButton.setPosition(860, 650);
+
 
     // Declare the text for the "Start" button
     sf::Font font;
@@ -27,9 +30,26 @@ int main() {
     titleFont.loadFromFile("TitleText.ttf");
     sf::Text startButtonText("Play!", font, 24);
     startButtonText.setFillColor(sf::Color::Blue);
+
+
     // Center the text on the button
     startButtonText.setPosition(startButton.getPosition().x + (startButton.getSize().x - startButtonText.getGlobalBounds().width) / 2,
         startButton.getPosition().y + (startButton.getSize().y - startButtonText.getGlobalBounds().height) / 2);
+
+
+    // Declare the text for the "Instructions" button
+    sf::Font instructionsFont;
+    instructionsFont.loadFromFile("ARIAL.TTF");
+    sf::Font instructionsTitleFont;
+    instructionsTitleFont.loadFromFile("TitleText.ttf");
+    sf::Text instructionsButtonText("Instructions!", font, 24);
+    instructionsButtonText.setFillColor(sf::Color::Black);
+
+
+    // Center the text on the button
+    instructionsButtonText.setPosition(instructionButton.getPosition().x + (instructionButton.getSize().x - instructionsButtonText.getGlobalBounds().width) / 2,
+        instructionButton.getPosition().y + (instructionButton.getSize().y - instructionsButtonText.getGlobalBounds().height) / 2);
+
     // Set the title of the window
     sf::Text titleText("Twixt Game", titleFont, 36); // You can adjust the font size
     titleText.setFillColor(sf::Color::Black); // Set the color
@@ -56,6 +76,7 @@ int main() {
         window.draw(startButton);
         window.draw(instructionButton);
         window.draw(startButtonText);
+        window.draw(instructionsButtonText);
      
         // Display what you have drawn
         window.display();

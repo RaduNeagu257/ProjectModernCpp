@@ -11,6 +11,14 @@ int main() {
     sf::RectangleShape startButton(sf::Vector2f(200, 50));
     startButton.setFillColor(sf::Color::Cyan);
     startButton.setPosition(860, 490);
+    startButton.setOutlineColor(sf::Color::Black);
+    startButton.setOutlineThickness(5);
+    ///Declare the "Instructions" button
+    sf::RectangleShape instructionButton(sf::Vector2f(200, 50));
+    instructionButton.setFillColor(sf::Color::Red);
+    instructionButton.setOutlineColor(sf::Color::Black);
+    instructionButton.setOutlineThickness(5);
+    instructionButton.setPosition(860, 650);
 
     // Declare the text for the "Start" button
     sf::Font font;
@@ -30,6 +38,7 @@ int main() {
     titleText.setPosition(860 + (startButton.getSize().x - titleText.getGlobalBounds().width) / 2,
         440);
 
+  
     // Main game loop
     while (window.isOpen()) {
         sf::Event event;
@@ -45,11 +54,14 @@ int main() {
         // Add button
         window.draw(titleText);
         window.draw(startButton);
+        window.draw(instructionButton);
         window.draw(startButtonText);
      
         // Display what you have drawn
         window.display();
     }
+
+
 
     return 0;
 }

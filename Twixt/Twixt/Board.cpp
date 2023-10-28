@@ -18,8 +18,18 @@ Board::Board()
 }
 void Board::Draw(sf::RenderWindow& window)
 {
+	// Calculate the dimensions of the array
+	float totalBoardWidth = m_size * m_tileSize;
+	float totalBoardHeight = m_size * m_tileSize;
+
+	// Calculate the distance between the corner of the window and the window to be centered
+	float offsetX = (window.getSize().x - totalBoardWidth) / 2;
+	float offsetY = (window.getSize().y - totalBoardHeight) / 2;
+
 	for (auto& tile : m_tiles)
 	{
-		window.draw(tile);
+		sf::RectangleShape centeredTile = tile;
+		centeredTile.setPosition(tile.getPosition().x + offsetX, tile.getPosition().y + offsetY); // Centering each tile of the array using the previously calculated offset
+		window.draw(centeredTile);
 	}
 }

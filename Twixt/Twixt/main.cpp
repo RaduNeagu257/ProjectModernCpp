@@ -77,7 +77,7 @@ int main() {
                 window.close();
             }
             // Check if the left mouse click is pressed
-            if (event.mouseButton.button == sf::Mouse::Left) {
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
                 // Check if the "Instructions" button is clicked
                 if (instructionButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {

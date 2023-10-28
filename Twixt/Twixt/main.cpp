@@ -1,10 +1,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include<iostream>
+#include "Board.h"
 
 //SFML sample code - try to run
 
 int main() {
+
+    Board board;
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");
     window.setFramerateLimit(60);
@@ -61,7 +64,9 @@ int main() {
         440);
 
     bool instructionsWindowOpen = false;
+    bool boardWindowOpen = false;
     sf::RenderWindow instructionsWindow;
+    sf::RenderWindow boardWindow;
 
   
     // Main game loop
@@ -71,12 +76,18 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            // Check if the "Instructions" button is clicked
+            // Check if the left mouse click is pressed
             if (event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+                // Check if the "Instructions" button is clicked
                 if (instructionButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
                     instructionsWindowOpen = true;
                     std::cout << "Instructions button clicked!" << std::endl; // Debug message
+                }
+                // Check if the "Board game" button is clicked
+                else if (startButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
+                    boardWindowOpen = true;
+                    std::cout << "Board Game button clicked!" << std::endl; //Debug message
                 }
             }
         
@@ -117,6 +128,25 @@ int main() {
            
             instructionsWindow.display();
         }
+
+        if (boardWindowOpen){
+            if (!boardWindow.isOpen()) {
+                boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
+                boardWindow.setFramerateLimit(60);
+            }
+            sf::Event boardEvent;
+            while (boardWindow.pollEvent(boardEvent)) {
+                if (boardEvent.type == sf::Event::Closed) {
+                    boardWindow.close();
+                    boardWindowOpen = false;
+                }
+            }
+            boardWindow.clear(sf::Color::White);
+            board.Draw(boardWindow);
+            boardWindow.display();
+        }
+
+
         // Clear the window
         window.clear(sf::Color::White);
 

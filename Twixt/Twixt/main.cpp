@@ -91,8 +91,8 @@ int main() {
                     std::cout << "Board Game button clicked!" << std::endl; //Debug message
                 }
             }
-
         }
+
         if (instructionsWindowOpen) {
             if (!instructionsWindow.isOpen()) {
                 instructionsWindow.create(sf::VideoMode(1000, 500), "Instructions", sf::Style::Close);
@@ -129,7 +129,7 @@ int main() {
 
             instructionsWindow.display();
         }
-
+        
         if (boardWindowOpen) {
             if (!boardWindow.isOpen()) {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
@@ -139,7 +139,13 @@ int main() {
             while (boardWindow.pollEvent(boardEvent)) {
                 if (boardEvent.type == sf::Event::Closed) {
                     boardWindow.close();
-                    boardWindowOpen = false;
+                }
+                if (boardEvent.type == sf::Event::MouseButtonPressed && boardEvent.mouseButton.button == sf::Mouse::Left) {
+                    // Get the mouse position in the board window
+                    sf::Vector2i mousePosition = sf::Mouse::getPosition(boardWindow);
+                    std::cout << "Mouse Position: " << mousePosition.x << ", " << mousePosition.y << std::endl; // Debug output
+                    // Call the PlacePillar function to add a red pillar to the board
+                    board.PlacePillar(mousePosition.x, mousePosition.y, sf::Color::Red);
                 }
             }
             boardWindow.clear(sf::Color::White);
@@ -147,11 +153,10 @@ int main() {
             boardWindow.display();
         }
 
-
         // Clear the window
         window.clear(sf::Color::White);
 
-        // Add button
+        // Add buttons and title
         window.draw(titleText);
         window.draw(startButton);
         window.draw(instructionButton);
@@ -161,7 +166,6 @@ int main() {
         // Display what you have drawn
         window.display();
     }
-
 
     return 0;
 }

@@ -2,33 +2,25 @@
 #include <SFML/Window.hpp>
 #include<iostream>
 #include "Board.h"
-#include"Pillars.h"
 //SFML sample code - try to run
-
 int main() {
 
     Board board;
-
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");
     window.setFramerateLimit(60);
-
     // Declare the "Start" button
     sf::RectangleShape startButton(sf::Vector2f(200, 50));
     startButton.setFillColor(sf::Color::Cyan);
     startButton.setPosition(860, 490);
     startButton.setOutlineColor(sf::Color::Black);
     startButton.setOutlineThickness(5);
-
-
     ///Declare the "Instructions" button
     sf::RectangleShape instructionButton(sf::Vector2f(200, 50));
     instructionButton.setFillColor(sf::Color::Red);
     instructionButton.setOutlineColor(sf::Color::Black);
     instructionButton.setOutlineThickness(5);
     instructionButton.setPosition(860, 650);
-
-
     // Declare the text for the "Start" button
     sf::Font font;
     font.loadFromFile("ARIAL.TTF");
@@ -36,13 +28,9 @@ int main() {
     titleFont.loadFromFile("TitleText.ttf");
     sf::Text startButtonText("Play!", font, 24);
     startButtonText.setFillColor(sf::Color::Blue);
-
-
     // Center the text on the button
     startButtonText.setPosition(startButton.getPosition().x + (startButton.getSize().x - startButtonText.getGlobalBounds().width) / 2,
         startButton.getPosition().y + (startButton.getSize().y - startButtonText.getGlobalBounds().height) / 2);
-
-
     // Declare the text for the "Instructions" button
     sf::Font instructionsFont;
     instructionsFont.loadFromFile("ARIAL.TTF");
@@ -50,12 +38,9 @@ int main() {
     instructionsTitleFont.loadFromFile("TitleText.ttf");
     sf::Text instructionsButtonText("Instructions", font, 24);
     instructionsButtonText.setFillColor(sf::Color::Black);
-
-
     // Center the text on the button
     instructionsButtonText.setPosition(instructionButton.getPosition().x + (instructionButton.getSize().x - instructionsButtonText.getGlobalBounds().width) / 2,
         instructionButton.getPosition().y + (instructionButton.getSize().y - instructionsButtonText.getGlobalBounds().height) / 2);
-
     // Set the title of the window
     sf::Text titleText("Twixt Game", titleFont, 36); // You can adjust the font size
     titleText.setFillColor(sf::Color::Black); // Set the color
@@ -91,8 +76,8 @@ int main() {
                     std::cout << "Board Game button clicked!" << std::endl; //Debug message
                 }
             }
-        }
 
+        }
         if (instructionsWindowOpen) {
             if (!instructionsWindow.isOpen()) {
                 instructionsWindow.create(sf::VideoMode(1000, 500), "Instructions", sf::Style::Close);
@@ -117,7 +102,7 @@ int main() {
                 "2. The player with the red color makes the first move.\n"
                 "3. You may not place a peg on your opponent's border rows.\n"
                 "4. After the first peg is placed, the second player has the option to swap sides. (If the second player \n chooses not to swap immediately after the first peg is placed, then sides may not be swapped \n later in that game.\n"
-                "6. Add or remove as many legal links between pegs of your color as you wish. A link is legal when \n the two pegs are at opposite corners of a six-hole rectangle (like a knight's move in chess), and \n no other link crosses the linking  path, not even one of your own.\n"
+                "6. Add or remove as many legal links between pegs of your color as you wish. A link is legal when \n the two pegs are at opposite corners of a six-hole rectangle (like a knight's move in chess), and \n no other link crosses the linking path, not even one of your own.\n"
                 "\n"
                 "Your goal is to connect a peg in one of your border rows to a peg in your other border row, with a \n continuous chain of linked pegs. If neither side can achieve this, the game is a draw.\n",
 
@@ -129,7 +114,7 @@ int main() {
 
             instructionsWindow.display();
         }
-        
+
         if (boardWindowOpen) {
             if (!boardWindow.isOpen()) {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
@@ -139,13 +124,7 @@ int main() {
             while (boardWindow.pollEvent(boardEvent)) {
                 if (boardEvent.type == sf::Event::Closed) {
                     boardWindow.close();
-                }
-                if (boardEvent.type == sf::Event::MouseButtonPressed && boardEvent.mouseButton.button == sf::Mouse::Left) {
-                    // Get the mouse position in the board window
-                    sf::Vector2i mousePosition = sf::Mouse::getPosition(boardWindow);
-                    std::cout << "Mouse Position: " << mousePosition.x << ", " << mousePosition.y << std::endl; // Debug output
-                    // Call the PlacePillar function to add a red pillar to the board
-                    board.PlacePillar(mousePosition.x, mousePosition.y, sf::Color::Red);
+                    boardWindowOpen = false;
                 }
             }
             boardWindow.clear(sf::Color::White);
@@ -153,10 +132,11 @@ int main() {
             boardWindow.display();
         }
 
+
         // Clear the window
         window.clear(sf::Color::White);
 
-        // Add buttons and title
+        // Add button
         window.draw(titleText);
         window.draw(startButton);
         window.draw(instructionButton);
@@ -166,6 +146,7 @@ int main() {
         // Display what you have drawn
         window.display();
     }
+
 
     return 0;
 }

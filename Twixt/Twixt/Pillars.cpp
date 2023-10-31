@@ -14,3 +14,7 @@ void Pillar::draw(sf::RenderWindow& BoardWindow)
 
 }
 
+void Pillar::setPosition(const sf::Vector2f& position)
+{
+}
+

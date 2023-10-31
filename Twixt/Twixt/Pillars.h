@@ -9,5 +9,6 @@ private:
 public:
 	Pillar(float x, float y, sf::Color c);
 	void draw(sf::RenderWindow& BoardWindow);// desenare pilon intr-o fereastra
-	
+	void setPosition(const sf::Vector2f& position);
+
 };

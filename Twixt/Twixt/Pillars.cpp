@@ -1,7 +1,7 @@
 #include "Pillars.h"
 #include "Board.h"
 #define DOT_RADIUS 5
-Pillar::Pillar(float x, float y, sf::Color c) : shape(DOT_RADIUS),color(c){
+Pillar::Pillar(float x, float y, sf::Color c) : shape(DOT_RADIUS), color(c) {
 	shape.setPosition(x, y);
 	shape.setOutlineColor(sf::Color::Black);
 	shape.setOutlineThickness(1);
@@ -10,11 +10,6 @@ Pillar::Pillar(float x, float y, sf::Color c) : shape(DOT_RADIUS),color(c){
 void Pillar::draw(sf::RenderWindow& BoardWindow)
 {
 
-		BoardWindow.draw(shape);
+	BoardWindow.draw(shape);
 
 }
-
-void Pillar::setPosition(const sf::Vector2f& position)
-{
-}
-

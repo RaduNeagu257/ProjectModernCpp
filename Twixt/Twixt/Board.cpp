@@ -18,6 +18,9 @@ Board::Board()
 	}
 
 
+
+	
+
 	// Create the red horizontal lines
 	float lineWidth = (m_tileSize + 1) * m_size;
 	m_redHorizontalLine1.setSize({ lineWidth, LINE_THICKNESS });
@@ -40,24 +43,38 @@ Board::Board()
 }
 void Board::Draw(sf::RenderWindow& BoardWindow)
 {
-	Pillar blackPillar(100.0f, 100.0f, sf::Color::Black);
-	Pillar redPillar(150.0f, 150.0f, sf::Color::Red);
+	//Pillar blackPillar(100.0f, 100.0f, sf::Color::Black);
+	//Pillar redPillar(150.0f, 150.0f, sf::Color::Red);
 	// Calculate the dimensions of the array
 	float totalBoardWidth = m_size * m_tileSize;
 	float totalBoardHeight = m_size * m_tileSize;
-	// Check if the mouse is over a cell.
-	sf::Vector2i mousePosition = sf::Mouse::getPosition(BoardWindow);
-	//sf::Vector2f mousePosition = sf::Mouse::getPosition(BoardWindow);
-	int x = mousePosition.x / m_tileSize;
-	int y = mousePosition.y / m_tileSize;
+	// Check if the mouse is over a cell
+	sf::Vector2i mousePosition;
+	sf::Vector2f mousePositionFloat;
+	mousePosition = sf::Mouse::getPosition(BoardWindow);
+	mousePositionFloat = sf::Vector2f(mousePosition.x, mousePosition.y);
 
-	// If the mouse is over a cell, create and draw a pillar.
-	if (x >= 0 && x < m_size && y >= 0 && y < m_size) {
-		// Create a new pillar.
-		Pillar pillar(x * m_tileSize, y * m_tileSize, sf::Color::Red);
+//sf::IntRect mousePositionRect(mousePosition.x, mousePosition.y, 1, 1); // create an sf::IntRect object from the sf::Vector2f object
+// Verificați dacă mouse-ul este peste o celulă a ferestrei și dacă faceți clic pe butonul stâng al mouse-ului
+//if (BoardWindow.getViewport(BoardWindow.getView()).contains(mousePositionFloat) && sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 
-		// Draw the pillar.
-		pillar.draw(BoardWindow);
+// Verificați dacă mouse-ul este deasupra ferestrei și dacă butonul stâng al mouse-ului este apăsat
+	if (mousePositionFloat.x >= 0 && mousePositionFloat.x <= totalBoardWidth &&
+		mousePositionFloat.y >= 0 && mousePositionFloat.y <= totalBoardHeight &&
+		sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		sf::Vector2f mousePositionFloat(mousePosition.x, mousePosition.y);
+			//sf::Vector2f mousePosition = sf::Mouse::getPosition(BoardWindow);
+		int x = static_cast<int>(mousePositionFloat.x / m_tileSize);
+		int y = static_cast<int>(mousePositionFloat.y / m_tileSize);
+
+			// If the mouse is over a cell, create and draw a pillar.
+			if (x >= 0 && x < m_size && y >= 0 && y < m_size) {
+				// Create a new pillar.
+				Pillar pillar(x * m_tileSize, y * m_tileSize, sf::Color::Red);
+					pillar.setPosition(mousePositionFloat);
+					// Draw the pillar.
+					pillar.draw(BoardWindow);
+			}
 	}
 
 
@@ -96,8 +113,8 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	BoardWindow.draw(m_redHorizontalLine2);
 	BoardWindow.draw(m_blackVerticalLine1);
 	BoardWindow.draw(m_blackVerticalLine2);
-	blackPillar.draw(BoardWindow);
-	redPillar.draw(BoardWindow);
+	//blackPillar.draw(BoardWindow);
+	//redPillar.draw(BoardWindow);
 	// În metoda Board::Draw(sf::RenderWindow& window)
 
 }

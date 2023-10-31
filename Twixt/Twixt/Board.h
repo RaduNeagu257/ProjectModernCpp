@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include"Pillars.h"
 #include <vector>
+#include"Pillars.h"
 #define DOT_RADIUS 5
 #define LINE_THICKNESS 3
 
@@ -9,7 +9,7 @@ class Board
 {
 public:
 	Board();
-	void Draw(sf::RenderWindow& BoardWindow);
+	void Draw(sf::RenderWindow& BoardWndow);
 private:
 	std::vector<sf::CircleShape> m_tiles;
 	int m_size;
@@ -19,4 +19,3 @@ private:
 	sf::RectangleShape m_blackVerticalLine1;
 	sf::RectangleShape m_blackVerticalLine2;
 };
-

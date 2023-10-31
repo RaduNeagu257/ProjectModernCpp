@@ -17,6 +17,7 @@ Board::Board()
 		}
 	}
 
+
 	// Create the red horizontal lines
 	float lineWidth = (m_tileSize + 1) * m_size;
 	m_redHorizontalLine1.setSize({ lineWidth, LINE_THICKNESS });
@@ -39,14 +40,31 @@ Board::Board()
 }
 void Board::Draw(sf::RenderWindow& BoardWindow)
 {
+	Pillar blackPillar(100.0f, 100.0f, sf::Color::Black);
+	Pillar redPillar(150.0f, 150.0f, sf::Color::Red);
 	// Calculate the dimensions of the array
 	float totalBoardWidth = m_size * m_tileSize;
 	float totalBoardHeight = m_size * m_tileSize;
+	// Check if the mouse is over a cell.
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(BoardWindow);
+	//sf::Vector2f mousePosition = sf::Mouse::getPosition(BoardWindow);
+	int x = mousePosition.x / m_tileSize;
+	int y = mousePosition.y / m_tileSize;
+
+	// If the mouse is over a cell, create and draw a pillar.
+	if (x >= 0 && x < m_size && y >= 0 && y < m_size) {
+		// Create a new pillar.
+		Pillar pillar(x * m_tileSize, y * m_tileSize, sf::Color::Red);
+
+		// Draw the pillar.
+		pillar.draw(BoardWindow);
+	}
+
 
 	// Calculate the distance between the corner of the window and the window to be centered
 	float offsetX = (BoardWindow.getSize().x - totalBoardWidth) / 2;
 	float offsetY = (BoardWindow.getSize().y - totalBoardHeight) / 2;
-	
+
 	// Create the background rectangle
 	sf::RectangleShape backgroundRectangle(sf::Vector2f(totalBoardWidth + m_size, totalBoardHeight + m_size));
 
@@ -66,13 +84,6 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 		centeredTile.setPosition(tile.getPosition().x + offsetX, tile.getPosition().y + offsetY);
 		BoardWindow.draw(centeredTile);
 	}
-	// În constructorul Board::Board()
-	Pillar blackPillar(100.0f, 100.0f, sf::Color::Black);  // Exemplu de pilon negru
-	Pillar redPillar(150.0f, 150.0f, sf::Color::Red);      // Exemplu de pilon roșu
-
-	// În metoda Board::Draw(sf::RenderWindow& window)
-	blackPillar.draw(BoardWindow);
-	redPillar.draw(BoardWindow);
 
 	// Position of the red and black lines showing the borders of each player
 	m_redHorizontalLine1.setPosition(offsetX - m_tileSize * 0.8, offsetY + DOT_RADIUS * 3.5);
@@ -85,4 +96,8 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	BoardWindow.draw(m_redHorizontalLine2);
 	BoardWindow.draw(m_blackVerticalLine1);
 	BoardWindow.draw(m_blackVerticalLine2);
+	blackPillar.draw(BoardWindow);
+	redPillar.draw(BoardWindow);
+	// În metoda Board::Draw(sf::RenderWindow& window)
+
 }

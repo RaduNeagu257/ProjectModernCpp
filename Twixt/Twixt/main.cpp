@@ -1,13 +1,14 @@
-#include <SFML/Graphics.hpp>
+﻿#include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include<iostream>
 #include "Board.h"
-
+#include"Pillars.h"
 //SFML sample code - try to run
 
 int main() {
 
     Board board;
+
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");
     window.setFramerateLimit(60);
@@ -68,7 +69,7 @@ int main() {
     sf::RenderWindow instructionsWindow;
     sf::RenderWindow boardWindow;
 
-  
+
     // Main game loop
     while (window.isOpen()) {
         sf::Event event;
@@ -90,7 +91,7 @@ int main() {
                     std::cout << "Board Game button clicked!" << std::endl; //Debug message
                 }
             }
-        
+
         }
         if (instructionsWindowOpen) {
             if (!instructionsWindow.isOpen()) {
@@ -105,31 +106,31 @@ int main() {
                     instructionsWindowOpen = false;
                 }
             }
-           instructionsWindow.clear(sf::Color::Cyan);
-              sf::Font instructions2Font;
-              instructions2Font.loadFromFile("ARIAL.TTF");
-              sf::Text instructions2Text("Welcome to the Twixt Game!\n"
-                  "\n"
-                  "Here are the rules of the game: \n"
-                  "\n"
-                  "1. You take turns placing pegs of your respective colors on the board, one peg per turn.\n"
-                  "2. The player with the red color makes the first move.\n"
-                  "3. You may not place a peg on your opponent's border rows.\n"
-                  "4. After the first peg is placed, the second player has the option to swap sides. (If the second player \n chooses not to swap immediately after the first peg is placed, then sides may not be swapped \n later in that game.\n"
-                  "6. Add or remove as many legal links between pegs of your color as you wish. A link is legal when \n the two pegs are at opposite corners of a six-hole rectangle (like a knight's move in chess), and \n no other link crosses the linking  path, not even one of your own.\n"
-                  "\n"
-                  "Your goal is to connect a peg in one of your border rows to a peg in your other border row, with a \n continuous chain of linked pegs. If neither side can achieve this, the game is a draw.\n",
-                 
-                  instructions2Font, 20);
-              instructions2Text.setFillColor(sf::Color::Black);
-        instructions2Text.setPosition(50, 50);
-        instructionsWindow.draw(instructions2Text);
-       
-           
+            instructionsWindow.clear(sf::Color::Cyan);
+            sf::Font instructions2Font;
+            instructions2Font.loadFromFile("ARIAL.TTF");
+            sf::Text instructions2Text("Welcome to the Twixt Game!\n"
+                "\n"
+                "Here are the rules of the game: \n"
+                "\n"
+                "1. You take turns placing pegs of your respective colors on the board, one peg per turn.\n"
+                "2. The player with the red color makes the first move.\n"
+                "3. You may not place a peg on your opponent's border rows.\n"
+                "4. After the first peg is placed, the second player has the option to swap sides. (If the second player \n chooses not to swap immediately after the first peg is placed, then sides may not be swapped \n later in that game.\n"
+                "6. Add or remove as many legal links between pegs of your color as you wish. A link is legal when \n the two pegs are at opposite corners of a six-hole rectangle (like a knight's move in chess), and \n no other link crosses the linking  path, not even one of your own.\n"
+                "\n"
+                "Your goal is to connect a peg in one of your border rows to a peg in your other border row, with a \n continuous chain of linked pegs. If neither side can achieve this, the game is a draw.\n",
+
+                instructions2Font, 20);
+            instructions2Text.setFillColor(sf::Color::Black);
+            instructions2Text.setPosition(50, 50);
+            instructionsWindow.draw(instructions2Text);
+
+
             instructionsWindow.display();
         }
 
-        if (boardWindowOpen){
+        if (boardWindowOpen) {
             if (!boardWindow.isOpen()) {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
                 boardWindow.setFramerateLimit(60);
@@ -156,13 +157,11 @@ int main() {
         window.draw(instructionButton);
         window.draw(startButtonText);
         window.draw(instructionsButtonText);
-     
+
         // Display what you have drawn
         window.display();
     }
 
-   
+
     return 0;
 }
-
-    

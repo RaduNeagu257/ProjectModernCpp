@@ -53,7 +53,7 @@ int main() {
     instructionsButtonText.setPosition(instructionButton.getPosition().x + (instructionButton.getSize().x - instructionsButtonText.getGlobalBounds().width) / 2,
         instructionButton.getPosition().y + (instructionButton.getSize().y - instructionsButtonText.getGlobalBounds().height) / 2);
 
-    // Declare the text for the "Instructions" button
+    // Declare the text for the "Settings" button
     sf::Font settingsFont;
     settingsFont.loadFromFile("ARIAL.TTF");
     sf::Font settingsTitleFont;
@@ -75,7 +75,9 @@ int main() {
 
     bool instructionsWindowOpen = false;
     bool boardWindowOpen = false;
+    bool settingsWindowOpen = false;
     sf::RenderWindow instructionsWindow;
+    sf::RenderWindow settingsWindow;
     sf::RenderWindow boardWindow;
 
 
@@ -99,6 +101,12 @@ int main() {
                     boardWindowOpen = true;
                     std::cout << "Board Game button clicked!" << std::endl; //Debug message
                 }
+                //Check if the "Settings" button is clicked
+                else  if (settingsButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
+                    settingsWindowOpen = true;
+                    std::cout << "Settings button clicked!" << std::endl; // Debug message
+                }
+                
             }
 
         }
@@ -154,6 +162,21 @@ int main() {
             boardWindow.clear(sf::Color::White);
             board.Draw(boardWindow);
             boardWindow.display();
+        }
+        if (settingsWindowOpen) {
+            if (!settingsWindow.isOpen()) {
+                settingsWindow.create(sf::VideoMode(1000, 500), "Settings", sf::Style::Close);
+                settingsWindow.setFramerateLimit(60);
+            }
+            sf::Event settingsEvent;
+            while (settingsWindow.pollEvent(settingsEvent)) {
+                if (settingsEvent.type == sf::Event::Closed) {
+                    settingsWindow.close();
+                    settingsWindowOpen = false;
+                }
+            }
+            settingsWindow.clear(sf::Color::White);
+            settingsWindow.display();
         }
 
 

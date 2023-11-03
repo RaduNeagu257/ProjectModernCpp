@@ -9,18 +9,28 @@ int main() {
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");
     window.setFramerateLimit(60);
+
     // Declare the "Start" button
     sf::RectangleShape startButton(sf::Vector2f(200, 50));
     startButton.setFillColor(sf::Color::Cyan);
     startButton.setPosition(860, 490);
     startButton.setOutlineColor(sf::Color::Black);
     startButton.setOutlineThickness(5);
+
     ///Declare the "Instructions" button
     sf::RectangleShape instructionButton(sf::Vector2f(200, 50));
     instructionButton.setFillColor(sf::Color::Red);
     instructionButton.setOutlineColor(sf::Color::Black);
     instructionButton.setOutlineThickness(5);
     instructionButton.setPosition(860, 650);
+
+    // Declare the "Settings" button
+    sf::RectangleShape settingsButton(sf::Vector2f(200, 50));
+    settingsButton.setFillColor(sf::Color::Green);
+    settingsButton.setPosition(860, 570);
+    settingsButton.setOutlineColor(sf::Color::Black);
+    settingsButton.setOutlineThickness(5);
+
     // Declare the text for the "Start" button
     sf::Font font;
     font.loadFromFile("ARIAL.TTF");
@@ -31,6 +41,7 @@ int main() {
     // Center the text on the button
     startButtonText.setPosition(startButton.getPosition().x + (startButton.getSize().x - startButtonText.getGlobalBounds().width) / 2,
         startButton.getPosition().y + (startButton.getSize().y - startButtonText.getGlobalBounds().height) / 2);
+
     // Declare the text for the "Instructions" button
     sf::Font instructionsFont;
     instructionsFont.loadFromFile("ARIAL.TTF");
@@ -41,6 +52,19 @@ int main() {
     // Center the text on the button
     instructionsButtonText.setPosition(instructionButton.getPosition().x + (instructionButton.getSize().x - instructionsButtonText.getGlobalBounds().width) / 2,
         instructionButton.getPosition().y + (instructionButton.getSize().y - instructionsButtonText.getGlobalBounds().height) / 2);
+
+    // Declare the text for the "Instructions" button
+    sf::Font settingsFont;
+    settingsFont.loadFromFile("ARIAL.TTF");
+    sf::Font settingsTitleFont;
+    settingsTitleFont.loadFromFile("TitleText.ttf");
+    sf::Text settingsButtonText("Settings", font, 24);
+    settingsButtonText.setFillColor(sf::Color::Black);
+    // Center the text on the button
+    settingsButtonText.setPosition(settingsButton.getPosition().x + (settingsButton.getSize().x - settingsButtonText.getGlobalBounds().width) / 2,
+        settingsButton.getPosition().y + (settingsButton.getSize().y - settingsButtonText.getGlobalBounds().height) / 2);
+
+
     // Set the title of the window
     sf::Text titleText("Twixt Game", titleFont, 36); // You can adjust the font size
     titleText.setFillColor(sf::Color::Black); // Set the color
@@ -140,8 +164,10 @@ int main() {
         window.draw(titleText);
         window.draw(startButton);
         window.draw(instructionButton);
+        window.draw(settingsButton);
         window.draw(startButtonText);
         window.draw(instructionsButtonText);
+        window.draw(settingsButtonText);
 
         // Display what you have drawn
         window.display();

@@ -168,14 +168,38 @@ int main() {
                 settingsWindow.create(sf::VideoMode(1000, 500), "Settings", sf::Style::Close);
                 settingsWindow.setFramerateLimit(60);
             }
+            settingsWindow.clear(sf::Color::White);
+            settingsWindow.display();
+       
             sf::Event settingsEvent;
             while (settingsWindow.pollEvent(settingsEvent)) {
                 if (settingsEvent.type == sf::Event::Closed) {
                     settingsWindow.close();
                     settingsWindowOpen = false;
                 }
+                else if (settingsEvent.type == sf::Event::MouseButtonPressed && settingsEvent.mouseButton.button == sf::Mouse::Left)
+                {
+                    sf::Vector2i mousePosition = sf::Mouse::getPosition(settingsWindow);
+
+                    // Verifică dacă butonul corespunzător dimensiunii 18x18 a fost apăsat
+                    if (board.button18x18.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                    {
+                        board.SetBoardSize(board.m_boardSize1);
+                    }
+                    // Verifică dacă butonul corespunzător dimensiunii 20x20 a fost apăsat
+                    else if (board.button20x20.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                    {
+                        board.SetBoardSize(board.m_boardSize2);
+                    }
+                    // Verifică dacă butonul corespunzător dimensiunii 16x16 a fost apăsat
+                    else if (board.button16x16.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                    {
+                        board.SetBoardSize(board.m_boardSize3);
+                    }
+                }
             }
             settingsWindow.clear(sf::Color::White);
+            board.DrawSettingsButtons(settingsWindow);
             settingsWindow.display();
         }
 

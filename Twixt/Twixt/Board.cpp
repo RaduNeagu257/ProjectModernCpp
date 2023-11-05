@@ -1,5 +1,5 @@
 ﻿#include "Board.h"
-#include "Pillars.h"
+#include "Pillar.h"
 Board::Board()
 	:m_size(24),
 	m_tileSize(30),
@@ -19,39 +19,25 @@ Board::Board()
 	button30x30.setFillColor(sf::Color::White);
 	button30x30.setPosition(50, 200);
 
-	for (int i = 0; i < m_size; ++i)
-	{
-		for (int j = 0; j < m_size; ++j)
-		{
-			// Create the 2D array for the board
-			sf::CircleShape tile(DOT_RADIUS);
-			tile.setPosition(i * m_tileSize, j * m_tileSize);
-			tile.setOutlineColor(sf::Color::Black);
-			tile.setOutlineThickness(1);
-			m_tiles.push_back(tile);
-		}
-	}
-
-
 	// Create the red horizontal lines
 	float lineWidth = (m_tileSize + 1) * m_size;
 	m_redHorizontalLine1.setSize({ lineWidth, LINE_THICKNESS });
 	m_redHorizontalLine1.setFillColor(sf::Color::Red);
-	m_redHorizontalLine1.setPosition(0, m_tileSize);
+	//m_redHorizontalLine1.setPosition(0, m_tileSize);
 
 	m_redHorizontalLine2.setSize({ lineWidth, LINE_THICKNESS });
 	m_redHorizontalLine2.setFillColor(sf::Color::Red);
-	m_redHorizontalLine2.setPosition(0, (m_size - 1) * m_tileSize - 2);
+	//m_redHorizontalLine2.setPosition(0, (m_size - 1) * m_tileSize - 2);
 
 	// Create the black vertical lines
 	float lineHeight = (m_tileSize + 1) * m_size;
 	m_blackVerticalLine1.setSize({ LINE_THICKNESS, lineHeight });
 	m_blackVerticalLine1.setFillColor(sf::Color::Black);
-	m_blackVerticalLine1.setPosition(m_tileSize, 0);
+	//m_blackVerticalLine1.setPosition(m_tileSize, 0);
 
 	m_blackVerticalLine2.setSize({ LINE_THICKNESS, lineHeight });
 	m_blackVerticalLine2.setFillColor(sf::Color::Black);
-	m_blackVerticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
+	//m_blackVerticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
 void Board::Draw(sf::RenderWindow& BoardWindow)
@@ -80,12 +66,21 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	BoardWindow.draw(backgroundRectangle); // draw the colored rectangle
 
 	// Centering the array using the previously calculated offsets
-	for (auto& tile : m_tiles)
+
+	for (int i = 0; i < m_size; ++i)
 	{
-		sf::CircleShape centeredTile = tile;
-		centeredTile.setPosition(tile.getPosition().x + offsetX, tile.getPosition().y + offsetY);
-		BoardWindow.draw(centeredTile);
+		for (int j = 0; j < m_size; ++j)
+		{
+			// Create the 2D array for the board
+			sf::CircleShape tile(DOT_RADIUS);
+			tile.setPosition(i * m_tileSize + offsetX, j * m_tileSize + offsetY);
+			tile.setOutlineColor(sf::Color::Black);
+			tile.setOutlineThickness(1);
+			m_tiles.push_back(tile);
+			BoardWindow.draw(tile);
+		}
 	}
+
 	// Declare the mousePosition and mousePostionFloat variables.
 	sf::Vector2i mousePosition;
 	sf::Vector2f mousePositionFloat;
@@ -100,16 +95,15 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	int x = mousePositionFloat.x / m_tileSize;
 	int y = mousePositionFloat.y / m_tileSize;
 
-	// If the mouse is over a cell, create and draw a pillar.
-	if (x >= 0 && x < m_size && y >= 0 && y < m_size) {
-		// Create a new pillar.
-		Pillar pillar(x * m_tileSize, y * m_tileSize, sf::Color::Red);
-
-		// Set the position of the pillar.
-		pillar.setPosition(mousePositionFloat);
-
-		// Draw the pillar.
-		pillar.draw(BoardWindow);
+	for (auto& tile : m_tiles)
+	{
+		if (tile.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+		{
+			// Create a new pillar.
+			Pillar pillar(x * m_tileSize, y * m_tileSize, sf::Color::Red);
+			pillar.setPosition(tile.getPosition());
+			pillar.Draw(BoardWindow);
+		}
 	}
 
 	// Position of the red and black lines showing the borders of each player
@@ -126,7 +120,7 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	BoardWindow.draw(button18x18);
 	BoardWindow.draw(button24x24);
 	BoardWindow.draw(button30x30);
-}//
+}
 void Board::SetBoardSize(int size)
 {
 	m_size = size;

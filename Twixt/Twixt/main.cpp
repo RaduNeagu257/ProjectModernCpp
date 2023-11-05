@@ -2,6 +2,7 @@
 #include <SFML/Window.hpp>
 #include<iostream>
 #include "Board.h"
+
 //SFML sample code - try to run
 int main() {
 
@@ -149,7 +150,8 @@ int main() {
 
         if (boardWindowOpen) {
             if (!boardWindow.isOpen()) {
-                boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
+                sf::VideoMode FullHD(1920, 1080);
+                boardWindow.create(FullHD, "Game Window", sf::Style::Close);
                 boardWindow.setFramerateLimit(60);
             }
             sf::Event boardEvent;

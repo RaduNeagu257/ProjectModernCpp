@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include"Pillars.h"
 #define DOT_RADIUS 5
 #define LINE_THICKNESS 3
 
@@ -26,8 +25,5 @@ private:
 	sf::RectangleShape m_redHorizontalLine2;
 	sf::RectangleShape m_blackVerticalLine1;
 	sf::RectangleShape m_blackVerticalLine2;
-	/*int m_boardSize1;
-	int m_boardSize2;
-	int m_boardSize3;*/
 };
 

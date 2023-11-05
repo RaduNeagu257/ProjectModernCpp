@@ -4,20 +4,20 @@ Board::Board()
 	:m_size(24),
 	m_tileSize(30),
 	m_boardSize1(18),
-	m_boardSize2(20),
-	m_boardSize3(16)
+	m_boardSize2(24),
+	m_boardSize3(30)
 {
 	button18x18.setSize({ 100, 50 });
 	button18x18.setFillColor(sf::Color::White);
-	button18x18.setPosition(50, 50); // Ajustează poziția după necesitate
+	button18x18.setPosition(50, 80); // Ajustează poziția după necesitate
 
-	button20x20.setSize({ 100, 50 });
-	button20x20.setFillColor(sf::Color::White);
-	button20x20.setPosition(50, 110); // Ajustează poziția după necesitate
+	button24x24.setSize({ 100, 50 });
+	button24x24.setFillColor(sf::Color::White);
+	button24x24.setPosition(50, 140); // Ajustează poziția după necesitate
 
-	button16x16.setSize({ 100, 50 });
-	button16x16.setFillColor(sf::Color::White);
-	button16x16.setPosition(50, 170);
+	button30x30.setSize({ 100, 50 });
+	button30x30.setFillColor(sf::Color::White);
+	button30x30.setPosition(50, 200);
 
 	for (int i = 0; i < m_size; ++i)
 	{
@@ -124,8 +124,8 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	//blackPillar.draw(BoardWindow);
 	//redPillar.draw(BoardWindow);
 	BoardWindow.draw(button18x18);
-	BoardWindow.draw(button20x20);
-	BoardWindow.draw(button16x16);
+	BoardWindow.draw(button24x24);
+	BoardWindow.draw(button30x30);
 }//
 void Board::SetBoardSize(int size)
 {
@@ -168,8 +168,38 @@ void Board::SetBoardSize(int size)
 
 void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 {
+	sf::Text text18x18;
+	sf::Font settingsfont;
+
+	settingsfont.loadFromFile("ARIAL.TTF");
+	text18x18.setFont(settingsfont); // Set the font to our text
+	text18x18.setString("18x18"); // Set the button label text
+	text18x18.setCharacterSize(24); // Set the text size
+	text18x18.setFillColor(sf::Color::Black); // Set the text color
+
+	sf::FloatRect textRect = text18x18.getLocalBounds();
+
+	// Position the text relative to the button
+	text18x18.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	text18x18.setPosition(sf::Vector2f(button18x18.getPosition().x + button18x18.getSize().x / 2.0f, button18x18.getPosition().y + button18x18.getSize().y / 2.0f));
+
+	sf::Text text24x24 = text18x18;
+
+	text24x24.setString("24x24");
+	// Position the text relative to the button
+	text24x24.setPosition(sf::Vector2f(button24x24.getPosition().x + button24x24.getSize().x / 2.0f, button24x24.getPosition().y + button24x24.getSize().y / 2.0f));
+
+	sf::Text text30x30 = text18x18;
+
+	text30x30.setString("30x30");
+	// Position the text relative to the button
+	text30x30.setPosition(sf::Vector2f(button30x30.getPosition().x + button30x30.getSize().x / 2.0f, button30x30.getPosition().y + button30x30.getSize().y / 2.0f));
+
 	settingsWindow.draw(button18x18);
-	settingsWindow.draw(button20x20);
-	settingsWindow.draw(button16x16);
+	settingsWindow.draw(text18x18);
+	settingsWindow.draw(button24x24);
+	settingsWindow.draw(text24x24);
+	settingsWindow.draw(button30x30);
+	settingsWindow.draw(text30x30);
 }
 

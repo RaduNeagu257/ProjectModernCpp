@@ -15,8 +15,8 @@ public:
 	int m_boardSize2;
 	int m_boardSize3;
 	sf::RectangleShape button18x18;
-	sf::RectangleShape button20x20;
-	sf::RectangleShape button16x16;
+	sf::RectangleShape button24x24;
+	sf::RectangleShape button30x30;
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
 private:
 	std::vector<sf::CircleShape> m_tiles;

@@ -163,44 +163,73 @@ int main() {
             board.Draw(boardWindow);
             boardWindow.display();
         }
+        
         if (settingsWindowOpen) {
+            sf::RectangleShape* selectedButtonShadow = nullptr;
+
+            sf::RectangleShape shadow;
+            shadow.setFillColor(sf::Color(0, 0, 0, 100));
+
+            sf::Font settingsFont;
+            settingsFont.loadFromFile("ARIAL.TTF");
+            sf::Text settingsText("Choose the dimensions of the board\n", settingsFont, 20);
+            settingsText.setFillColor(sf::Color::Black);
+            settingsText.setPosition(50, 40);
+
             if (!settingsWindow.isOpen()) {
                 settingsWindow.create(sf::VideoMode(1000, 500), "Settings", sf::Style::Close);
                 settingsWindow.setFramerateLimit(60);
             }
-            settingsWindow.clear(sf::Color::White);
-            settingsWindow.display();
-       
-            sf::Event settingsEvent;
-            while (settingsWindow.pollEvent(settingsEvent)) {
-                if (settingsEvent.type == sf::Event::Closed) {
-                    settingsWindow.close();
-                    settingsWindowOpen = false;
-                }
-                else if (settingsEvent.type == sf::Event::MouseButtonPressed && settingsEvent.mouseButton.button == sf::Mouse::Left)
-                {
-                    sf::Vector2i mousePosition = sf::Mouse::getPosition(settingsWindow);
+            while (settingsWindow.isOpen()) {
+                sf::Event settingsEvent;
+                while (settingsWindow.pollEvent(settingsEvent)) {
+                    if (settingsEvent.type == sf::Event::Closed) {
+                        settingsWindow.close();
+                        settingsWindowOpen = false;
+                    }
 
-                    // Verifică dacă butonul corespunzător dimensiunii 18x18 a fost apăsat
-                    if (board.button18x18.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+
+
+
+
+                    if (settingsEvent.type == sf::Event::MouseButtonPressed && settingsEvent.mouseButton.button == sf::Mouse::Left)
                     {
-                        board.SetBoardSize(board.m_boardSize1);
-                    }
-                    // Verifică dacă butonul corespunzător dimensiunii 20x20 a fost apăsat
-                    else if (board.button20x20.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
-                    {
-                        board.SetBoardSize(board.m_boardSize2);
-                    }
-                    // Verifică dacă butonul corespunzător dimensiunii 16x16 a fost apăsat
-                    else if (board.button16x16.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
-                    {
-                        board.SetBoardSize(board.m_boardSize3);
+                        sf::Vector2i mousePosition = sf::Mouse::getPosition(settingsWindow);
+
+                        // Check if the 18x18 button was pressed
+                        if (board.button18x18.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        {
+                            board.SetBoardSize(board.m_boardSize1);
+                            std::cout << "18x18 button clicked!" << std::endl; // Debug message
+                            selectedButtonShadow = &board.button18x18;
+                        }
+                        // Check if the 24x24 button was pressed
+                        else if (board.button24x24.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        {
+                            board.SetBoardSize(board.m_boardSize2);
+                            std::cout << "24x24 button clicked!" << std::endl; // Debug message
+                            selectedButtonShadow = &board.button24x24;
+                        }
+                        // Check if the 30x30button was pressed
+                        else if (board.button30x30.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        {
+                            board.SetBoardSize(board.m_boardSize3);
+                            std::cout << "30x30 button clicked!" << std::endl; // Debug message
+                            selectedButtonShadow = &board.button30x30;
+                        }
                     }
                 }
+                settingsWindow.clear(sf::Color::Red);
+                if (selectedButtonShadow != nullptr)
+                {
+                    shadow.setPosition(selectedButtonShadow->getPosition().x - 5, selectedButtonShadow->getPosition().y - 5);
+                    shadow.setSize(sf::Vector2f(selectedButtonShadow->getSize().x + 10, selectedButtonShadow->getSize().y + 10));
+                    settingsWindow.draw(shadow);
+                }
+                settingsWindow.draw(settingsText);
+                board.DrawSettingsButtons(settingsWindow);
+                settingsWindow.display();
             }
-            settingsWindow.clear(sf::Color::White);
-            board.DrawSettingsButtons(settingsWindow);
-            settingsWindow.display();
         }
 
 

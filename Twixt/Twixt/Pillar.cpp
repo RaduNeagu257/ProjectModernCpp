@@ -1,6 +1,6 @@
 #include "Pillar.h"
 #include "Board.h"
-#define DOT_RADIUS 5
+
 Pillar::Pillar(float x, float y, sf::Color c) 
 	: shape(DOT_RADIUS), color(c) 
 {
@@ -9,9 +9,7 @@ Pillar::Pillar(float x, float y, sf::Color c)
 	shape.setOutlineThickness(1);
 	shape.setFillColor(color);
 }
-void Pillar::Draw(sf::RenderWindow& BoardWindow)
+void Pillar::Draw(sf::RenderWindow& boardWindow)
 {
-
-	BoardWindow.draw(shape);
-
+	boardWindow.draw(shape);
 }

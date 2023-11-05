@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#define DOT_RADIUS 5
+#define DOT_RADIUS 10
 #define LINE_THICKNESS 3
 
 class Board
@@ -16,6 +16,8 @@ public:
 	sf::RectangleShape button18x18;
 	sf::RectangleShape button24x24;
 	sf::RectangleShape button30x30;
+	std::vector<sf::CircleShape> getTiles();
+	int getTileSize();
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
 private:
 	std::vector<sf::CircleShape> m_tiles;

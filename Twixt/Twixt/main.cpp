@@ -2,6 +2,7 @@
 #include <SFML/Window.hpp>
 #include<iostream>
 #include "Board.h"
+#include "Pillar.h"
 
 //SFML sample code - try to run
 int main() {
@@ -150,20 +151,58 @@ int main() {
 
         if (boardWindowOpen) {
             if (!boardWindow.isOpen()) {
-                sf::VideoMode FullHD(1920, 1080);
-                boardWindow.create(FullHD, "Game Window", sf::Style::Close);
+                boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
                 boardWindow.setFramerateLimit(60);
+                
             }
-            sf::Event boardEvent;
-            while (boardWindow.pollEvent(boardEvent)) {
-                if (boardEvent.type == sf::Event::Closed) {
-                    boardWindow.close();
-                    boardWindowOpen = false;
+            std::vector<Pillar> pillars;
+            while (boardWindow.isOpen()) {
+                
+                sf::Event boardEvent;
+                boardWindow.clear(sf::Color::White);
+                while (boardWindow.pollEvent(boardEvent)) {
+                    if (boardEvent.type == sf::Event::Closed) {
+                        boardWindow.close();
+                        boardWindowOpen = false;
+                    }
+                    if (boardEvent.type == sf::Event::MouseButtonPressed && boardEvent.mouseButton.button == sf::Mouse::Left)
+                    {
+                        
+                        //Place pillar on board
+
+                        sf::Vector2f mousePositionFloat;
+                        sf::Vector2i mousePosition;
+                        mousePosition = sf::Mouse::getPosition(boardWindow);
+                        for (auto& tile : board.getTiles())
+                        {
+                            // Convert the mousePosition to a sf::Vector2f object.
+                            mousePositionFloat = sf::Vector2f(mousePosition.x, mousePosition.y);
+
+                            // Check if the mouse is over a cell.
+                            int x = mousePositionFloat.x / board.getTileSize();
+                            int y = mousePositionFloat.y / board.getTileSize();
+                            if (tile.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                            {
+                                std::cout << "Pillar button clicked!" << std::endl; // Debug message
+                                // Create a new pillar.
+                                Pillar pillar(x * board.getTileSize(), y * board.getTileSize(), sf::Color::Red);
+                                pillar.setPosition(tile.getPosition());
+                                pillars.push_back(pillar);
+                                break;
+                            }
+                            
+                        }
+                        
+                    }
+                    
                 }
+                
+                //boardWindow.clear(sf::Color::White);
+                board.Draw(boardWindow);
+                for(auto& pillar:pillars)
+                    pillar.Draw(boardWindow);
+                boardWindow.display();
             }
-            boardWindow.clear(sf::Color::White);
-            board.Draw(boardWindow);
-            boardWindow.display();
         }
         
         if (settingsWindowOpen) {
@@ -189,10 +228,6 @@ int main() {
                         settingsWindow.close();
                         settingsWindowOpen = false;
                     }
-
-
-
-
 
                     if (settingsEvent.type == sf::Event::MouseButtonPressed && settingsEvent.mouseButton.button == sf::Mouse::Left)
                     {
@@ -233,7 +268,6 @@ int main() {
                 settingsWindow.display();
             }
         }
-
 
         // Clear the window
         window.clear(sf::Color::White);

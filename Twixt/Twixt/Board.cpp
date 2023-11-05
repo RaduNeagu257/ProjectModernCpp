@@ -106,11 +106,12 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 		}
 	}
 
-	// Position of the red and black lines showing the borders of each player
-	m_redHorizontalLine1.setPosition(offsetX - m_tileSize * 0.8, offsetY + DOT_RADIUS * 3.5);
-	m_redHorizontalLine2.setPosition(offsetX - m_tileSize * 0.8, offsetY + (m_size - 1) * m_tileSize - DOT_RADIUS * 2);
-	m_blackVerticalLine1.setPosition(offsetX + DOT_RADIUS * 3.5, offsetY - m_tileSize * 0.8);
-	m_blackVerticalLine2.setPosition(offsetX + (m_size - 1) * m_tileSize - DOT_RADIUS * 2, offsetY - m_tileSize * 0.8);
+	m_redHorizontalLine1.setPosition(offsetX - m_tileSize * 0.8, offsetY + DOT_RADIUS * 2.25);
+	m_redHorizontalLine2.setPosition(offsetX - m_tileSize * 0.8, offsetY + (m_size - 1) * m_tileSize - DOT_RADIUS * 0.6);
+
+	m_blackVerticalLine1.setPosition(offsetX + DOT_RADIUS * 2.25, offsetY - m_tileSize * 0.8);
+	m_blackVerticalLine2.setPosition(offsetX + (m_size - 1) * m_tileSize - DOT_RADIUS * 0.6, offsetY - m_tileSize * 0.8);
+
 	BoardWindow.draw(m_redHorizontalLine1);
 	BoardWindow.draw(m_redHorizontalLine2);
 	BoardWindow.draw(m_blackVerticalLine1);
@@ -158,6 +159,16 @@ void Board::SetBoardSize(int size)
 	m_blackVerticalLine2.setSize({ LINE_THICKNESS, lineHeight });
 	m_blackVerticalLine2.setFillColor(sf::Color::Black);
 	m_blackVerticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
+}
+
+std::vector<sf::CircleShape> Board::getTiles()
+{
+	return m_tiles;
+}
+
+int Board::getTileSize()
+{
+	return m_tileSize;
 }
 
 void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)

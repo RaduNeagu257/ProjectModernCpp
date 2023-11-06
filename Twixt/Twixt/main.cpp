@@ -39,6 +39,15 @@ int main() {
     okButton.setOutlineColor(sf::Color::Black);
     okButton.setOutlineThickness(5);
 
+    //Declare the text for the "ok" button
+    sf::Font buttonFont;
+    buttonFont.loadFromFile("ARIAL.TTF");
+    sf::Text okButtonText("OK", buttonFont, 24);
+    okButtonText.setFillColor(sf::Color::White);
+    okButtonText.setPosition(okButton.getPosition().x + (okButton.getSize().x - okButtonText.getGlobalBounds().width) / 2,
+        okButton.getPosition().y + (okButton.getSize().y - okButtonText.getGlobalBounds().height) / 2);
+
+
     // Declare the text for the "Start" button
     sf::Font font;
     font.loadFromFile("ARIAL.TTF");
@@ -282,6 +291,7 @@ int main() {
                 }
                 settingsWindow.draw(settingsText);
                 settingsWindow.draw(okButton);
+                settingsWindow.draw(okButtonText);
 
                 board.DrawSettingsButtons(settingsWindow);
                 

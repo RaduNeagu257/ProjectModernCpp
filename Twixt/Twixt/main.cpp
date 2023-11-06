@@ -32,6 +32,12 @@ int main() {
     settingsButton.setPosition(860, 570);
     settingsButton.setOutlineColor(sf::Color::Black);
     settingsButton.setOutlineThickness(5);
+    //Declare the "Ok' button
+    sf::RectangleShape okButton(sf::Vector2f(200, 50));
+    okButton.setFillColor(sf::Color::Blue); 
+    okButton.setPosition(50, 300); 
+    okButton.setOutlineColor(sf::Color::Black);
+    okButton.setOutlineThickness(5);
 
     // Declare the text for the "Start" button
     sf::Font font;
@@ -207,6 +213,8 @@ int main() {
         
         if (settingsWindowOpen) {
             sf::RectangleShape* selectedButtonShadow = nullptr;
+            //Declare the "Back" button for the Settings Window
+         
 
             sf::RectangleShape shadow;
             shadow.setFillColor(sf::Color(0, 0, 0, 100));
@@ -220,6 +228,7 @@ int main() {
             if (!settingsWindow.isOpen()) {
                 settingsWindow.create(sf::VideoMode(1000, 500), "Settings", sf::Style::Close);
                 settingsWindow.setFramerateLimit(60);
+          
             }
             while (settingsWindow.isOpen()) {
                 sf::Event settingsEvent;
@@ -227,6 +236,14 @@ int main() {
                     if (settingsEvent.type == sf::Event::Closed) {
                         settingsWindow.close();
                         settingsWindowOpen = false;
+                    }
+                    if (settingsEvent.type == sf::Event::MouseButtonPressed && settingsEvent.mouseButton.button == sf::Mouse::Left) {
+                        sf::Vector2i mousePosition = sf::Mouse::getPosition(settingsWindow);
+                        if (okButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
+                            // Aici puteți adăuga logica sau acțiunile corespunzătoare atunci când butonul "OK" este apăsat în fereastra de setări.
+                            std::cout << "OK button clicked in Settings!" << std::endl; // Mesaj de depanare
+                        }
+                        // Verificați dacă alte evenimente din fereastra de setări sunt gestionate aici.
                     }
 
                     if (settingsEvent.type == sf::Event::MouseButtonPressed && settingsEvent.mouseButton.button == sf::Mouse::Left)
@@ -264,8 +281,12 @@ int main() {
                     settingsWindow.draw(shadow);
                 }
                 settingsWindow.draw(settingsText);
+                settingsWindow.draw(okButton);
+
                 board.DrawSettingsButtons(settingsWindow);
+                
                 settingsWindow.display();
+           
             }
         }
 
@@ -280,6 +301,7 @@ int main() {
         window.draw(startButtonText);
         window.draw(instructionsButtonText);
         window.draw(settingsButtonText);
+      //  window.draw(okButton);
 
         // Display what you have drawn
         window.display();

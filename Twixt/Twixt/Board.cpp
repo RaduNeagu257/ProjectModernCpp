@@ -206,5 +206,6 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 	settingsWindow.draw(text24x24);
 	settingsWindow.draw(button30x30);
 	settingsWindow.draw(text30x30);
+	
 }
 

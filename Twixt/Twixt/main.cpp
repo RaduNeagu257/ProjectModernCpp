@@ -11,7 +11,7 @@ int main() {
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");
     window.setFramerateLimit(60);
-
+   
     // Declare the "Start" button
     sf::RectangleShape startButton(sf::Vector2f(200, 50));
     startButton.setFillColor(sf::Color::Cyan);
@@ -93,6 +93,7 @@ int main() {
     bool instructionsWindowOpen = false;
     bool boardWindowOpen = false;
     bool settingsWindowOpen = false;
+
     sf::RenderWindow instructionsWindow;
     sf::RenderWindow settingsWindow;
     sf::RenderWindow boardWindow;
@@ -123,7 +124,7 @@ int main() {
                     settingsWindowOpen = true;
                     std::cout << "Settings button clicked!" << std::endl; // Debug message
                 }
-                
+
             }
 
         }
@@ -168,11 +169,11 @@ int main() {
             if (!boardWindow.isOpen()) {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
                 boardWindow.setFramerateLimit(60);
-                
+
             }
             std::vector<Pillar> pillars;
             while (boardWindow.isOpen()) {
-                
+
                 sf::Event boardEvent;
                 boardWindow.clear(sf::Color::White);
                 while (boardWindow.pollEvent(boardEvent)) {
@@ -182,7 +183,7 @@ int main() {
                     }
                     if (boardEvent.type == sf::Event::MouseButtonPressed && boardEvent.mouseButton.button == sf::Mouse::Left)
                     {
-                        
+
                         //Place pillar on board
 
                         sf::Vector2f mousePositionFloat;
@@ -205,25 +206,25 @@ int main() {
                                 pillars.push_back(pillar);
                                 break;
                             }
-                            
+
                         }
-                        
+
                     }
-                    
+
                 }
-                
+
                 //boardWindow.clear(sf::Color::White);
                 board.Draw(boardWindow);
-                for(auto& pillar:pillars)
+                for (auto& pillar : pillars)
                     pillar.Draw(boardWindow);
                 boardWindow.display();
             }
         }
-        
+
         if (settingsWindowOpen) {
             sf::RectangleShape* selectedButtonShadow = nullptr;
             //Declare the "Back" button for the Settings Window
-         
+
 
             sf::RectangleShape shadow;
             shadow.setFillColor(sf::Color(0, 0, 0, 100));
@@ -237,7 +238,7 @@ int main() {
             if (!settingsWindow.isOpen()) {
                 settingsWindow.create(sf::VideoMode(1000, 500), "Settings", sf::Style::Close);
                 settingsWindow.setFramerateLimit(60);
-          
+
             }
             while (settingsWindow.isOpen()) {
                 sf::Event settingsEvent;
@@ -251,8 +252,14 @@ int main() {
                         if (okButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
                             // Aici puteți adăuga logica sau acțiunile corespunzătoare atunci când butonul "OK" este apăsat în fereastra de setări.
                             std::cout << "OK button clicked in Settings!" << std::endl; // Mesaj de depanare
+                            settingsWindowOpen = false;
+                           
+                            settingsWindow.close(); // Închide fereastra de setări
+                            window.clear();
                         }
                         // Verificați dacă alte evenimente din fereastra de setări sunt gestionate aici.
+
+
                     }
 
                     if (settingsEvent.type == sf::Event::MouseButtonPressed && settingsEvent.mouseButton.button == sf::Mouse::Left)
@@ -294,12 +301,12 @@ int main() {
                 settingsWindow.draw(okButtonText);
 
                 board.DrawSettingsButtons(settingsWindow);
-                
+
                 settingsWindow.display();
-           
+
             }
         }
-
+       
         // Clear the window
         window.clear(sf::Color::White);
 

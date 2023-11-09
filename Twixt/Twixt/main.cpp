@@ -6,15 +6,20 @@
 
 bool IsPillarThere(const std::vector<Pillar>& pillars, const sf::Vector2f& place) {
     for (const auto& pillar : pillars) {
-        if (pillar.GetPosition() == place) {
+        if (std::abs(pillar.GetPosition().x - place.x )< 1.0f && std::abs(pillar.GetPosition().y - place.y) < 1.0f) {
             return true;
         }
-        return false;
     }
+    return false;
+
 }
+
 //SFML sample code - try to run
 int main() {
 //
+    sf::Clock clockAnimation;
+    bool isAnimating = false; //for animation later on maybe
+
     Board board;
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");
@@ -174,6 +179,8 @@ int main() {
         }
 
         if (boardWindowOpen) {
+            int pillarAdded = 0;
+
             if (!boardWindow.isOpen()) {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
                 boardWindow.setFramerateLimit(60);
@@ -197,6 +204,8 @@ int main() {
                         sf::Vector2f mousePositionFloat;
                         sf::Vector2i mousePosition;
                         mousePosition = sf::Mouse::getPosition(boardWindow);
+                        
+
                         for (auto& tile : board.getTiles())
                         {
                             // Convert the mousePosition to a sf::Vector2f object.
@@ -207,13 +216,22 @@ int main() {
                             int y = mousePositionFloat.y / board.getTileSize();
                             if (tile.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                             {
-                                std::cout << "Pillar button clicked!" << std::endl; // Debug message
-                                // Create a new pillar.
-                                Pillar pillar(x * board.getTileSize(), y * board.getTileSize(), sf::Color::Red);
-                                pillar.setPosition(tile.getPosition());
-                                pillars.push_back(pillar);
-                                break;
+                                if (!IsPillarThere(pillars, mousePositionFloat)) {
+
+                                    std::cout << "Pillar button clicked!" << std::endl; // debug message
+                                    // Create a new pillar.
+                                    Pillar pillar(x * board.getTileSize(), y * board.getTileSize(), sf::Color::Red);
+                                    pillarAdded++;
+                                    pillar.setPosition(tile.getPosition());
+                                    pillars.push_back(pillar);
+                                    break;
+                                }
+                                else {
+                                    std::cout << "There is already a pillar there!" << std::endl;
+                                }
+                                
                             }
+
 
                         }
 
@@ -227,6 +245,7 @@ int main() {
                     pillar.Draw(boardWindow);
                 boardWindow.display();
             }
+            std::cout << pillarAdded;//checks how many pillars we have(duplicate or unique pillars)
         }
 
         if (settingsWindowOpen) {

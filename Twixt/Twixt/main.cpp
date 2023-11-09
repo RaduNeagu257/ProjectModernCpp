@@ -4,9 +4,17 @@
 #include "Board.h"
 #include "Pillar.h"
 
+bool IsPillarThere(const std::vector<Pillar>& pillars, const sf::Vector2f& place) {
+    for (const auto& pillar : pillars) {
+        if (pillar.GetPosition() == place) {
+            return true;
+        }
+        return false;
+    }
+}
 //SFML sample code - try to run
 int main() {
-
+//
     Board board;
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");

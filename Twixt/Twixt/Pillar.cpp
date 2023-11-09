@@ -9,6 +9,10 @@ Pillar::Pillar(float x, float y, sf::Color c)
 	shape.setOutlineThickness(1);
 	shape.setFillColor(color);
 }
+sf::Vector2f Pillar::GetPosition() const
+{
+	return m_position;
+}
 void Pillar::Draw(sf::RenderWindow& boardWindow)
 {
 	boardWindow.draw(shape);

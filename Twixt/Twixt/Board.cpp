@@ -1,5 +1,6 @@
 ﻿#include "Board.h"
 #include "Pillar.h"
+#include <iostream>
 Board::Board()
 	:m_size(24),
 	m_tileSize(30),
@@ -59,7 +60,7 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	// Set its position to the top-left corner of the array
 	backgroundRectangle.setPosition(offsetX - m_tileSize * 0.8, offsetY - m_tileSize * 0.8);
 
-	// Set its color to rgb(247, 255, 208)
+	// Set its color to rgb(247, 255, 208) - pale yellow from pictures of the board game
 	backgroundRectangle.setFillColor(sf::Color(247, 255, 208));
 
 	// Draw the background rectangle
@@ -88,21 +89,16 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	// Get the position of the mouse.
 	mousePosition = sf::Mouse::getPosition(BoardWindow);
 
-	// Convert the mousePosition to a sf::Vector2f object.
-	mousePositionFloat = sf::Vector2f(mousePosition.x, mousePosition.y);
-
-	// Check if the mouse is over a cell.
-	int x = mousePositionFloat.x / m_tileSize;
-	int y = mousePositionFloat.y / m_tileSize;
+	// Check if the mouse is hovering over a cell.
 
 	for (auto& tile : m_tiles)
 	{
+		
 		if (tile.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
 		{
-			// Create a new pillar.
-			Pillar pillar(x * m_tileSize, y * m_tileSize, sf::Color::Red);
-			pillar.setPosition(tile.getPosition());
-			pillar.Draw(BoardWindow);
+			// Temporarily change the color of the hovered pillar to a light grey
+			tile.setFillColor(sf::Color(200, 200, 200, 255));
+			BoardWindow.draw(tile);
 		}
 	}
 

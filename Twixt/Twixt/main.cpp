@@ -4,19 +4,17 @@
 #include "Board.h"
 #include "Pillar.h"
 
-bool IsPillarThere(const std::vector<Pillar>& pillars, const sf::Vector2f& place) {
+bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar) {
+    //each existing pillar is checked in case the new pillar would be placed on a position which already has a pillar on it
     for (const auto& pillar : pillars) {
-        if (std::abs(pillar.GetPosition().x - place.x )< 1.0f && std::abs(pillar.GetPosition().y - place.y) < 1.0f) {
+        if (pillar.GetPosition() == tempPillar.GetPosition())
             return true;
-        }
     }
     return false;
-
 }
 
 //SFML sample code - try to run
 int main() {
-//
     sf::Clock clockAnimation;
     bool isAnimating = false; //for animation later on maybe
 
@@ -196,16 +194,13 @@ int main() {
                         boardWindow.close();
                         boardWindowOpen = false;
                     }
+                    // Left mouse click is pressed to place a pillar
                     if (boardEvent.type == sf::Event::MouseButtonPressed && boardEvent.mouseButton.button == sf::Mouse::Left)
                     {
-
-                        //Place pillar on board
-
                         sf::Vector2f mousePositionFloat;
                         sf::Vector2i mousePosition;
                         mousePosition = sf::Mouse::getPosition(boardWindow);
                         
-
                         for (auto& tile : board.getTiles())
                         {
                             // Convert the mousePosition to a sf::Vector2f object.
@@ -216,18 +211,20 @@ int main() {
                             int y = mousePositionFloat.y / board.getTileSize();
                             if (tile.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                             {
-                                if (!IsPillarThere(pillars, mousePositionFloat)) {
+                                //Create a new pillar and check its position before adding it to the vector
+                                Pillar tempPillar(x* board.getTileSize(), y* board.getTileSize(), sf::Color::Red);
+                                tempPillar.setPosition(tile.getPosition());
+
+                                if (!IsPillarThere(pillars, tempPillar)) {
 
                                     std::cout << "Pillar button clicked!" << std::endl; // debug message
-                                    // Create a new pillar.
-                                    Pillar pillar(x * board.getTileSize(), y * board.getTileSize(), sf::Color::Red);
                                     pillarAdded++;
-                                    pillar.setPosition(tile.getPosition());
-                                    pillars.push_back(pillar);
+                                    pillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
                                     break;
                                 }
                                 else {
                                     std::cout << "There is already a pillar there!" << std::endl;
+                                    break;
                                 }
                                 
                             }

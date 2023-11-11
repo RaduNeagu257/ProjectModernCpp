@@ -98,8 +98,7 @@ int main() {
     titleText.setFillColor(sf::Color::Black); // Set the color
     titleText.setStyle(sf::Text::Bold); // Make it bold
     // Center the title above the button
-    titleText.setPosition(860 + (startButton.getSize().x - titleText.getGlobalBounds().width) / 2,
-        440);
+    titleText.setPosition(860 + (startButton.getSize().x - titleText.getGlobalBounds().width) / 2, 440);
 
     bool instructionsWindowOpen = false;
     bool boardWindowOpen = false;
@@ -185,6 +184,8 @@ int main() {
 
             }
             std::vector<Pillar> pillars;
+            //Side player = Side::Red; // Set the Red color as the first one to place a pillar
+            sf::Color player = sf::Color::Red;
             while (boardWindow.isOpen()) {
 
                 sf::Event boardEvent;
@@ -212,14 +213,19 @@ int main() {
                             if (tile.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                             {
                                 //Create a new pillar and check its position before adding it to the vector
-                                Pillar tempPillar(x* board.getTileSize(), y* board.getTileSize(), sf::Color::Red);
-                                tempPillar.setPosition(tile.getPosition());
+                                Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player);
+                                tempPillar.setPosition(tile.getPosition()); 
 
                                 if (!IsPillarThere(pillars, tempPillar)) {
 
                                     std::cout << "Pillar button clicked!" << std::endl; // debug message
                                     pillarAdded++;
                                     pillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
+                                    // alternate between the red and black sides
+                                    if (player == sf::Color::Red)
+                                        player = sf::Color::Black;
+                                    else
+                                        player = sf::Color::Red;
                                     break;
                                 }
                                 else {

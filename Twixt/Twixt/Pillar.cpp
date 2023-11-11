@@ -13,6 +13,10 @@ sf::Vector2f Pillar::GetPosition() const
 {
 	return m_position;
 }
+void Pillar::setPosition(const sf::Vector2f& position)
+{
+	m_position = position;
+}
 void Pillar::Draw(sf::RenderWindow& boardWindow)
 {
 	boardWindow.draw(shape);

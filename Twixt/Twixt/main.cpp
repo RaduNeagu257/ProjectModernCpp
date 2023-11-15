@@ -3,6 +3,7 @@
 #include<iostream>
 #include "Board.h"
 #include "Pillar.h"
+#include "Bridge.h"
 
 bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar) {
     //each existing pillar is checked in case the new pillar would be placed on a position which already has a pillar on it

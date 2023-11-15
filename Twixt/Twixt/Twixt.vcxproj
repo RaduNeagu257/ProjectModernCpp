@@ -131,11 +131,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pillar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="Bridge.h" />
     <ClInclude Include="Pillar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

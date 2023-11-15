@@ -3,6 +3,7 @@
 #include<iostream>
 #include "Board.h"
 #include "Pillar.h"
+#include "Bridge.h"
 
 //SFML sample code - try to run
 int main() {

@@ -2,7 +2,7 @@
 #include "Bridge.h"
 #include<cmath>
 const float PI = 3.14159265358979323846f;
-const float LINE_THICKNESS = 5.0f;
+const float BRIDGE_LINE_THICKNESS = 5.0f;
 
 Bridge::Bridge(const sf::Vector2f& start, const sf::Vector2f& end, sf::Color c) {
     // Calculează direcția și lungimea podului
@@ -10,7 +10,7 @@ Bridge::Bridge(const sf::Vector2f& start, const sf::Vector2f& end, sf::Color c) 
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
     // Setează proprietățile podului
-    shape.setSize({ length, LINE_THICKNESS }); // LINE_THICKNESS ar fi o constantă definită în altă parte
+    shape.setSize({ length, BRIDGE_LINE_THICKNESS }); // LINE_THICKNESS ar fi o constantă definită în altă parte
     shape.setRotation(atan2(direction.y, direction.x) * 180 / PI); // PI ar fi definit ca constantele matematice
     shape.setPosition(start);
     shape.setFillColor(c);

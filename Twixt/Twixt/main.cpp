@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "Pillar.h"
 #include "Bridge.h"
+float BRIDGE_LINE_THICKNESS = 5.0f;
 
 bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar) {
     //each existing pillar is checked in case the new pillar would be placed on a position which already has a pillar on it
@@ -126,18 +127,7 @@ int main() {
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePositionFloat(mousePosition.x, mousePosition.y);
-                if (!isSelecting) {
-                    startPosition = mousePositionFloat;
-                    isSelecting = true;
-                }
-                else {
-                    endPosition = mousePositionFloat;
-                    isSelecting = false;
 
-                    if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges)) {
-                        existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
-                    }
-                }
             
                 // Check if the "Instructions" button is clicked
                 if (instructionButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
@@ -246,6 +236,36 @@ int main() {
                                         player = sf::Color::Black;
                                     else
                                         player = sf::Color::Red;
+
+                                    //aici
+                                    if (!isSelecting) 
+                                    {
+                                        //startPosition = mousePositionFloat;
+                                        /*startPosition = tempPillar.GetPosition();
+                                        startPosition.x += board.getTileSize()/2;
+                                        startPosition.y += board.getTileSize()/2;*/
+                                        startPosition = sf::Vector2f(tempPillar.getCenter().x, tempPillar.getCenter().y);
+                                        //startPosition = sf::Vector2f (tile.getRadius() + tile.getPosition().x, tile.getRadius() + tile.getPosition().y);
+                                        isSelecting = true;
+                                    }
+                                    else 
+                                    {
+                                        //endPosition = mousePositionFloat;
+                                        /*endPosition = tempPillar.GetPosition();
+                                        endPosition.x += board.getTileSize()/2;
+                                        endPosition.y += board.getTileSize()/2;*/
+                                        endPosition = sf::Vector2f(tempPillar.getCenter().x, tempPillar.getCenter().y);
+                                        isSelecting = false;
+
+
+                                        //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
+                                        {
+                                            std::cout << "place";
+                                            existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
+                                        }
+                                        //else
+                                            //std::cout << "not placed";
+                                    }
                                     break;
                                 }
                                 else {
@@ -267,7 +287,7 @@ int main() {
                 for (auto& pillar : pillars)
                     pillar.Draw(boardWindow);
                 for (const auto& bridge : existingBridges) {
-                    bridge.draw(window);
+                    bridge.draw(boardWindow);
                 }
                 boardWindow.display();
             }

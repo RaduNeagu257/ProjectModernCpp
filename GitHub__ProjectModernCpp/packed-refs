@@ -1,0 +1,17 @@
+# pack-refs with: peeled fully-peeled sorted 
+c3cfbab79451d9ac03d4640647449e0cb2473047 refs/heads/#13-Settingsbutton
+399a3e733c58c767c0b188b74d4ba7b41f8d0a66 refs/heads/main
+00c5ee4582594cc60a9cc91e06fdd8208517e141 refs/remotes/origin/#1-start-window-created
+6b2967630345a004886fe6144edd0430792e8036 refs/remotes/origin/#11-Pillars-added
+c3cfbab79451d9ac03d4640647449e0cb2473047 refs/remotes/origin/#13-Settingsbutton
+e423c6867b48c28d126e0688b6b227897907b48b refs/remotes/origin/#2-start-button-and-title
+62d6a0a1db1846f97a148b9cb4ba32a74071ad62 refs/remotes/origin/#20-back-button-added
+f9e366482816d7877af44d52dbea7f6d65d31f22 refs/remotes/origin/#23-FunctionForDuplicatePillars
+e9ffd69391c7b6e14555d55b35a385f47abcaf86 refs/remotes/origin/#3-Game-Title
+84abdb8a6415059a9599bcb5038e4fa93a7cd8e9 refs/remotes/origin/#5-Instructionsbutton
+5713fd9598076c72fb44e2f6bba6bf08d3c81725 refs/remotes/origin/#9-Instructions
+399a3e733c58c767c0b188b74d4ba7b41f8d0a66 refs/remotes/origin/HEAD
+f68180d26bc94abc90cb488b0d908437d759d741 refs/remotes/origin/board-game-window
+399a3e733c58c767c0b188b74d4ba7b41f8d0a66 refs/remotes/origin/main
+0851163e5f5c69cd3e66f7a99b8ee55b5ae55142 refs/remotes/origin/stefaniaroman15-patch-1
+67fb9bdfa592f9d9a0a01e2a5d40ca5d1416a276 refs/remotes/origin/stefaniaroman15-patch-2

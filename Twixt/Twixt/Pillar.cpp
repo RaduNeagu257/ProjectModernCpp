@@ -13,6 +13,12 @@ sf::Vector2f Pillar::GetPosition() const
 {
 	return m_position;
 }
+
+sf::Vector2f Pillar::getCenter() const
+{
+	sf::Vector2f center = sf::Vector2f(GetPosition().x + shape.getRadius(), GetPosition().y + shape.getRadius());
+	return center;
+}
 void Pillar::setPosition(const sf::Vector2f& position)
 {
 	m_position = position;

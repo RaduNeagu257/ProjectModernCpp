@@ -23,7 +23,12 @@ int main() {
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");
     window.setFramerateLimit(60);
-   
+    std::vector<Pillar> pillars;
+    std::vector<Bridge> existingBridges;
+    bool isSelecting = false;
+    sf::Vector2f startPosition;
+    sf::Vector2f endPosition;
+
     // Declare the "Start" button
     sf::RectangleShape startButton(sf::Vector2f(200, 50));
     startButton.setFillColor(sf::Color::Cyan);
@@ -120,6 +125,20 @@ int main() {
             // Check if the left mouse click is pressed
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+                sf::Vector2f mousePositionFloat(mousePosition.x, mousePosition.y);
+                if (!isSelecting) {
+                    startPosition = mousePositionFloat;
+                    isSelecting = true;
+                }
+                else {
+                    endPosition = mousePositionFloat;
+                    isSelecting = false;
+
+                    if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges)) {
+                        existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
+                    }
+                }
+            
                 // Check if the "Instructions" button is clicked
                 if (instructionButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
                     instructionsWindowOpen = true;
@@ -247,6 +266,9 @@ int main() {
                 board.Draw(boardWindow);
                 for (auto& pillar : pillars)
                     pillar.Draw(boardWindow);
+                for (const auto& bridge : existingBridges) {
+                    bridge.draw(window);
+                }
                 boardWindow.display();
             }
             std::cout << pillarAdded;//checks how many pillars we have(duplicate or unique pillars)

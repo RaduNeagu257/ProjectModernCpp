@@ -4,6 +4,7 @@
 const float PI = 3.14159265358979323846f;
 const float BRIDGE_LINE_THICKNESS = 5.0f;
 
+//old constructor - to delete
 //Bridge::Bridge(const sf::Vector2f& start, const sf::Vector2f& end, sf::Color c) {
 //    // Calculează direcția și lungimea podului
 //    sf::Vector2f direction = end - start;
@@ -22,9 +23,18 @@ Bridge::Bridge(const Pillar& startPillar, const Pillar& stopPillar, sf::Color co
 {
     sf::Vector2f direction = stopPillar.getCenter() - startPillar.getCenter();
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+    // Normalize the direction vector
+    sf::Vector2f normalizedDirection = direction / length;
+
+    // Calculate perpendicular offset to center the bridge vertically
+    sf::Vector2f perpendicularOffset(-normalizedDirection.y, normalizedDirection.x);
+    perpendicularOffset *= BRIDGE_LINE_THICKNESS / 2.0f;
+
+    // Set the size, rotation, and position
     shape.setSize({ length, BRIDGE_LINE_THICKNESS });
     shape.setRotation(atan2(direction.y, direction.x) * 180 / PI);
-    shape.setPosition(startPillar.getCenter());
+    shape.setPosition(startPillar.getCenter() - perpendicularOffset);
     shape.setFillColor(color);
 }
 
@@ -65,8 +75,17 @@ bool Bridge::canPlaceBridge(const sf::Vector2f& potentialStart, const sf::Vector
     return true;
 }
 
-// Va trebui să implementezi această funcție pentru a verifica intersecția dintre două linii
+bool Bridge::canPlaceBridge(const Pillar& potentialStart, const Pillar& potentialEnd, const std::vector<Bridge>& existingBridges)
+{
+    // Get the absolute difference in rows and columns between the two pillars
+    int rowDiff = std::abs(potentialStart.m_row - potentialEnd.m_row);
+    int colDiff = std::abs(potentialStart.m_col - potentialEnd.m_col);
 
+    // Check for a knight's move: 2 rows and 1 column, or 2 columns and 1 row
+    if ((rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2)) 
+       return true;
+    return false;
+}
 
 
 sf::Vector2f Bridge::getStartPosition() const {

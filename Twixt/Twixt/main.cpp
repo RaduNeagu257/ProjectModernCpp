@@ -24,8 +24,6 @@ int main() {
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");
     window.setFramerateLimit(60);
-    //std::vector<Pillar> pillars;
-    //std::vector<Bridge> existingBridges;
     bool isSelecting = false;
     sf::Vector2f startPosition;
     sf::Vector2f endPosition;
@@ -195,9 +193,9 @@ int main() {
                 boardWindow.setFramerateLimit(60);
 
             }
-            std::vector<Pillar> pillars;
-            std::vector<Bridge> existingBridges;
-            //Side player = Side::Red; // Set the Red color as the first one to place a pillar
+            std::vector<Pillar> redPillars, bluePillars;
+            std::vector<Bridge> redBridges, blueBridges;
+            
             sf::Color player = sf::Color::Red;
             while (boardWindow.isOpen()) {
 
@@ -223,60 +221,58 @@ int main() {
                             // Check if the mouse is over a cell.
                             int x = mousePositionFloat.x / board.getTileSize();
                             int y = mousePositionFloat.y / board.getTileSize();
-                            if (tile.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                            if (std::get<0>(tile).getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                             {
                                 //Create a new pillar and check its position before adding it to the vector
-                                Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player);
-                                tempPillar.setPosition(tile.getPosition()); 
+                                //std::cout << std::get<1>(tile) << " " << std::get<2>(tile) << "\n";
+                                Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player, std::get<1>(tile),std::get<2>(tile));
+                                tempPillar.setPosition(std::get<0>(tile).getPosition());
+                                if (player != sf::Color::Red)
+                                    player = sf::Color::Red;
+                                else
+                                {
+                                    if (!IsPillarThere(redPillars, tempPillar)) {
 
-                                if (!IsPillarThere(pillars, tempPillar)) {
+                                        std::cout << "Pillar button clicked!" << std::endl; // debug message
+                                        pillarAdded++;
+                                        redPillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
+                                        // alternate between the red and black sides
 
-                                    std::cout << "Pillar button clicked!" << std::endl; // debug message
-                                    pillarAdded++;
-                                    pillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
-                                    // alternate between the red and black sides
+
+                                        //aici
+                                        if (!isSelecting)
+                                        {
+                                            startPillar = tempPillar;
+                                            isSelecting = true;
+                                        }
+                                        else
+                                        {
+                                            isSelecting = false;
+                                            stopPillar = tempPillar;
+
+                                            //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
+                                            if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))
+                                            {
+                                                std::cout << "Bridge Placed!\n";
+                                                redBridges.emplace_back(startPillar, stopPillar, player);
+                                                //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
+                                            }
+                                            else
+                                                std::cout << "Can't place\n"<<startPillar.m_row<<" "<<startPillar.m_col<<"\n"<<stopPillar.m_row<<" "<<stopPillar.m_col<<"\n";
+                                        }
                                     if (player == sf::Color::Red)
                                         player = sf::Color::Black;
                                     else
                                         player = sf::Color::Red;
-
-                                    //aici
-                                    if (!isSelecting) 
-                                    {
-                                        //startPosition = mousePositionFloat;
-                                        /*startPosition = tempPillar.GetPosition();
-                                        startPosition.x += board.getTileSize()/2;
-                                        startPosition.y += board.getTileSize()/2;*/
-                                        startPosition = sf::Vector2f(tempPillar.getCenter().x, tempPillar.getCenter().y);
-                                        //startPosition = sf::Vector2f (tile.getRadius() + tile.getPosition().x, tile.getRadius() + tile.getPosition().y);
-                                        startPillar = tempPillar;
-                                        isSelecting = true;
-                                    }
-                                    else 
-                                    {
-                                        //endPosition = mousePositionFloat;
-                                        /*endPosition = tempPillar.GetPosition();
-                                        endPosition.x += board.getTileSize()/2;
-                                        endPosition.y += board.getTileSize()/2;*/
-                                        endPosition = sf::Vector2f(tempPillar.getCenter().x, tempPillar.getCenter().y);
-                                        isSelecting = false;
-                                        stopPillar = tempPillar;
-
-                                        //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
-                                        {
-                                            std::cout << "place";
-                                            existingBridges.emplace_back(startPillar, stopPillar, sf::Color::Red);
-                                            //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
-                                        }
-                                        //else
-                                            //std::cout << "not placed";
-                                    }
                                     break;
-                                }
-                                else {
+                                    }
+                                else
+                                {
                                     std::cout << "There is already a pillar there!" << std::endl;
                                     break;
                                 }
+                                }
+                                
                                 
                             }
 
@@ -289,9 +285,9 @@ int main() {
 
                 //boardWindow.clear(sf::Color::White);
                 board.Draw(boardWindow);
-                for (auto& pillar : pillars)
+                for (auto& pillar : redPillars)
                     pillar.Draw(boardWindow);
-                for (const auto& bridge : existingBridges) {
+                for (const auto& bridge : redBridges) {
                     bridge.draw(boardWindow);
                 }
                 boardWindow.display();

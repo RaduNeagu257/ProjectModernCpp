@@ -77,7 +77,7 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 			tile.setPosition(i * m_tileSize + offsetX, j * m_tileSize + offsetY);
 			tile.setOutlineColor(sf::Color::Black);
 			tile.setOutlineThickness(1);
-			m_tiles.push_back(tile);
+			m_tiles.push_back(std::make_tuple(tile,j,i));
 			BoardWindow.draw(tile);
 		}
 	}
@@ -94,11 +94,11 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	for (auto& tile : m_tiles)
 	{
 		
-		if (tile.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+		if (std::get<0>(tile).getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
 		{
 			// Temporarily change the color of the hovered pillar to a light grey
-			tile.setFillColor(sf::Color(200, 200, 200, 255));
-			BoardWindow.draw(tile);
+			std::get<0>(tile).setFillColor(sf::Color(200, 200, 200, 255));
+			BoardWindow.draw(std::get<0>(tile));
 		}
 	}
 
@@ -132,7 +132,7 @@ void Board::SetBoardSize(int size)
 			tile.setPosition(i * m_tileSize, j * m_tileSize);
 			tile.setOutlineColor(sf::Color::Black);
 			tile.setOutlineThickness(1);
-			m_tiles.push_back(tile);
+			m_tiles.push_back(std::make_tuple(tile,j,i));
 		}
 	}
 
@@ -157,7 +157,7 @@ void Board::SetBoardSize(int size)
 	m_blackVerticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
-std::vector<sf::CircleShape> Board::getTiles()
+std::vector<std::tuple<sf::CircleShape,int,int>> Board::getTiles()
 {
 	return m_tiles;
 }

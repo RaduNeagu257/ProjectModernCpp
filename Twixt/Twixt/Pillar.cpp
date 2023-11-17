@@ -1,8 +1,11 @@
 #include "Pillar.h"
 #include "Board.h"
 
-Pillar::Pillar(float x, float y, sf::Color c) 
-	: shape(DOT_RADIUS), color(c) 
+Pillar::Pillar(float x, float y, sf::Color c,int row,int col) 
+	: shape(DOT_RADIUS),
+	color(c),
+	m_row(row),
+	m_col(col)
 {
 	shape.setPosition(x, y);
 	shape.setOutlineColor(sf::Color::Black);
@@ -12,6 +15,11 @@ Pillar::Pillar(float x, float y, sf::Color c)
 sf::Vector2f Pillar::GetPosition() const
 {
 	return m_position;
+}
+
+float Pillar::getRadius() const
+{
+	return shape.getRadius();
 }
 
 sf::Vector2f Pillar::getCenter() const

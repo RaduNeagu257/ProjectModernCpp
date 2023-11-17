@@ -8,6 +8,7 @@ private:
 	sf::Vector2f m_position;
 public:
 	Pillar(float x, float y, sf::Color c);
+	Pillar() = default;
 	sf::Vector2f GetPosition() const;
 	sf::Vector2f getCenter() const;
 	void Draw(sf::RenderWindow& boardWindow);// desenare pilon intr-o fereastra

@@ -4,16 +4,28 @@
 const float PI = 3.14159265358979323846f;
 const float BRIDGE_LINE_THICKNESS = 5.0f;
 
-Bridge::Bridge(const sf::Vector2f& start, const sf::Vector2f& end, sf::Color c) {
-    // Calculează direcția și lungimea podului
-    sf::Vector2f direction = end - start;
-    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+//Bridge::Bridge(const sf::Vector2f& start, const sf::Vector2f& end, sf::Color c) {
+//    // Calculează direcția și lungimea podului
+//    sf::Vector2f direction = end - start;
+//    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+//
+//    // Setează proprietățile podului
+//    shape.setSize({ length, BRIDGE_LINE_THICKNESS }); // LINE_THICKNESS ar fi o constantă definită în altă parte
+//    shape.setRotation(atan2(direction.y, direction.x) * 180 / PI); // PI ar fi definit ca constantele matematice
+//    shape.setPosition(start);
+//    shape.setFillColor(c);
+//}
 
-    // Setează proprietățile podului
-    shape.setSize({ length, BRIDGE_LINE_THICKNESS }); // LINE_THICKNESS ar fi o constantă definită în altă parte
-    shape.setRotation(atan2(direction.y, direction.x) * 180 / PI); // PI ar fi definit ca constantele matematice
-    shape.setPosition(start);
-    shape.setFillColor(c);
+Bridge::Bridge(const Pillar& startPillar, const Pillar& stopPillar, sf::Color color)
+    :m_startPillar(startPillar),
+    m_stopPillar(stopPillar)
+{
+    sf::Vector2f direction = stopPillar.getCenter() - startPillar.getCenter();
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    shape.setSize({ length, BRIDGE_LINE_THICKNESS });
+    shape.setRotation(atan2(direction.y, direction.x) * 180 / PI);
+    shape.setPosition(startPillar.getCenter());
+    shape.setFillColor(color);
 }
 
 void Bridge::draw(sf::RenderWindow& Boardwindow) const{

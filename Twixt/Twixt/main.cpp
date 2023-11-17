@@ -24,11 +24,13 @@ int main() {
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");
     window.setFramerateLimit(60);
-    std::vector<Pillar> pillars;
-    std::vector<Bridge> existingBridges;
+    //std::vector<Pillar> pillars;
+    //std::vector<Bridge> existingBridges;
     bool isSelecting = false;
     sf::Vector2f startPosition;
     sf::Vector2f endPosition;
+    Pillar startPillar;
+    Pillar stopPillar;
 
     // Declare the "Start" button
     sf::RectangleShape startButton(sf::Vector2f(200, 50));
@@ -194,6 +196,7 @@ int main() {
 
             }
             std::vector<Pillar> pillars;
+            std::vector<Bridge> existingBridges;
             //Side player = Side::Red; // Set the Red color as the first one to place a pillar
             sf::Color player = sf::Color::Red;
             while (boardWindow.isOpen()) {
@@ -246,6 +249,7 @@ int main() {
                                         startPosition.y += board.getTileSize()/2;*/
                                         startPosition = sf::Vector2f(tempPillar.getCenter().x, tempPillar.getCenter().y);
                                         //startPosition = sf::Vector2f (tile.getRadius() + tile.getPosition().x, tile.getRadius() + tile.getPosition().y);
+                                        startPillar = tempPillar;
                                         isSelecting = true;
                                     }
                                     else 
@@ -256,12 +260,13 @@ int main() {
                                         endPosition.y += board.getTileSize()/2;*/
                                         endPosition = sf::Vector2f(tempPillar.getCenter().x, tempPillar.getCenter().y);
                                         isSelecting = false;
-
+                                        stopPillar = tempPillar;
 
                                         //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
                                         {
                                             std::cout << "place";
-                                            existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
+                                            existingBridges.emplace_back(startPillar, stopPillar, sf::Color::Red);
+                                            //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
                                         }
                                         //else
                                             //std::cout << "not placed";

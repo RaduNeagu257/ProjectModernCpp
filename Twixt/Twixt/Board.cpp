@@ -7,6 +7,9 @@ Board::Board()
 	m_boardSize1(18),
 	m_boardSize2(24),
 	m_boardSize3(30)
+
+
+
 {
 	button18x18.setSize({ 100, 50 });
 	button18x18.setFillColor(sf::Color::White);
@@ -19,6 +22,18 @@ Board::Board()
 	button30x30.setSize({ 100, 50 });
 	button30x30.setFillColor(sf::Color::White);
 	button30x30.setPosition(50, 200);
+
+	button28pillars.setSize({ 100, 50 });
+	button28pillars.setFillColor(sf::Color::White);
+	button28pillars.setPosition(600, 80);
+
+	button50pillars.setSize({ 100, 50 });
+	button50pillars.setFillColor(sf::Color::White);
+	button50pillars.setPosition(600, 140);
+
+	button78pillars.setSize({ 100, 50 });
+	button78pillars.setFillColor(sf::Color::White);
+	button78pillars.setPosition(600, 200);
 
 	// Create the red horizontal lines
 	float lineWidth = (m_tileSize + 1) * m_size;
@@ -77,7 +92,7 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 			tile.setPosition(i * m_tileSize + offsetX, j * m_tileSize + offsetY);
 			tile.setOutlineColor(sf::Color::Black);
 			tile.setOutlineThickness(1);
-			m_tiles.push_back(std::make_tuple(tile,j,i));
+			m_tiles.push_back(std::make_tuple(tile, j, i));
 			BoardWindow.draw(tile);
 		}
 	}
@@ -93,7 +108,7 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 
 	for (auto& tile : m_tiles)
 	{
-		
+
 		if (std::get<0>(tile).getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
 		{
 			// Temporarily change the color of the hovered pillar to a light grey
@@ -117,7 +132,7 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	BoardWindow.draw(button18x18);
 	BoardWindow.draw(button24x24);
 	BoardWindow.draw(button30x30);
-}
+	}
 void Board::SetBoardSize(int size)
 {
 	m_size = size;
@@ -132,7 +147,7 @@ void Board::SetBoardSize(int size)
 			tile.setPosition(i * m_tileSize, j * m_tileSize);
 			tile.setOutlineColor(sf::Color::Black);
 			tile.setOutlineThickness(1);
-			m_tiles.push_back(std::make_tuple(tile,j,i));
+			m_tiles.push_back(std::make_tuple(tile, j, i));
 		}
 	}
 
@@ -157,7 +172,7 @@ void Board::SetBoardSize(int size)
 	m_blackVerticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
-std::vector<std::tuple<sf::CircleShape,int,int>> Board::getTiles()
+std::vector<std::tuple<sf::CircleShape, int, int>> Board::getTiles()
 {
 	return m_tiles;
 }
@@ -178,10 +193,10 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 	text18x18.setCharacterSize(24); // Set the text size
 	text18x18.setFillColor(sf::Color::Black); // Set the text color
 
-	sf::FloatRect textRect = text18x18.getLocalBounds();
+	sf::FloatRect textRectBoard = text18x18.getLocalBounds();
 
 	// Position the text relative to the button
-	text18x18.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	text18x18.setOrigin(textRectBoard.left + textRectBoard.width / 2.0f, textRectBoard.top + textRectBoard.height / 2.0f);
 	text18x18.setPosition(sf::Vector2f(button18x18.getPosition().x + button18x18.getSize().x / 2.0f, button18x18.getPosition().y + button18x18.getSize().y / 2.0f));
 
 	sf::Text text24x24 = text18x18;
@@ -196,12 +211,50 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 	// Position the text relative to the button
 	text30x30.setPosition(sf::Vector2f(button30x30.getPosition().x + button30x30.getSize().x / 2.0f, button30x30.getPosition().y + button30x30.getSize().y / 2.0f));
 
+
+	sf::Text text28Pillars;
+
+	settingsfont.loadFromFile("ARIAL.TTF");
+	text28Pillars.setFont(settingsfont); // Set the font to our text
+	text28Pillars.setString("28 pillars"); // Set the button label text
+	text28Pillars.setCharacterSize(24); // Set the text size
+	text28Pillars.setFillColor(sf::Color::Black); // Set the text color
+
+	sf::FloatRect textRectPillars = text28Pillars.getLocalBounds();
+
+	// Position the text relative to the button
+	text28Pillars.setOrigin(textRectPillars.left + textRectPillars.width / 2.0f, textRectPillars.top + textRectPillars.height / 2.0f);
+	text28Pillars.setPosition(sf::Vector2f(button28pillars.getPosition().x + button28pillars.getSize().x / 2.0f, button28pillars.getPosition().y + button28pillars.getSize().y / 2.0f));
+
+	sf::Text text50Pillars = text28Pillars;
+
+	text50Pillars.setString("50 pillars");
+	// Position the text relative to the button
+	text50Pillars.setPosition(sf::Vector2f(button50pillars.getPosition().x + button50pillars.getSize().x / 2.0f, button50pillars.getPosition().y + button50pillars.getSize().y / 2.0f));
+
+	sf::Text text78Pillars = text28Pillars;
+
+	text78Pillars.setString("78 pillars");
+	// Position the text relative to the button
+	text78Pillars.setPosition(sf::Vector2f(button78pillars.getPosition().x + button78pillars.getSize().x / 2.0f, button78pillars.getPosition().y + button78pillars.getSize().y / 2.0f));
+
 	settingsWindow.draw(button18x18);
 	settingsWindow.draw(text18x18);
+
 	settingsWindow.draw(button24x24);
 	settingsWindow.draw(text24x24);
+
 	settingsWindow.draw(button30x30);
 	settingsWindow.draw(text30x30);
-	
+
+	settingsWindow.draw(button28pillars);
+	settingsWindow.draw(text28Pillars);
+
+	settingsWindow.draw(button50pillars);
+	settingsWindow.draw(text50Pillars);
+
+	settingsWindow.draw(button78pillars);
+	settingsWindow.draw(text78Pillars);
+
 }
 

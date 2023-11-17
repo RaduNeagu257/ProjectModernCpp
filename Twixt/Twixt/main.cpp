@@ -309,6 +309,10 @@ int main() {
             settingsText.setFillColor(sf::Color::Black);
             settingsText.setPosition(50, 40);
 
+            sf::Text settingsText2("Choose the number of the pillars\n", settingsFont, 20);
+            settingsText2.setFillColor(sf::Color::Black);
+            settingsText2.setPosition(600, 40);
+
             if (!settingsWindow.isOpen()) {
                 settingsWindow.create(sf::VideoMode(1000, 500), "Settings", sf::Style::Close);
                 settingsWindow.setFramerateLimit(60);
@@ -371,6 +375,7 @@ int main() {
                     settingsWindow.draw(shadow);
                 }
                 settingsWindow.draw(settingsText);
+                settingsWindow.draw(settingsText2);
                 settingsWindow.draw(okButton);
                 settingsWindow.draw(okButtonText);
 

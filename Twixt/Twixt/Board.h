@@ -17,7 +17,10 @@ public:
 	sf::RectangleShape button18x18;
 	sf::RectangleShape button24x24;
 	sf::RectangleShape button30x30;
-	std::vector<std::tuple<sf::CircleShape,int,int>> getTiles();
+	sf::RectangleShape button28pillars;
+	sf::RectangleShape button50pillars;
+	sf::RectangleShape button78pillars;
+	std::vector<std::tuple<sf::CircleShape, int, int>> getTiles();
 	int getTileSize();
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
 private:
@@ -30,4 +33,3 @@ private:
 	sf::RectangleShape m_blackVerticalLine1;
 	sf::RectangleShape m_blackVerticalLine2;
 };
-

@@ -300,6 +300,7 @@ int main() {
         if (settingsWindowOpen) {
             sf::RectangleShape* selectedButtonShadow = nullptr;
             sf::RectangleShape* selectedButtonShadowPillars = nullptr;
+            sf::RectangleShape* selectedButtonShadowBridges = nullptr;
             //Declare the "Back" button for the Settings Window
 
 
@@ -318,10 +319,10 @@ int main() {
 
             sf::Text settingsText3("Choose the number of bridges\n", settingsFont, 20);
             settingsText3.setFillColor(sf::Color::Black);
-            settingsText3.setPosition(900, 40);
+            settingsText3.setPosition(800, 40);
 
             if (!settingsWindow.isOpen()) {
-                settingsWindow.create(sf::VideoMode(1500, 500), "Settings", sf::Style::Close);
+                settingsWindow.create(sf::VideoMode(1100, 500), "Settings", sf::Style::Close);
                 settingsWindow.setFramerateLimit(60);
 
             }
@@ -393,26 +394,26 @@ int main() {
                             selectedButtonShadowPillars = &board.button78pillars;
                         }
 
-                        // Check if the bridges button was pressed
-                        if (board.button28pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        // Check if the 25 bridges button was pressed
+                        if (board.button25bridges.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
-                            board.SetPillarNumber(board.m_pillarNumber1);
+                            //board.SetBridgesNumber(board.m_bridgesNumber1);
                             std::cout << "25 bridges button clicked!" << std::endl; // Debug message
-                            selectedButtonShadowPillars = &board.button28pillars;
+                            selectedButtonShadowBridges = &board.button25bridges;
                         }
-                        // Check if the bridges button was pressed
-                        else if (board.button50pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        // Check if the 50 bridges button was pressed
+                        else if (board.button50bridges.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
-                            board.SetPillarNumber(board.m_pillarNumber2);
+                            //board.SetBridgesNumber(board.m_bridgesNumber2);
                             std::cout << "50 bridges button clicked!" << std::endl; // Debug message
-                            selectedButtonShadowPillars = &board.button50pillars;
+                            selectedButtonShadowBridges = &board.button50bridges;
                         }
-                        // Check if the bridges button was pressed
-                        else if (board.button78pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        // Check if the 75 bridges button was pressed
+                        else if (board.button75bridges.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
-                            board.SetPillarNumber(board.m_pillarNumber3);
+                           // board.SetBridgesNumber(board.m_bridgesNumber3);
                             std::cout << "75 bridges button clicked!" << std::endl; // Debug message
-                            selectedButtonShadowPillars = &board.button78pillars;
+                            selectedButtonShadowBridges = &board.button75bridges;
                         }
                     }
                 }
@@ -427,6 +428,12 @@ int main() {
                 {
                     shadow.setPosition(selectedButtonShadowPillars->getPosition().x - 5, selectedButtonShadowPillars->getPosition().y - 5);
                     shadow.setSize(sf::Vector2f(selectedButtonShadowPillars->getSize().x + 10, selectedButtonShadowPillars->getSize().y + 10));
+                    settingsWindow.draw(shadow);
+                }
+                if (selectedButtonShadowBridges != nullptr)
+                {
+                    shadow.setPosition(selectedButtonShadowBridges->getPosition().x - 5, selectedButtonShadowBridges->getPosition().y - 5);
+                    shadow.setSize(sf::Vector2f(selectedButtonShadowBridges->getSize().x + 10, selectedButtonShadowBridges->getSize().y + 10));
                     settingsWindow.draw(shadow);
                 }
                 settingsWindow.draw(settingsText);

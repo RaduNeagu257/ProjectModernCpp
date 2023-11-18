@@ -43,17 +43,17 @@ Board::Board()
 	button78pillars.setFillColor(sf::Color::White);
 	button78pillars.setPosition(450, 200);
 
-	button25bridges.setSize({ 100,50 });
+	button25bridges.setSize({ 120,50 });
 	button25bridges.setFillColor(sf::Color::White);
-	button25bridges.setPosition(900, 80);
+	button25bridges.setPosition(800, 80);
 
-	button50bridges.setSize({ 100,50 });
+	button50bridges.setSize({ 120,50 });
 	button50bridges.setFillColor(sf::Color::White);
-	button50bridges.setPosition(900, 140);
+	button50bridges.setPosition(800, 140);
 
-	button50bridges.setSize({ 100,50 });
-	button50bridges.setFillColor(sf::Color::White);
-	button50bridges.setPosition(900, 200);
+	button75bridges.setSize({ 120,50 });
+	button75bridges.setFillColor(sf::Color::White);
+	button75bridges.setPosition(800, 200);
 
 
 	// Create the red horizontal lines
@@ -228,6 +228,7 @@ int Board::getTileSize()
 
 void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 {
+	//text for board buttons
 	sf::Text text18x18;
 	sf::Font settingsfont;
 
@@ -255,7 +256,7 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 	// Position the text relative to the button
 	text30x30.setPosition(sf::Vector2f(button30x30.getPosition().x + button30x30.getSize().x / 2.0f, button30x30.getPosition().y + button30x30.getSize().y / 2.0f));
 
-
+	//text for pillar buttons
 	sf::Text text28Pillars;
 
 	settingsfont.loadFromFile("ARIAL.TTF");
@@ -282,6 +283,7 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 	// Position the text relative to the button
 	text78Pillars.setPosition(sf::Vector2f(button78pillars.getPosition().x + button78pillars.getSize().x / 2.0f, button78pillars.getPosition().y + button78pillars.getSize().y / 2.0f));
 
+	//text for bridges button
 	sf::Text text25bridges;
 
 	settingsfont.loadFromFile("ARIAL.TTF");
@@ -290,10 +292,10 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 	text25bridges.setCharacterSize(24); // Set the text size
 	text25bridges.setFillColor(sf::Color::Black); // Set the text color
 
-	sf::FloatRect textRectbridges = text25bridges.getLocalBounds();
+	sf::FloatRect textRectBridges = text25bridges.getLocalBounds();
 
 	// Position the text relative to the button
-	text25bridges.setOrigin(textRectbridges.left + textRectbridges.width / 2.0f, textRectbridges.top + textRectbridges.height / 2.0f);
+	text25bridges.setOrigin(textRectBridges.left + textRectBridges.width / 2.0f, textRectBridges.top + textRectBridges.height / 2.0f);
 	text25bridges.setPosition(sf::Vector2f(button25bridges.getPosition().x + button25bridges.getSize().x / 2.0f, button25bridges.getPosition().y + button25bridges.getSize().y / 2.0f));
 
 	sf::Text text50bridges = text25bridges;

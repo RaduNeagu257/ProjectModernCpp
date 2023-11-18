@@ -11,9 +11,14 @@ public:
 	Board();
 	void Draw(sf::RenderWindow& BoardWndow);
 	void SetBoardSize(int size);
+	void SetPillarNumber(int pillarNumber);
 	int m_boardSize1;
 	int m_boardSize2;
 	int m_boardSize3;
+	int m_pillarNumberDef;
+	int m_pillarNumber1;
+	int m_pillarNumber2;
+	int m_pillarNumber3;
 	sf::RectangleShape button18x18;
 	sf::RectangleShape button24x24;
 	sf::RectangleShape button30x30;

@@ -6,7 +6,11 @@ Board::Board()
 	m_tileSize(30),
 	m_boardSize1(18),
 	m_boardSize2(24),
-	m_boardSize3(30)
+	m_boardSize3(30),
+	m_pillarNumberDef(50),
+	m_pillarNumber1(28),
+	m_pillarNumber2(50),
+	m_pillarNumber3(78)
 
 
 
@@ -170,6 +174,29 @@ void Board::SetBoardSize(int size)
 	m_blackVerticalLine2.setSize({ LINE_THICKNESS, lineHeight });
 	m_blackVerticalLine2.setFillColor(sf::Color::Black);
 	m_blackVerticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
+}
+
+void Board::SetPillarNumber(int pillarNumber)
+{
+	// Ensure that the pillar number is not greater than the maximum allowed for the current board size
+	int maxPillarNumber = 0;
+
+	// Determine the maximum allowed pillar number based on the current board size
+	if (m_size == m_boardSize1)
+	{
+		maxPillarNumber = std::min(m_pillarNumber1, m_pillarNumberDef);
+	}
+	else if (m_size == m_boardSize2)
+	{
+		maxPillarNumber = std::min(m_pillarNumber2, m_pillarNumberDef);
+	}
+	else if (m_size == m_boardSize3)
+	{
+		maxPillarNumber = std::min(m_pillarNumber3, m_pillarNumberDef);
+	}
+
+	// Update the actual pillar number with the minimum of the user-selected number and the maximum allowed
+	m_pillarNumberDef = std::min(pillarNumber, maxPillarNumber);
 }
 
 std::vector<std::tuple<sf::CircleShape, int, int>> Board::getTiles()

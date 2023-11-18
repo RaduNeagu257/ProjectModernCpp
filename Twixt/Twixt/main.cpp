@@ -312,12 +312,16 @@ int main() {
             settingsText.setFillColor(sf::Color::Black);
             settingsText.setPosition(50, 40);
 
-            sf::Text settingsText2("Choose the number of the pillars\n", settingsFont, 20);
+            sf::Text settingsText2("Choose the number of pillars\n", settingsFont, 20);
             settingsText2.setFillColor(sf::Color::Black);
-            settingsText2.setPosition(600, 40);
+            settingsText2.setPosition(450, 40);
+
+            sf::Text settingsText3("Choose the number of bridges\n", settingsFont, 20);
+            settingsText3.setFillColor(sf::Color::Black);
+            settingsText3.setPosition(900, 40);
 
             if (!settingsWindow.isOpen()) {
-                settingsWindow.create(sf::VideoMode(1000, 500), "Settings", sf::Style::Close);
+                settingsWindow.create(sf::VideoMode(1500, 500), "Settings", sf::Style::Close);
                 settingsWindow.setFramerateLimit(60);
 
             }
@@ -388,6 +392,28 @@ int main() {
                             std::cout << "78 pillars button clicked!" << std::endl; // Debug message
                             selectedButtonShadowPillars = &board.button78pillars;
                         }
+
+                        // Check if the bridges button was pressed
+                        if (board.button28pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        {
+                            board.SetPillarNumber(board.m_pillarNumber1);
+                            std::cout << "25 bridges button clicked!" << std::endl; // Debug message
+                            selectedButtonShadowPillars = &board.button28pillars;
+                        }
+                        // Check if the bridges button was pressed
+                        else if (board.button50pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        {
+                            board.SetPillarNumber(board.m_pillarNumber2);
+                            std::cout << "50 bridges button clicked!" << std::endl; // Debug message
+                            selectedButtonShadowPillars = &board.button50pillars;
+                        }
+                        // Check if the bridges button was pressed
+                        else if (board.button78pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        {
+                            board.SetPillarNumber(board.m_pillarNumber3);
+                            std::cout << "75 bridges button clicked!" << std::endl; // Debug message
+                            selectedButtonShadowPillars = &board.button78pillars;
+                        }
                     }
                 }
                 settingsWindow.clear(sf::Color::Red);
@@ -405,6 +431,7 @@ int main() {
                 }
                 settingsWindow.draw(settingsText);
                 settingsWindow.draw(settingsText2);
+                settingsWindow.draw(settingsText3);
                 settingsWindow.draw(okButton);
                 settingsWindow.draw(okButtonText);
 

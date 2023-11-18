@@ -19,12 +19,21 @@ public:
 	int m_pillarNumber1;
 	int m_pillarNumber2;
 	int m_pillarNumber3;
+	int m_bridgesNumberDef;
+	int m_bridgesNumber1;
+	int m_bridgesNumber2;
+	int m_bridgesNumber3;
+
 	sf::RectangleShape button18x18;
 	sf::RectangleShape button24x24;
 	sf::RectangleShape button30x30;
 	sf::RectangleShape button28pillars;
 	sf::RectangleShape button50pillars;
 	sf::RectangleShape button78pillars;
+	sf::RectangleShape button25bridges;
+	sf::RectangleShape button50bridges;
+	sf::RectangleShape button75bridges;
+
 	std::vector<std::tuple<sf::CircleShape, int, int>> getTiles();
 	int getTileSize();
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);

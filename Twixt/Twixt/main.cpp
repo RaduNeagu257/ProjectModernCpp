@@ -227,8 +227,10 @@ int main() {
                                 //std::cout << std::get<1>(tile) << " " << std::get<2>(tile) << "\n";
                                 Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player, std::get<1>(tile),std::get<2>(tile));
                                 tempPillar.setPosition(std::get<0>(tile).getPosition());
-                                if (player != sf::Color::Red)
+                                if (player != sf::Color::Red) {
+                                    board.SetPillarNumber(redPillars.size());
                                     player = sf::Color::Red;
+                                }
                                 else
                                 {
                                     if (!IsPillarThere(redPillars, tempPillar)) {
@@ -297,6 +299,7 @@ int main() {
 
         if (settingsWindowOpen) {
             sf::RectangleShape* selectedButtonShadow = nullptr;
+            sf::RectangleShape* selectedButtonShadowPillars = nullptr;
             //Declare the "Back" button for the Settings Window
 
 
@@ -328,14 +331,12 @@ int main() {
                     if (settingsEvent.type == sf::Event::MouseButtonPressed && settingsEvent.mouseButton.button == sf::Mouse::Left) {
                         sf::Vector2i mousePosition = sf::Mouse::getPosition(settingsWindow);
                         if (okButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
-                            // Aici puteți adăuga logica sau acțiunile corespunzătoare atunci când butonul "OK" este apăsat în fereastra de setări.
-                            std::cout << "OK button clicked in Settings!" << std::endl; // Mesaj de depanare
+                            std::cout << "OK button clicked in Settings!" << std::endl; 
                             settingsWindowOpen = false;
                            
-                            settingsWindow.close(); // Închide fereastra de setări
+                            settingsWindow.close(); 
                             window.clear();
                         }
-                        // Verificați dacă alte evenimente din fereastra de setări sunt gestionate aici.
 
 
                     }
@@ -365,6 +366,28 @@ int main() {
                             std::cout << "30x30 button clicked!" << std::endl; // Debug message
                             selectedButtonShadow = &board.button30x30;
                         }
+
+                        // Check if the 28 pillars button was pressed
+                        if (board.button28pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        {
+                            board.SetPillarNumber(board.m_pillarNumber1);
+                            std::cout << "28 pillars button clicked!" << std::endl; // Debug message
+                            selectedButtonShadowPillars = &board.button28pillars;
+                        }
+                        // Check if the 50 pillars button was pressed
+                        else if (board.button50pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        {
+                            board.SetPillarNumber(board.m_pillarNumber2);
+                            std::cout << "50 pillars button clicked!" << std::endl; // Debug message
+                            selectedButtonShadowPillars = &board.button50pillars;
+                        }
+                        // Check if the 78 pillars button was pressed
+                        else if (board.button78pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
+                        {
+                            board.SetPillarNumber(board.m_pillarNumber3);
+                            std::cout << "78 pillars button clicked!" << std::endl; // Debug message
+                            selectedButtonShadowPillars = &board.button78pillars;
+                        }
                     }
                 }
                 settingsWindow.clear(sf::Color::Red);
@@ -372,6 +395,12 @@ int main() {
                 {
                     shadow.setPosition(selectedButtonShadow->getPosition().x - 5, selectedButtonShadow->getPosition().y - 5);
                     shadow.setSize(sf::Vector2f(selectedButtonShadow->getSize().x + 10, selectedButtonShadow->getSize().y + 10));
+                    settingsWindow.draw(shadow);
+                }
+                if (selectedButtonShadowPillars != nullptr)
+                {
+                    shadow.setPosition(selectedButtonShadowPillars->getPosition().x - 5, selectedButtonShadowPillars->getPosition().y - 5);
+                    shadow.setSize(sf::Vector2f(selectedButtonShadowPillars->getSize().x + 10, selectedButtonShadowPillars->getSize().y + 10));
                     settingsWindow.draw(shadow);
                 }
                 settingsWindow.draw(settingsText);

@@ -241,7 +241,31 @@ int main() {
                                     std::cout << "Pillar limit reached!" << std::endl;
                                     boardWindow.close();
                                 }
-                            
+                                if (redPillars.size() > board.m_pillarNumberDef) {
+                                    sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limita atinsa");
+                                    sf::Text message;
+                                    sf::Font font;
+                                    if (!font.loadFromFile("Arial.TTF"));
+                                    {
+                                        std::cerr << "Nu s-a putut incarca fontul";
+                                    }
+                                    message.setFont(font);
+                                    message.setString("Limita a fost atinsa");
+                                    message.setCharacterSize(24);
+                                    message.setFillColor(sf::Color::Red);
+                                    message.setPosition(50, 80);
+                                    while (messageWindow.isOpen()) {
+                                        sf::Event event;
+                                        while (messageWindow.pollEvent(event)) {
+                                            if (event.type == sf::Event::Closed)
+                                                messageWindow.close();
+                                        }
+                                        messageWindow.clear();
+                                        messageWindow.draw(message);
+                                        messageWindow.display();
+                                    }
+                                    boardWindow.close();
+                            }
                        
                     
                                 if (player != sf::Color::Red) {

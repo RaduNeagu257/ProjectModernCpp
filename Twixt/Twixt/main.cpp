@@ -227,6 +227,23 @@ int main() {
                                 //std::cout << std::get<1>(tile) << " " << std::get<2>(tile) << "\n";
                                 Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player, std::get<1>(tile),std::get<2>(tile));
                                 tempPillar.setPosition(std::get<0>(tile).getPosition());
+                                // Verificați dacă limita de piloni nu a fost atinsă
+                                if (redPillars.size() < board.m_pillarNumberDef) {
+                                    if (!IsPillarThere(redPillars, tempPillar)) {
+                                        redPillars.push_back(tempPillar);
+                                        std::cout << "Pillar added!" << std::endl;
+                                    }
+                                    else {
+                                        std::cout << "Pillar already exists at this position!" << std::endl;
+                                    }
+                                }
+                                else {
+                                    std::cout << "Pillar limit reached!" << std::endl;
+                                    boardWindow.close();
+                                }
+                            
+                       
+                    
                                 if (player != sf::Color::Red) {
                                     board.SetPillarNumber(redPillars.size());
                                     player = sf::Color::Red;
@@ -273,6 +290,7 @@ int main() {
                                     std::cout << "There is already a pillar there!" << std::endl;
                                     break;
                                 }
+
                                 }
                                 
                                 
@@ -379,6 +397,7 @@ int main() {
                             std::cout << "28 pillars button clicked!" << std::endl; // Debug message
                             selectedButtonShadowPillars = &board.button28pillars;
                         }
+                       
                         // Check if the 50 pillars button was pressed
                         else if (board.button50pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {

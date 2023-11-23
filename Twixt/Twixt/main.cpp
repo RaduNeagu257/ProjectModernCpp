@@ -227,119 +227,84 @@ int main() {
                                 //std::cout << std::get<1>(tile) << " " << std::get<2>(tile) << "\n";
                                 Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player, std::get<1>(tile),std::get<2>(tile));
                                 tempPillar.setPosition(std::get<0>(tile).getPosition());
-                                // Verificați dacă limita de piloni nu a fost atinsă
-                                if (redPillars.size() < board.m_pillarNumberDef) {
-                                    if (!IsPillarThere(redPillars, tempPillar)) {
-                                        redPillars.push_back(tempPillar);
-                                        std::cout << "Pillar added!" << std::endl;
-                                    }
-                                    else {
-                                        std::cout << "Pillar already exists at this position!" << std::endl;
-                                    }
-                                }
-                                else {
-                                    std::cout << "Pillar limit reached!" << std::endl;
-                                    sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limita atinsa");
-                                    sf::Text message;
-                                    sf::Font font;
-                                    if (!font.loadFromFile("Arial.TTF"));
-                                    {
-                                        std::cerr << "Nu s-a putut incarca fontul";
-                                    }
-                                    message.setFont(font);
-                                    message.setString("Limita a fost atinsa");
-                                    message.setCharacterSize(24);
-                                    message.setFillColor(sf::Color::Red);
-                                    message.setPosition(50, 80);
-                                    while (messageWindow.isOpen()) {
-                                        sf::Event event;
-                                        while (messageWindow.pollEvent(event)) {
-                                            if (event.type == sf::Event::Closed)
-                                                messageWindow.close();
-                                        }
-                                        messageWindow.clear();
-                                        messageWindow.draw(message);
-                                        messageWindow.display();
-                                    }
-                                    boardWindow.close();
-                                  
-                                }
-                               // if (redPillars.size() == board.m_pillarNumberDef) {
-                                   /* sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limita atinsa");
-                                    sf::Text message;
-                                    sf::Font font;
-                                    if (!font.loadFromFile("Arial.TTF"));
-                                    {
-                                        std::cerr << "Nu s-a putut incarca fontul";
-                                    }
-                                    message.setFont(font);
-                                    message.setString("Limita a fost atinsa");
-                                    message.setCharacterSize(24);
-                                    message.setFillColor(sf::Color::Red);
-                                    message.setPosition(50, 80);
-                                    while (messageWindow.isOpen()) {
-                                        sf::Event event;
-                                        while (messageWindow.pollEvent(event)) {
-                                            if (event.type == sf::Event::Closed)
-                                                messageWindow.close();
-                                        }
-                                        messageWindow.clear();
-                                        messageWindow.draw(message);
-                                        messageWindow.display();
-                                    }
-                                    boardWindow.close();*/
-                                   /// boardWindowOpen = false;
-                                    //break;
-                            //}
-                       
-                    
-                                if (player != sf::Color::Red) {
-                                    board.SetPillarNumber(redPillars.size());
+                                
+                                if (player != sf::Color::Red)
                                     player = sf::Color::Red;
-                                }
                                 else
                                 {
-                                    if (!IsPillarThere(redPillars, tempPillar)) {
+                                    if (redPillars.size() < board.m_pillarNumberDef)
+                                    {
+                                        if (!IsPillarThere(redPillars, tempPillar)) {
 
-                                        std::cout << "Pillar button clicked!" << std::endl; // debug message
-                                        pillarAdded++;
-                                        redPillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
-                                        // alternate between the red and black sides
+                                            std::cout << "Pillar button clicked!" << std::endl; // debug message
+                                            pillarAdded++;
+                                            redPillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
+                                            // alternate between the red and black sides
 
 
-                                        //aici
-                                        if (!isSelecting)
-                                        {
-                                            startPillar = tempPillar;
-                                            isSelecting = true;
+                                            //aici
+                                            if (!isSelecting)
+                                            {
+                                                startPillar = tempPillar;
+                                                isSelecting = true;
+                                            }
+                                            else
+                                            {
+                                                isSelecting = false;
+                                                stopPillar = tempPillar;
+
+                                                //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
+                                                if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))
+                                                {
+                                                    std::cout << "Bridge Placed!\n";
+                                                    redBridges.emplace_back(startPillar, stopPillar, player);
+                                                    //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
+                                                }
+                                                else
+                                                    std::cout << "Can't place\n" << startPillar.m_row << " " << startPillar.m_col << "\n" << stopPillar.m_row << " " << stopPillar.m_col << "\n";
+                                            }
+                                            if (player == sf::Color::Red)
+                                                player = sf::Color::Black;
+                                            else
+                                                player = sf::Color::Red;
+                                            break;
                                         }
                                         else
                                         {
-                                            isSelecting = false;
-                                            stopPillar = tempPillar;
-
-                                            //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
-                                            if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))
-                                            {
-                                                std::cout << "Bridge Placed!\n";
-                                                redBridges.emplace_back(startPillar, stopPillar, player);
-                                                //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
-                                            }
-                                            else
-                                                std::cout << "Can't place\n"<<startPillar.m_row<<" "<<startPillar.m_col<<"\n"<<stopPillar.m_row<<" "<<stopPillar.m_col<<"\n";
+                                            std::cout << "There is already a pillar there!" << std::endl;
+                                            break;
                                         }
-                                    if (player == sf::Color::Red)
-                                        player = sf::Color::Black;
-                                    else
-                                        player = sf::Color::Red;
-                                    break;
-                                    }
-                                else
-                                {
-                                    std::cout << "There is already a pillar there!" << std::endl;
-                                    break;
-                                }
 
+                                    }
+                                    {
+                                        std::cout << "Pillar limit reached!" << std::endl;
+                                        sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limita atinsa");
+                                        sf::Text message;
+                                        sf::Font font;
+                                        font.loadFromFile("ARIAL.TTF");
+                                        message.setFont(font);
+                                        message.setString("Limita of pillars reached");
+                                        message.setCharacterSize(24);
+                                        message.setFillColor(sf::Color::Red);
+
+                                        sf::FloatRect messageRect = message.getLocalBounds();
+                                        message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+                                        message.setPosition(messageWindow.getView().getCenter());
+
+                                        while (messageWindow.isOpen()) {
+                                            sf::Event event;
+                                            while (messageWindow.pollEvent(event)) {
+                                                if (event.type == sf::Event::Closed)
+                                                    messageWindow.close();
+                                            }
+                                            messageWindow.clear();
+                                            messageWindow.draw(message);
+                                            messageWindow.display();
+                                        }
+                                        boardWindow.close();
+                                        break;
+
+                                    }
                                 }
                                 
                                 
@@ -442,7 +407,7 @@ int main() {
                         // Check if the 28 pillars button was pressed
                         if (board.button28pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
-                            board.SetPillarNumber(board.m_pillarNumber1);
+                            board.SetPillarNumber(3);
                             std::cout << "28 pillars button clicked!" << std::endl; // Debug message
                             selectedButtonShadowPillars = &board.button28pillars;
                         }

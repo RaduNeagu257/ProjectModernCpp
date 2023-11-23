@@ -26,7 +26,7 @@ void placePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar,
             pillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
             // alternate between the red and black sides
 
-
+           
             
                 //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
                 //if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))

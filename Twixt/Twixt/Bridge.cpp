@@ -53,39 +53,39 @@ bool linesIntersect(const sf::Vector2f& p0, const sf::Vector2f& p1, const sf::Ve
 }
 
 
-bool Bridge::canPlaceBridge(const sf::Vector2f& potentialStart, const sf::Vector2f& potentialEnd, const std::vector<Bridge>& existingBridges) {
-    // Calculează diferențele pe axele x și y
-    int dx = std::abs(potentialEnd.x - potentialStart.x);
-    int dy = std::abs(potentialEnd.y - potentialStart.y);
+//bool Bridge::canPlaceBridge(const sf::Vector2f& potentialStart, const sf::Vector2f& potentialEnd, const std::vector<Bridge>& existingBridges) {
+//    // Calculează diferențele pe axele x și y
+//    int dx = std::abs(potentialEnd.x - potentialStart.x);
+//    int dy = std::abs(potentialEnd.y - potentialStart.y);
+//
+//    // Verifică dacă pozițiile corespund mișcării unui cal în șah (L shape)
+//    if (!((dx == 2 && dy == 1) || (dx == 1 && dy == 2))) {
+//        return false; // Nu este o mișcare legală de cal
+//    }
+//
+//    // Verifică intersecțiile cu podurile existente
+//    for (const auto& bridge : existingBridges) {
+//        // Aici va trebui să implementezi o funcție care să determine dacă liniile se intersectează
+//        if (linesIntersect(potentialStart, potentialEnd, bridge.getStartPosition(), bridge.getEndPosition())) {
+//            return false; // Există o intersecție, deci nu poți plasa podul
+//        }
+//    }
+//
+//    // Dacă nicio regulă nu a fost încălcată, poziția este legală pentru un pod nou
+//    return true;
+//}
 
-    // Verifică dacă pozițiile corespund mișcării unui cal în șah (L shape)
-    if (!((dx == 2 && dy == 1) || (dx == 1 && dy == 2))) {
-        return false; // Nu este o mișcare legală de cal
-    }
-
-    // Verifică intersecțiile cu podurile existente
-    for (const auto& bridge : existingBridges) {
-        // Aici va trebui să implementezi o funcție care să determine dacă liniile se intersectează
-        if (linesIntersect(potentialStart, potentialEnd, bridge.getStartPosition(), bridge.getEndPosition())) {
-            return false; // Există o intersecție, deci nu poți plasa podul
-        }
-    }
-
-    // Dacă nicio regulă nu a fost încălcată, poziția este legală pentru un pod nou
-    return true;
-}
-
-bool Bridge::canPlaceBridge(const Pillar& potentialStart, const Pillar& potentialEnd, const std::vector<Bridge>& existingBridges)
-{
-    // Get the absolute difference in rows and columns between the two pillars
-    int rowDiff = std::abs(potentialStart.m_row - potentialEnd.m_row);
-    int colDiff = std::abs(potentialStart.m_col - potentialEnd.m_col);
-
-    // Check for a knight's move: 2 rows and 1 column, or 2 columns and 1 row
-    if ((rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2)) 
-       return true;
-    return false;
-}
+//bool Bridge::canPlaceBridge(const Pillar& potentialStart, const Pillar& potentialEnd, std::vector<Bridge>& existingBridges)
+//{
+//    // Get the absolute difference in rows and columns between the two pillars
+//    int rowDiff = std::abs(potentialStart.m_row - potentialEnd.m_row);
+//    int colDiff = std::abs(potentialStart.m_col - potentialEnd.m_col);
+//
+//    // Check for a knight's move: 2 rows and 1 column, or 2 columns and 1 row
+//    if ((rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2)) 
+//       return true;
+//    return false;
+//}
 
 
 sf::Vector2f Bridge::getStartPosition() const {

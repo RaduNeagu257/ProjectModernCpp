@@ -1,5 +1,4 @@
 ﻿#include "Board.h"
-#include "Pillar.h"
 #include <iostream>
 Board::Board()
 	:m_size(24),
@@ -196,6 +195,20 @@ void Board::SetBoardSize(int size)
 void Board::SetPillarNumber(int pillarNumber)
 {
 	m_pillarNumberDef = pillarNumber;
+}
+
+
+bool Board::canPlaceBridgePositions(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges)
+{
+	for(auto & pillar: existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
+		if (selectedPillar.GetPosition() != pillar.GetPosition())
+		{	
+			int dx = std::abs(pillar.GetPosition().x - selectedPillar.GetPosition().x);
+			int dy = std::abs(pillar.GetPosition().y - selectedPillar.GetPosition().y);
+			if (!((dx == 2 && dy == 1) || (dx == 1 && dy == 2)))
+				return false; // a 2x1 Bridge cannot be created
+		}
+	return false;
 }
 
 std::vector<std::tuple<sf::CircleShape, int, int>> Board::getTiles()

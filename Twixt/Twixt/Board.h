@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <tuple>
+#include "Pillar.h"
+#include "Bridge.h"
 #define DOT_RADIUS 10
 #define LINE_THICKNESS 3
 
@@ -23,6 +25,8 @@ public:
 	int m_bridgesNumber1;
 	int m_bridgesNumber2;
 	int m_bridgesNumber3;
+
+	static bool canPlaceBridgePositions(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges);
 
 	sf::RectangleShape button18x18;
 	sf::RectangleShape button24x24;

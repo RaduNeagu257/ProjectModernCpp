@@ -15,6 +15,35 @@ bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar)
     return false;
 }
 
+void placePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, int& pillarAdded )
+{
+    if (pillars.size() < board.m_pillarNumberDef)
+    {
+        if (!IsPillarThere(pillars, tempPillar)) {
+
+            std::cout << "Pillar button clicked!" << std::endl; // debug message
+            pillarAdded++;
+            pillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
+            // alternate between the red and black sides
+
+
+            
+                //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
+                //if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))
+                {
+                    //std::cout << "Bridge Placed!\n";
+                    //redBridges.emplace_back(startPillar, stopPillar, player);
+                    //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
+                }
+                //else
+                    //std::cout << "Can't place\n" << startPillar.m_row << " " << startPillar.m_col << "\n" << stopPillar.m_row << " " << stopPillar.m_col << "\n";
+            }
+    }
+    else
+        std::cout << "There is already a pillar there!" << std::endl;
+}
+
+
 //SFML sample code - try to run
 int main() {
     sf::Clock clockAnimation;
@@ -193,8 +222,8 @@ int main() {
                 boardWindow.setFramerateLimit(60);
 
             }
-            std::vector<Pillar> redPillars, bluePillars;
-            std::vector<Bridge> redBridges, blueBridges;
+            std::vector<Pillar> redPillars, blackPillars;
+            std::vector<Bridge> redBridges, blackBridges;
             
             sf::Color player = sf::Color::Red;
             while (boardWindow.isOpen()) {
@@ -225,57 +254,66 @@ int main() {
                             {
                                 //Create a new pillar and check its position before adding it to the vector
                                 //std::cout << std::get<1>(tile) << " " << std::get<2>(tile) << "\n";
-                                Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player, std::get<1>(tile),std::get<2>(tile));
+                                Pillar tempPillar(x* board.getTileSize(), y* board.getTileSize(), player, std::get<1>(tile), std::get<2>(tile));
                                 tempPillar.setPosition(std::get<0>(tile).getPosition());
                                 
-                                if (player != sf::Color::Red)
-                                    player = sf::Color::Red;
-                                else
+                                /*if (player != sf::Color::Red)
+                                    player = sf::Color::Red;*/
+                                
+                                //else
+                                //{
+                                    //if (redPillars.size() < board.m_pillarNumberDef)
+                                    //{
+                                    //    if (!IsPillarThere(redPillars, tempPillar)) {
+
+                                    //        std::cout << "Pillar button clicked!" << std::endl; // debug message
+                                    //        pillarAdded++;
+                                    //        redPillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
+                                    //        // alternate between the red and black sides
+
+
+                                    //        //aici
+                                    //        if (!isSelecting)
+                                    //        {
+                                    //            startPillar = tempPillar;
+                                    //            isSelecting = true;
+                                    //        }
+                                    //        else
+                                    //        {
+                                    //            isSelecting = false;
+                                    //            stopPillar = tempPillar;
+
+                                    //            //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
+                                    //            if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))
+                                    //            {
+                                    //                std::cout << "Bridge Placed!\n";
+                                    //                redBridges.emplace_back(startPillar, stopPillar, player);
+                                    //                //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
+                                    //            }
+                                    //            else
+                                    //                std::cout << "Can't place\n" << startPillar.m_row << " " << startPillar.m_col << "\n" << stopPillar.m_row << " " << stopPillar.m_col << "\n";
+                                    //        }
+                                    //        if (player == sf::Color::Red)
+                                    //            player = sf::Color::Black;
+                                    //        else
+                                    //            player = sf::Color::Red;
+                                    //        break;
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        std::cout << "There is already a pillar there!" << std::endl;
+                                    //        break;
+                                    //    }
+
+                                    //}
+                                if (player == sf::Color::Red) // Red side's turn
                                 {
                                     if (redPillars.size() < board.m_pillarNumberDef)
                                     {
-                                        if (!IsPillarThere(redPillars, tempPillar)) {
-
-                                            std::cout << "Pillar button clicked!" << std::endl; // debug message
-                                            pillarAdded++;
-                                            redPillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
-                                            // alternate between the red and black sides
-
-
-                                            //aici
-                                            if (!isSelecting)
-                                            {
-                                                startPillar = tempPillar;
-                                                isSelecting = true;
-                                            }
-                                            else
-                                            {
-                                                isSelecting = false;
-                                                stopPillar = tempPillar;
-
-                                                //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
-                                                if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))
-                                                {
-                                                    std::cout << "Bridge Placed!\n";
-                                                    redBridges.emplace_back(startPillar, stopPillar, player);
-                                                    //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
-                                                }
-                                                else
-                                                    std::cout << "Can't place\n" << startPillar.m_row << " " << startPillar.m_col << "\n" << stopPillar.m_row << " " << stopPillar.m_col << "\n";
-                                            }
-                                            if (player == sf::Color::Red)
-                                                player = sf::Color::Black;
-                                            else
-                                                player = sf::Color::Red;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            std::cout << "There is already a pillar there!" << std::endl;
-                                            break;
-                                        }
-
+                                        std::cout << "Red ";
+                                        placePillar(board, redPillars, tempPillar, player, pillarAdded);
                                     }
+                                    else
                                     {
                                         std::cout << "Pillar limit reached!" << std::endl;
                                         sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limita atinsa");
@@ -305,6 +343,48 @@ int main() {
                                         break;
 
                                     }
+                                    player = sf::Color::Black;
+                                    break;
+                                }
+                                else // Black side's turn
+                                {
+                                    if (blackPillars.size() < board.m_pillarNumberDef)
+                                    {
+                                        std::cout << "Black ";
+                                        placePillar(board, blackPillars, tempPillar, player, pillarAdded);
+                                    }
+                                    else
+                                    {
+                                        std::cout << "Pillar limit reached!" << std::endl;
+                                        sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limita atinsa");
+                                        sf::Text message;
+                                        sf::Font font;
+                                        font.loadFromFile("ARIAL.TTF");
+                                        message.setFont(font);
+                                        message.setString("Limita of pillars reached");
+                                        message.setCharacterSize(24);
+                                        message.setFillColor(sf::Color::Red);
+
+                                        sf::FloatRect messageRect = message.getLocalBounds();
+                                        message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+                                        message.setPosition(messageWindow.getView().getCenter());
+
+                                        while (messageWindow.isOpen()) {
+                                            sf::Event event;
+                                            while (messageWindow.pollEvent(event)) {
+                                                if (event.type == sf::Event::Closed)
+                                                    messageWindow.close();
+                                            }
+                                            messageWindow.clear();
+                                            messageWindow.draw(message);
+                                            messageWindow.display();
+                                        }
+                                        boardWindow.close();
+                                        break;
+
+                                    }
+                                    player = sf::Color::Red;
+                                    break;
                                 }
                                 
                                 
@@ -321,9 +401,10 @@ int main() {
                 board.Draw(boardWindow);
                 for (auto& pillar : redPillars)
                     pillar.Draw(boardWindow);
-                for (const auto& bridge : redBridges) {
+                for (const auto& bridge : redBridges)
                     bridge.draw(boardWindow);
-                }
+                for (auto& pillar : blackPillars)
+                    pillar.Draw(boardWindow);
                 boardWindow.display();
             }
             std::cout << pillarAdded;//checks how many pillars we have(duplicate or unique pillars)

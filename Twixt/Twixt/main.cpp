@@ -19,25 +19,14 @@ void placePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar,
 {
     if (pillars.size() < board.m_pillarNumberDef)
     {
-        if (!IsPillarThere(pillars, tempPillar)) {
+        if (!IsPillarThere(pillars, tempPillar)) 
+        {
 
             std::cout << "Pillar button clicked!" << std::endl; // debug message
             pillarAdded++;
-            pillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
-            // alternate between the red and black sides
-
-           
+            pillars.emplace_back(tempPillar); //pillar is added to the vector of existing pillars
             
-                //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
-                //if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))
-                {
-                    //std::cout << "Bridge Placed!\n";
-                    //redBridges.emplace_back(startPillar, stopPillar, player);
-                    //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
-                }
-                //else
-                    //std::cout << "Can't place\n" << startPillar.m_row << " " << startPillar.m_col << "\n" << stopPillar.m_row << " " << stopPillar.m_col << "\n";
-            }
+        }
     }
     else
         std::cout << "There is already a pillar there!" << std::endl;
@@ -312,6 +301,7 @@ int main() {
                                     {
                                         std::cout << "Red ";
                                         placePillar(board, redPillars, tempPillar, player, pillarAdded);
+                                        Board::PlaceBridge(tempPillar, redPillars, redBridges, player);
                                     }
                                     else
                                     {
@@ -352,6 +342,7 @@ int main() {
                                     {
                                         std::cout << "Black ";
                                         placePillar(board, blackPillars, tempPillar, player, pillarAdded);
+                                        Board::PlaceBridge(tempPillar, blackPillars, blackBridges, player);
                                     }
                                     else
                                     {
@@ -405,6 +396,8 @@ int main() {
                     bridge.draw(boardWindow);
                 for (auto& pillar : blackPillars)
                     pillar.Draw(boardWindow);
+                for (const auto& bridge : blackBridges)
+                    bridge.draw(boardWindow);
                 boardWindow.display();
             }
             std::cout << pillarAdded;//checks how many pillars we have(duplicate or unique pillars)

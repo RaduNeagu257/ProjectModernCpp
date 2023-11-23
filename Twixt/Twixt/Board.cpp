@@ -197,18 +197,39 @@ void Board::SetPillarNumber(int pillarNumber)
 	m_pillarNumberDef = pillarNumber;
 }
 
-
-bool Board::canPlaceBridgePositions(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges)
+void Board::PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
-	for(auto & pillar: existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
-		if (selectedPillar.GetPosition() != pillar.GetPosition())
-		{	
-			int dx = std::abs(pillar.GetPosition().x - selectedPillar.GetPosition().x);
-			int dy = std::abs(pillar.GetPosition().y - selectedPillar.GetPosition().y);
-			if (!((dx == 2 && dy == 1) || (dx == 1 && dy == 2)))
-				return false; // a 2x1 Bridge cannot be created
+	bool found = false;
+	for (auto& pillar : existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
+		if (selectedPillar.GetPosition() != pillar.GetPosition()) // avoid checking the same pillar
+		{
+			int dx = std::abs(pillar.m_col - selectedPillar.m_col);
+			int dy = std::abs(pillar.m_row - selectedPillar.m_row);
+			std::cout << dx << " " << dy << "\n";
+			if (((dx == 2 && dy == 1) || (dx == 1 && dy == 2))) // check if pillars are in an L shape
+			{
+				std::cout << "size "<<existingBridges.size() << "\n";
+				if (existingBridges.empty()) // check if there are no bridges for optimization purposes
+				{
+					std::cout << "No existing Bridges\n";
+					found = true;
+					existingBridges.emplace_back(selectedPillar, pillar, player);
+				}
+				else
+				for (auto& bridge : existingBridges) // check all existing bridges in order to make sure that a bridge doesn't already exist between 2 pillars
+					if (!((bridge.m_startPillar.GetPosition() == selectedPillar.GetPosition() && bridge.m_stopPillar.GetPosition() == pillar.GetPosition()) ||
+						(bridge.m_startPillar.GetPosition() == pillar.GetPosition() && bridge.m_stopPillar.GetPosition() == selectedPillar.GetPosition())))
+					{
+						found = true;
+						existingBridges.emplace_back(selectedPillar, pillar, player);
+					}
+			}
 		}
-	return false;
+	if (found)
+		std::cout << "Placed bridge\n";
+	else
+		std::cout << "Did not find any pillar to place a bridge between\n";
+
 }
 
 std::vector<std::tuple<sf::CircleShape, int, int>> Board::getTiles()

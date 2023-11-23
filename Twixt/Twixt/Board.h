@@ -26,7 +26,6 @@ public:
 	int m_bridgesNumber2;
 	int m_bridgesNumber3;
 
-	static bool canPlaceBridgePositions(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges);
 
 	sf::RectangleShape button18x18;
 	sf::RectangleShape button24x24;
@@ -37,6 +36,8 @@ public:
 	sf::RectangleShape button25bridges;
 	sf::RectangleShape button50bridges;
 	sf::RectangleShape button75bridges;
+
+	static void PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
 
 	std::vector<std::tuple<sf::CircleShape, int, int>> getTiles();
 	int getTileSize();

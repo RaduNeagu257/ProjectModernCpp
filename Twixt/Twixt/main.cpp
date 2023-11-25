@@ -6,16 +6,6 @@
 #include "Bridge.h"
 float BRIDGE_LINE_THICKNESS = 5.0f;
 
-bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar) {
-    //each existing pillar is checked in case the new pillar would be placed on a position which already has a pillar on it
-    for (const auto& pillar : pillars) {
-        if (pillar.GetPosition() == tempPillar.GetPosition())
-            return true;
-    }
-    return false;
-}
-
-
 //SFML sample code - try to run
 int main() {
     sf::Clock clockAnimation;

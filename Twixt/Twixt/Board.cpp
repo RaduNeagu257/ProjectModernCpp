@@ -242,6 +242,7 @@ int Board::getTileSize()
 	return m_tileSize;
 }
 
+
 void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 {
 	//text for board buttons
@@ -356,3 +357,19 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 
 }
 
+void Board::PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, int& pillarAdded)
+{
+	if (pillars.size() < board.m_pillarNumberDef)
+	{
+		if (!IsPillarThere(pillars, tempPillar))
+		{
+
+			std::cout << "Pillar button clicked!" << std::endl; // debug message
+			pillarAdded++;
+			pillars.emplace_back(tempPillar); //pillar is added to the vector of existing pillars
+
+		}
+	}
+	else
+		std::cout << "There is already a pillar there!" << std::endl;
+}

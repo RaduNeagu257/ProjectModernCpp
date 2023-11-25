@@ -42,6 +42,7 @@ public:
 	std::vector<std::tuple<sf::CircleShape, int, int>> getTiles();
 	int getTileSize();
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
+	static void PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, int& pillarAdded);
 private:
 	//std::vector<sf::CircleShape> m_tiles;
 	std::vector<std::tuple<sf::CircleShape, int, int>> m_tiles;

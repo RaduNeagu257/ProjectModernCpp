@@ -15,23 +15,6 @@ bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar)
     return false;
 }
 
-void placePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, int& pillarAdded )
-{
-    if (pillars.size() < board.m_pillarNumberDef)
-    {
-        if (!IsPillarThere(pillars, tempPillar)) 
-        {
-
-            std::cout << "Pillar button clicked!" << std::endl; // debug message
-            pillarAdded++;
-            pillars.emplace_back(tempPillar); //pillar is added to the vector of existing pillars
-            
-        }
-    }
-    else
-        std::cout << "There is already a pillar there!" << std::endl;
-}
-
 
 //SFML sample code - try to run
 int main() {
@@ -300,7 +283,7 @@ int main() {
                                     if (redPillars.size() < board.m_pillarNumberDef)
                                     {
                                         std::cout << "Red ";
-                                        placePillar(board, redPillars, tempPillar, player, pillarAdded);
+                                        Board::PlacePillar(board, redPillars, tempPillar, player, pillarAdded);
                                         Board::PlaceBridge(tempPillar, redPillars, redBridges, player);
                                     }
                                     else
@@ -341,7 +324,7 @@ int main() {
                                     if (blackPillars.size() < board.m_pillarNumberDef)
                                     {
                                         std::cout << "Black ";
-                                        placePillar(board, blackPillars, tempPillar, player, pillarAdded);
+                                        Board::PlacePillar(board, blackPillars, tempPillar, player, pillarAdded);
                                         Board::PlaceBridge(tempPillar, blackPillars, blackBridges, player);
                                     }
                                     else

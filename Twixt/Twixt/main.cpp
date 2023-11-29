@@ -105,7 +105,7 @@ int main() {
     sf::RenderWindow instructionsWindow;
     sf::RenderWindow settingsWindow;
     sf::RenderWindow boardWindow;
-
+    bool closeMessageWindowClicked = false;
 
     // Main game loop
     while (window.isOpen()) {
@@ -282,10 +282,10 @@ int main() {
                                         sf::RenderWindow messageWindow(sf::VideoMode(500, 300), "Limit reached");
                                         sf::Text message;
                                         sf::Font font;
-                                        sf::RectangleShape closeButton(sf::Vector2f(200, 100));
+                                        sf::RectangleShape closeButton(sf::Vector2f(70, 30));
                                         closeButton.setFillColor(sf::Color::Red);
-                                        closeButton.setPosition(150, 100); // Position the button within the messageWindow
-                                        sf::Text closeButtonText("Close", font, 24);
+                                        closeButton.setPosition(350, 240); // Position the button within the messageWindow
+                                        sf::Text closeButtonText("Close", font, 18);
                                         closeButtonText.setFillColor(sf::Color::Blue);
                                         closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
 
@@ -308,9 +308,16 @@ int main() {
                                                     sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
                                                     if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
                                                         std::cout << "Close button clicked. Closing message window." << std::endl;
+                                                        closeMessageWindowClicked = true;
                                                         messageWindow.close(); // Close the message window
                                                     }
                                                 }
+                                            }
+                                            if (closeMessageWindowClicked) {
+                                                boardWindow.close(); // Închide fereastra de joc
+                                                boardWindowOpen = false; // Setează starea ferestrei de joc pe închis
+                                                window.create(sf::VideoMode(1920, 1080), "Twixt Game Menu"); // Recreează fereastra de meniu
+                                                closeMessageWindowClicked = false; // Reset the flag
                                             }
                                             messageWindow.clear();
                                             messageWindow.draw(message);
@@ -366,11 +373,16 @@ int main() {
                                                     sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
                                                     if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
                                                         std::cout << "Close button clicked. Closing message window." << std::endl;
+                                                        closeMessageWindowClicked = true;
                                                         messageWindow.close(); // Close the message window
                                                     }
                                                 }
+                                            } if (closeMessageWindowClicked) {
+                                                boardWindow.close(); // Închide fereastra de joc
+                                                boardWindowOpen = false; // Setează starea ferestrei de joc pe închis
+                                                window.create(sf::VideoMode(1920, 1080), "Twixt Game Menu"); // Recreează fereastra de meniu
+                                                closeMessageWindowClicked = false; // Reset the flag
                                             }
-
                                             messageWindow.clear();
                                             messageWindow.draw(message);
                                             messageWindow.draw(closeButton);

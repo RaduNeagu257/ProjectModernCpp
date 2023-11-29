@@ -279,14 +279,14 @@ int main() {
                                     else
                                     {
                                         std::cout << "Pillar limit reached!" << std::endl;
-                                        sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limit reached");
+                                        sf::RenderWindow messageWindow(sf::VideoMode(500, 300), "Limit reached");
                                         sf::Text message;
                                         sf::Font font;
-                                        sf::RectangleShape closeButton(sf::Vector2f(100, 50));
+                                        sf::RectangleShape closeButton(sf::Vector2f(200, 100));
                                         closeButton.setFillColor(sf::Color::Red);
-                                        closeButton.setPosition(100, 150); // Position the button within the messageWindow
+                                        closeButton.setPosition(150, 100); // Position the button within the messageWindow
                                         sf::Text closeButtonText("Close", font, 24);
-                                        closeButtonText.setFillColor(sf::Color::White);
+                                        closeButtonText.setFillColor(sf::Color::Blue);
                                         closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
 
                                         font.loadFromFile("ARIAL.TTF");
@@ -307,13 +307,17 @@ int main() {
                                                 if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                                                     sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
                                                     if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                                                        std::cout << "Close button clicked. Closing message window." << std::endl;
                                                         messageWindow.close(); // Close the message window
                                                     }
                                                 }
                                             }
                                             messageWindow.clear();
                                             messageWindow.draw(message);
+                                            messageWindow.draw(closeButton);
+                                            messageWindow.draw(closeButtonText);
                                             messageWindow.display();
+                                           
                                         }
                                         boardWindow.close();
                                         break;
@@ -336,6 +340,13 @@ int main() {
                                         sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limit reached");
                                         sf::Text message;
                                         sf::Font font;
+                                        sf::RectangleShape closeButton(sf::Vector2f(200, 100));
+                                        closeButton.setFillColor(sf::Color::Red);
+                                        closeButton.setPosition(150, 100); // Position the button within the messageWindow
+                                        sf::Text closeButtonText("Close", font, 24);
+                                        closeButtonText.setFillColor(sf::Color::Blue);
+                                        closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
+
                                         font.loadFromFile("ARIAL.TTF");
                                         message.setFont(font);
                                         message.setString("Limit of pillars reached");
@@ -351,9 +362,19 @@ int main() {
                                             while (messageWindow.pollEvent(event)) {
                                                 if (event.type == sf::Event::Closed)
                                                     messageWindow.close();
+                                                if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                                                    sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
+                                                    if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                                                        std::cout << "Close button clicked. Closing message window." << std::endl;
+                                                        messageWindow.close(); // Close the message window
+                                                    }
+                                                }
                                             }
+
                                             messageWindow.clear();
                                             messageWindow.draw(message);
+                                            messageWindow.draw(closeButton);
+                                            messageWindow.draw(closeButtonText);
                                             messageWindow.display();
                                         }
                                         boardWindow.close();

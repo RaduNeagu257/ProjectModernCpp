@@ -279,12 +279,19 @@ int main() {
                                     else
                                     {
                                         std::cout << "Pillar limit reached!" << std::endl;
-                                        sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limita atinsa");
+                                        sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limit reached");
                                         sf::Text message;
                                         sf::Font font;
+                                        sf::RectangleShape closeButton(sf::Vector2f(100, 50));
+                                        closeButton.setFillColor(sf::Color::Red);
+                                        closeButton.setPosition(100, 150); // Position the button within the messageWindow
+                                        sf::Text closeButtonText("Close", font, 24);
+                                        closeButtonText.setFillColor(sf::Color::White);
+                                        closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
+
                                         font.loadFromFile("ARIAL.TTF");
                                         message.setFont(font);
-                                        message.setString("Limita of pillars reached");
+                                        message.setString("Limit of pillars reached");
                                         message.setCharacterSize(24);
                                         message.setFillColor(sf::Color::Red);
 
@@ -297,6 +304,12 @@ int main() {
                                             while (messageWindow.pollEvent(event)) {
                                                 if (event.type == sf::Event::Closed)
                                                     messageWindow.close();
+                                                if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                                                    sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
+                                                    if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                                                        messageWindow.close(); // Close the message window
+                                                    }
+                                                }
                                             }
                                             messageWindow.clear();
                                             messageWindow.draw(message);
@@ -320,12 +333,12 @@ int main() {
                                     else
                                     {
                                         std::cout << "Pillar limit reached!" << std::endl;
-                                        sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limita atinsa");
+                                        sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limit reached");
                                         sf::Text message;
                                         sf::Font font;
                                         font.loadFromFile("ARIAL.TTF");
                                         message.setFont(font);
-                                        message.setString("Limita of pillars reached");
+                                        message.setString("Limit of pillars reached");
                                         message.setCharacterSize(24);
                                         message.setFillColor(sf::Color::Red);
 
@@ -549,3 +562,4 @@ int main() {
 
     return 0;
 }
+

@@ -14,6 +14,7 @@ public:
 	float getRadius() const;
 	void Draw(sf::RenderWindow& boardWindow);// desenare pilon intr-o fereastra
 	void setPosition(const sf::Vector2f& position);
+	void setColor(sf::Color color);
 	int m_row;
 	int m_col;
 	

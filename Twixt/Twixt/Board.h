@@ -42,16 +42,18 @@ public:
 	std::vector<std::tuple<sf::CircleShape, int, int>> getTiles();
 	int getTileSize();
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
+	void SwapLines();
 	static bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar);
 	static void PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, int& pillarAdded);
+	static void SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blackPillars);
 	
 private:
 	//std::vector<sf::CircleShape> m_tiles;
 	std::vector<std::tuple<sf::CircleShape, int, int>> m_tiles;
 	int m_size;
 	float m_tileSize;
-	sf::RectangleShape m_redHorizontalLine1;
-	sf::RectangleShape m_redHorizontalLine2;
-	sf::RectangleShape m_blackVerticalLine1;
-	sf::RectangleShape m_blackVerticalLine2;
+	sf::RectangleShape m_horizontalLine1;
+	sf::RectangleShape m_horizontalLine2;
+	sf::RectangleShape m_verticalLine1;
+	sf::RectangleShape m_verticalLine2;
 };

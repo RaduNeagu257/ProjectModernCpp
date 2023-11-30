@@ -340,6 +340,86 @@ int main() {
                                         std::cout << "Black ";
                                         Board::PlacePillar(board, blackPillars, tempPillar, player, pillarAdded);
                                         Board::PlaceBridge(tempPillar, blackPillars, blackBridges, player);
+                                        if (blackPillars.size() == redPillars.size() && pillarAdded == 2) //Allow the black side to choose to swap sides after the first turn
+                                        {
+                                            //declare variables for window, window text, buttons and buttons text
+                                            sf::RenderWindow messageWindow(sf::VideoMode(500, 200), "Swap sides");
+                                            sf::Text text;
+                                            sf::Font font;
+                                            sf::RectangleShape yesButton(sf::Vector2f(75, 50));
+                                            sf::RectangleShape noButton(sf::Vector2f(75, 50));
+
+                                            //setting up buttons
+                                            yesButton.setFillColor(sf::Color::Red);
+                                            noButton.setFillColor(sf::Color::Red);
+                                            yesButton.setPosition(175, 150);
+                                            noButton.setPosition(250, 150);
+                                            sf::Text yesButtonText("Yes", font, 24);
+                                            sf::Text noButtonText("No", font, 24);
+                                            yesButtonText.setFillColor(sf::Color::Blue);
+                                            noButtonText.setFillColor(sf::Color::Blue);
+
+                                            sf::FloatRect textRect = yesButtonText.getLocalBounds();
+                                            
+                                            // Position the text relative to the button
+                                            
+                                            yesButtonText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+                                            yesButtonText.setPosition(sf::Vector2f(yesButton.getPosition().x + yesButton.getSize().x / 2.0f, yesButton.getPosition().y + yesButton.getSize().y / 2.0f));
+
+                                            noButtonText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+                                            noButtonText.setPosition(sf::Vector2f(noButton.getPosition().x + noButton.getSize().x / 2.0f, noButton.getPosition().y + noButton.getSize().y / 2.0f));
+
+
+                                            //setting up text on the window
+                                            font.loadFromFile("ARIAL.TTF");
+                                            text.setFont(font);
+                                            text.setString("Do you want to swap sides?");
+                                            text.setCharacterSize(24);
+                                            text.setFillColor(sf::Color::Red);
+
+                                            //setting up text on the window
+                                            textRect = text.getLocalBounds();
+                                            text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+                                            text.setPosition(messageWindow.getView().getCenter());
+
+
+                                            
+                                            while (messageWindow.isOpen())
+                                            {
+                                                sf::Event event;
+                                                while (messageWindow.pollEvent(event))
+                                                {
+                                                    if (event.type == sf::Event::Closed)
+                                                        messageWindow.close();
+                                                    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                                                        sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
+                                                        if (yesButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                                                            std::cout << "\"Yes\" button clicked. Sides are swapped. Closing message window." << std::endl;
+                                                            // Swap the pillars and the drawn vertical/horizontal lines
+                                                            Board::SwapSides(redPillars, blackPillars);
+                                                            board.SwapLines();
+                                                            messageWindow.close(); // Close the message window
+                                                        }
+                                                        else if (noButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+                                                        {
+                                                            std::cout << "\"No\" button clicked. Sides are not swapped. Closing message window.\n";
+                                                            // do not swap sides
+                                                            messageWindow.close();
+                                                        }
+                                                    }
+                                                    
+                                                }
+
+                                                messageWindow.clear();
+                                                messageWindow.draw(text);
+                                                messageWindow.draw(yesButton);
+                                                messageWindow.draw(yesButtonText);
+                                                messageWindow.draw(noButton);
+                                                messageWindow.draw(noButtonText);
+                                                messageWindow.display();
+                                            }
+
+                                        }
                                     }
                                     else
                                     {
@@ -500,7 +580,7 @@ int main() {
                         // Check if the 28 pillars button was pressed
                         if (board.button28pillars.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
-                            board.SetPillarNumber(3);
+                            board.SetPillarNumber(board.m_pillarNumber1);
                             std::cout << "28 pillars button clicked!" << std::endl; // Debug message
                             selectedButtonShadowPillars = &board.button28pillars;
                         }

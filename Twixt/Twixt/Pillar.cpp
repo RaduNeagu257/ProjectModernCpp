@@ -22,6 +22,11 @@ float Pillar::getRadius() const
 	return shape.getRadius();
 }
 
+void Pillar::setColor(sf::Color color)
+{
+	shape.setFillColor(color);
+}
+
 sf::Vector2f Pillar::getCenter() const
 {
 	sf::Vector2f center = sf::Vector2f(GetPosition().x + shape.getRadius(), GetPosition().y + shape.getRadius());

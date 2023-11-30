@@ -44,6 +44,7 @@ public:
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
 	static bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar);
 	static void PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, int& pillarAdded);
+	static void SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blackPillars);
 	
 private:
 	//std::vector<sf::CircleShape> m_tiles;

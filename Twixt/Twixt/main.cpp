@@ -396,6 +396,7 @@ int main() {
                                                         if (yesButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
                                                             std::cout << "\"Yes\" button clicked. Sides are swapped. Closing message window." << std::endl;
                                                             // swap sides
+                                                            Board::SwapSides(redPillars, blackPillars);
                                                             messageWindow.close(); // Close the message window
                                                         }
                                                         else if (noButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))

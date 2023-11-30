@@ -395,8 +395,9 @@ int main() {
                                                         sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
                                                         if (yesButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
                                                             std::cout << "\"Yes\" button clicked. Sides are swapped. Closing message window." << std::endl;
-                                                            // swap sides
+                                                            // Swap the pillars and the drawn vertical/horizontal lines
                                                             Board::SwapSides(redPillars, blackPillars);
+                                                            board.SwapLines();
                                                             messageWindow.close(); // Close the message window
                                                         }
                                                         else if (noButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))

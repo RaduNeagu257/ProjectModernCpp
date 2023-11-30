@@ -57,23 +57,23 @@ Board::Board()
 
 	// Create the red horizontal lines
 	float lineWidth = (m_tileSize + 1) * m_size;
-	m_redHorizontalLine1.setSize({ lineWidth, LINE_THICKNESS });
-	m_redHorizontalLine1.setFillColor(sf::Color::Red);
-	//m_redHorizontalLine1.setPosition(0, m_tileSize);
+	m_horizontalLine1.setSize({ lineWidth, LINE_THICKNESS });
+	m_horizontalLine1.setFillColor(sf::Color::Red);
+	//m_horizontalLine1.setPosition(0, m_tileSize);
 
-	m_redHorizontalLine2.setSize({ lineWidth, LINE_THICKNESS });
-	m_redHorizontalLine2.setFillColor(sf::Color::Red);
-	//m_redHorizontalLine2.setPosition(0, (m_size - 1) * m_tileSize - 2);
+	m_horizontalLine2.setSize({ lineWidth, LINE_THICKNESS });
+	m_horizontalLine2.setFillColor(sf::Color::Red);
+	//m_horizontalLine2.setPosition(0, (m_size - 1) * m_tileSize - 2);
 
 	// Create the black vertical lines
 	float lineHeight = (m_tileSize + 1) * m_size;
-	m_blackVerticalLine1.setSize({ LINE_THICKNESS, lineHeight });
-	m_blackVerticalLine1.setFillColor(sf::Color::Black);
-	//m_blackVerticalLine1.setPosition(m_tileSize, 0);
+	m_verticalLine1.setSize({ LINE_THICKNESS, lineHeight });
+	m_verticalLine1.setFillColor(sf::Color::Black);
+	//m_verticalLine1.setPosition(m_tileSize, 0);
 
-	m_blackVerticalLine2.setSize({ LINE_THICKNESS, lineHeight });
-	m_blackVerticalLine2.setFillColor(sf::Color::Black);
-	//m_blackVerticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
+	m_verticalLine2.setSize({ LINE_THICKNESS, lineHeight });
+	m_verticalLine2.setFillColor(sf::Color::Black);
+	//m_verticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
 void Board::Draw(sf::RenderWindow& BoardWindow)
@@ -137,16 +137,16 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 		}
 	}
 
-	m_redHorizontalLine1.setPosition(offsetX - m_tileSize * 0.8, offsetY + DOT_RADIUS * 2.25);
-	m_redHorizontalLine2.setPosition(offsetX - m_tileSize * 0.8, offsetY + (m_size - 1) * m_tileSize - DOT_RADIUS * 0.6);
+	m_horizontalLine1.setPosition(offsetX - m_tileSize * 0.8, offsetY + DOT_RADIUS * 2.25);
+	m_horizontalLine2.setPosition(offsetX - m_tileSize * 0.8, offsetY + (m_size - 1) * m_tileSize - DOT_RADIUS * 0.6);
 
-	m_blackVerticalLine1.setPosition(offsetX + DOT_RADIUS * 2.25, offsetY - m_tileSize * 0.8);
-	m_blackVerticalLine2.setPosition(offsetX + (m_size - 1) * m_tileSize - DOT_RADIUS * 0.6, offsetY - m_tileSize * 0.8);
+	m_verticalLine1.setPosition(offsetX + DOT_RADIUS * 2.25, offsetY - m_tileSize * 0.8);
+	m_verticalLine2.setPosition(offsetX + (m_size - 1) * m_tileSize - DOT_RADIUS * 0.6, offsetY - m_tileSize * 0.8);
 
-	BoardWindow.draw(m_redHorizontalLine1);
-	BoardWindow.draw(m_redHorizontalLine2);
-	BoardWindow.draw(m_blackVerticalLine1);
-	BoardWindow.draw(m_blackVerticalLine2);
+	BoardWindow.draw(m_horizontalLine1);
+	BoardWindow.draw(m_horizontalLine2);
+	BoardWindow.draw(m_verticalLine1);
+	BoardWindow.draw(m_verticalLine2);
 	//blackPillar.draw(BoardWindow);
 	//redPillar.draw(BoardWindow);
 	BoardWindow.draw(button18x18);
@@ -173,23 +173,23 @@ void Board::SetBoardSize(int size)
 
 	// Regenerează liniile orizontale roșii
 	float lineWidth = (m_tileSize + 1) * m_size;
-	m_redHorizontalLine1.setSize({ lineWidth, LINE_THICKNESS });
-	m_redHorizontalLine1.setFillColor(sf::Color::Red);
-	m_redHorizontalLine1.setPosition(0, m_tileSize);
+	m_horizontalLine1.setSize({ lineWidth, LINE_THICKNESS });
+	m_horizontalLine1.setFillColor(sf::Color::Red);
+	m_horizontalLine1.setPosition(0, m_tileSize);
 
-	m_redHorizontalLine2.setSize({ lineWidth, LINE_THICKNESS });
-	m_redHorizontalLine2.setFillColor(sf::Color::Red);
-	m_redHorizontalLine2.setPosition(0, (m_size - 1) * m_tileSize - 2);
+	m_horizontalLine2.setSize({ lineWidth, LINE_THICKNESS });
+	m_horizontalLine2.setFillColor(sf::Color::Red);
+	m_horizontalLine2.setPosition(0, (m_size - 1) * m_tileSize - 2);
 
 	// Regenerează liniile verticale negre
 	float lineHeight = (m_tileSize + 1) * m_size;
-	m_blackVerticalLine1.setSize({ LINE_THICKNESS, lineHeight });
-	m_blackVerticalLine1.setFillColor(sf::Color::Black);
-	m_blackVerticalLine1.setPosition(m_tileSize, 0);
+	m_verticalLine1.setSize({ LINE_THICKNESS, lineHeight });
+	m_verticalLine1.setFillColor(sf::Color::Black);
+	m_verticalLine1.setPosition(m_tileSize, 0);
 
-	m_blackVerticalLine2.setSize({ LINE_THICKNESS, lineHeight });
-	m_blackVerticalLine2.setFillColor(sf::Color::Black);
-	m_blackVerticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
+	m_verticalLine2.setSize({ LINE_THICKNESS, lineHeight });
+	m_verticalLine2.setFillColor(sf::Color::Black);
+	m_verticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
 void Board::SetPillarNumber(int pillarNumber)
@@ -357,6 +357,14 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 
 }
 
+void Board::SwapLines()
+{
+	m_horizontalLine1.setFillColor(sf::Color::Black);
+	m_horizontalLine2.setFillColor(sf::Color::Black);
+	m_verticalLine1.setFillColor(sf::Color::Red);
+	m_verticalLine2.setFillColor(sf::Color::Red);
+}
+
 bool Board::IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar)
 {
 	//each existing pillar is checked in case the new pillar would be placed on a position which already has a pillar on it
@@ -393,5 +401,4 @@ void Board::SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blac
 		pillar.setColor(sf::Color::Red);
 	for (auto& pillar : blackPillars)
 		pillar.setColor(sf::Color::Black);
-	//SwapLines();
 }

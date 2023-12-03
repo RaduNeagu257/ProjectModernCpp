@@ -203,7 +203,7 @@ int main() {
                         sf::Vector2f mousePositionFloat;
                         sf::Vector2i mousePosition;
                         mousePosition = sf::Mouse::getPosition(boardWindow);
-                        
+
                         for (auto& tile : board.getTiles())
                         {
                             // Convert the mousePosition to a sf::Vector2f object.
@@ -216,275 +216,283 @@ int main() {
                             {
                                 //Create a new pillar and check its position before adding it to the vector
                                 //std::cout << std::get<1>(tile) << " " << std::get<2>(tile) << "\n";
-                                Pillar tempPillar(x* board.getTileSize(), y* board.getTileSize(), player, std::get<1>(tile), std::get<2>(tile));
+                                Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player, std::get<1>(tile), std::get<2>(tile));
                                 tempPillar.SetPosition(std::get<0>(tile).getPosition());
-                                
+
                                 /*if (player != sf::Color::Red)
                                     player = sf::Color::Red;*/
-                                
-                                //else
-                                //{
-                                    //if (redPillars.size() < board.m_pillarNumberDef)
+
+                                    //else
                                     //{
-                                    //    if (!IsPillarThere(redPillars, tempPillar)) {
+                                        //if (redPillars.size() < board.m_pillarNumberDef)
+                                        //{
+                                        //    if (!IsPillarThere(redPillars, tempPillar)) {
 
-                                    //        std::cout << "Pillar button clicked!" << std::endl; // debug message
-                                    //        pillarAdded++;
-                                    //        redPillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
-                                    //        // alternate between the red and black sides
+                                        //        std::cout << "Pillar button clicked!" << std::endl; // debug message
+                                        //        pillarAdded++;
+                                        //        redPillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
+                                        //        // alternate between the red and black sides
 
 
-                                    //        //aici
-                                    //        if (!isSelecting)
-                                    //        {
-                                    //            startPillar = tempPillar;
-                                    //            isSelecting = true;
-                                    //        }
-                                    //        else
-                                    //        {
-                                    //            isSelecting = false;
-                                    //            stopPillar = tempPillar;
+                                        //        //aici
+                                        //        if (!isSelecting)
+                                        //        {
+                                        //            startPillar = tempPillar;
+                                        //            isSelecting = true;
+                                        //        }
+                                        //        else
+                                        //        {
+                                        //            isSelecting = false;
+                                        //            stopPillar = tempPillar;
 
-                                    //            //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
-                                    //            if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))
-                                    //            {
-                                    //                std::cout << "Bridge Placed!\n";
-                                    //                redBridges.emplace_back(startPillar, stopPillar, player);
-                                    //                //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
-                                    //            }
-                                    //            else
-                                    //                std::cout << "Can't place\n" << startPillar.m_row << " " << startPillar.m_col << "\n" << stopPillar.m_row << " " << stopPillar.m_col << "\n";
-                                    //        }
-                                    //        if (player == sf::Color::Red)
-                                    //            player = sf::Color::Black;
-                                    //        else
-                                    //            player = sf::Color::Red;
-                                    //        break;
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        std::cout << "There is already a pillar there!" << std::endl;
-                                    //        break;
-                                    //    }
+                                        //            //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
+                                        //            if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))
+                                        //            {
+                                        //                std::cout << "Bridge Placed!\n";
+                                        //                redBridges.emplace_back(startPillar, stopPillar, player);
+                                        //                //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
+                                        //            }
+                                        //            else
+                                        //                std::cout << "Can't place\n" << startPillar.m_row << " " << startPillar.m_col << "\n" << stopPillar.m_row << " " << stopPillar.m_col << "\n";
+                                        //        }
+                                        //        if (player == sf::Color::Red)
+                                        //            player = sf::Color::Black;
+                                        //        else
+                                        //            player = sf::Color::Red;
+                                        //        break;
+                                        //    }
+                                        //    else
+                                        //    {
+                                        //        std::cout << "There is already a pillar there!" << std::endl;
+                                        //        break;
+                                        //    }
 
-                                    //}
-                                if (player == sf::Color::Red) // Red side's turn
-                                {
-                                    if (redPillars.size() < board.m_pillarNumberDef)
-                                    {
-                                        std::cout << "Red ";
-                                        Board::PlacePillar(board, redPillars, tempPillar, player, pillarAdded);
-                                        Board::PlaceBridge(tempPillar, redPillars, redBridges, player);
-                                    }
-                                    else
-                                    {
-                                        std::cout << "Pillar limit reached!" << std::endl;
-                                        sf::RenderWindow messageWindow(sf::VideoMode(500, 300), "Limit reached");
-                                        sf::Text message;
-                                        sf::Font font;
-                                        sf::RectangleShape closeButton(sf::Vector2f(70, 30));
-                                        closeButton.setFillColor(sf::Color::Red);
-                                        closeButton.setPosition(350, 240); // Position the button within the messageWindow
-                                        sf::Text closeButtonText("Close", font, 18);
-                                        closeButtonText.setFillColor(sf::Color::Blue);
-                                        closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
-
-                                        font.loadFromFile("ARIAL.TTF");
-                                        message.setFont(font);
-                                        message.setString("Limit of pillars reached");
-                                        message.setCharacterSize(24);
-                                        message.setFillColor(sf::Color::Red);
-
-                                        sf::FloatRect messageRect = message.getLocalBounds();
-                                        message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
-                                        message.setPosition(messageWindow.getView().getCenter());
-
-                                        while (messageWindow.isOpen()) {
-                                            sf::Event event;
-                                            while (messageWindow.pollEvent(event)) {
-                                                if (event.type == sf::Event::Closed)
-                                                    messageWindow.close();
-                                                if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                                                    sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
-                                                    if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
-                                                        std::cout << "Close button clicked. Closing message window." << std::endl;
-                                                        closeMessageWindowClicked = true;
-                                                        messageWindow.close(); // Close the message window
-                                                    }
-                                                }
-                                            }
-                                            if (closeMessageWindowClicked) {
-                                                boardWindow.close(); // Închide fereastra de joc
-                                                boardWindowOpen = false; // Setează starea ferestrei de joc pe închis
-                                                window.create(sf::VideoMode(1920, 1080), "Twixt Game Menu"); // Recreează fereastra de meniu
-                                                closeMessageWindowClicked = false; // Reset the flag
-                                            }
-                                            messageWindow.clear();
-                                            messageWindow.draw(message);
-                                            messageWindow.draw(closeButton);
-                                            messageWindow.draw(closeButtonText);
-                                            messageWindow.display();
-                                           
-                                        }
-                                        boardWindow.close();
-                                        break;
-
-                                    }
-                                    player = sf::Color::Black;
-                                    break;
-                                }
-                                else // Black side's turn
-                                {
-                                    if (blackPillars.size() < board.m_pillarNumberDef)
-                                    {
-                                        std::cout << "Black ";
-                                        Board::PlacePillar(board, blackPillars, tempPillar, player, pillarAdded);
-                                        Board::PlaceBridge(tempPillar, blackPillars, blackBridges, player);
-                                        if (blackPillars.size() == redPillars.size() && pillarAdded == 2) //Allow the black side to choose to swap sides after the first turn
+                                        //}
+                                  if (player == sf::Color::Red) // Red side's turn
+                                   {
+                                        if (redPillars.size() < board.m_pillarNumberDef)
                                         {
-                                            //declare variables for window, window text, buttons and buttons text
-                                            sf::RenderWindow messageWindow(sf::VideoMode(500, 200), "Swap sides");
-                                            sf::Text text;
+                                            if (board.PlacePillarInBase(tempPillar)){
+                                                std::cout << "Red ";
+                                                Board::PlacePillar(board, redPillars, tempPillar, player, pillarAdded);
+                                                Board::PlaceBridge(tempPillar, redPillars, redBridges, player);
+                                                player = sf::Color::Black;
+
+                                            }
+                                            else {
+                                                std::cout << "error in base";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            std::cout << "Pillar limit reached!" << std::endl;
+                                            sf::RenderWindow messageWindow(sf::VideoMode(500, 300), "Limit reached");
+                                            sf::Text message;
                                             sf::Font font;
-                                            sf::RectangleShape yesButton(sf::Vector2f(75, 50));
-                                            sf::RectangleShape noButton(sf::Vector2f(75, 50));
+                                            sf::RectangleShape closeButton(sf::Vector2f(70, 30));
+                                            closeButton.setFillColor(sf::Color::Red);
+                                            closeButton.setPosition(350, 240); // Position the button within the messageWindow
+                                            sf::Text closeButtonText("Close", font, 18);
+                                            closeButtonText.setFillColor(sf::Color::Blue);
+                                            closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
 
-                                            //setting up buttons
-                                            yesButton.setFillColor(sf::Color::Red);
-                                            noButton.setFillColor(sf::Color::Red);
-                                            yesButton.setPosition(175, 150);
-                                            noButton.setPosition(250, 150);
-                                            sf::Text yesButtonText("Yes", font, 24);
-                                            sf::Text noButtonText("No", font, 24);
-                                            yesButtonText.setFillColor(sf::Color::Blue);
-                                            noButtonText.setFillColor(sf::Color::Blue);
-
-                                            sf::FloatRect textRect = yesButtonText.getLocalBounds();
-                                            
-                                            // Position the text relative to the button
-                                            
-                                            yesButtonText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-                                            yesButtonText.setPosition(sf::Vector2f(yesButton.getPosition().x + yesButton.getSize().x / 2.0f, yesButton.getPosition().y + yesButton.getSize().y / 2.0f));
-
-                                            noButtonText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-                                            noButtonText.setPosition(sf::Vector2f(noButton.getPosition().x + noButton.getSize().x / 2.0f, noButton.getPosition().y + noButton.getSize().y / 2.0f));
-
-
-                                            //setting up text on the window
                                             font.loadFromFile("ARIAL.TTF");
-                                            text.setFont(font);
-                                            text.setString("Do you want to swap sides?");
-                                            text.setCharacterSize(24);
-                                            text.setFillColor(sf::Color::Red);
+                                            message.setFont(font);
+                                            message.setString("Limit of pillars reached");
+                                            message.setCharacterSize(24);
+                                            message.setFillColor(sf::Color::Red);
 
-                                            //setting up text on the window
-                                            textRect = text.getLocalBounds();
-                                            text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-                                            text.setPosition(messageWindow.getView().getCenter());
+                                            sf::FloatRect messageRect = message.getLocalBounds();
+                                            message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+                                            message.setPosition(messageWindow.getView().getCenter());
 
-
-                                            
-                                            while (messageWindow.isOpen())
-                                            {
+                                            while (messageWindow.isOpen()) {
                                                 sf::Event event;
-                                                while (messageWindow.pollEvent(event))
-                                                {
+                                                while (messageWindow.pollEvent(event)) {
                                                     if (event.type == sf::Event::Closed)
                                                         messageWindow.close();
                                                     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                                                         sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
-                                                        if (yesButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
-                                                            std::cout << "\"Yes\" button clicked. Sides are swapped. Closing message window." << std::endl;
-                                                            // Swap the pillars and the drawn vertical/horizontal lines
-                                                            Board::SwapSides(redPillars, blackPillars);
-                                                            board.SwapLines();
+                                                        if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                                                            std::cout << "Close button clicked. Closing message window." << std::endl;
+                                                            closeMessageWindowClicked = true;
                                                             messageWindow.close(); // Close the message window
                                                         }
-                                                        else if (noButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
-                                                        {
-                                                            std::cout << "\"No\" button clicked. Sides are not swapped. Closing message window.\n";
-                                                            // do not swap sides
+                                                    }
+                                                }
+                                                if (closeMessageWindowClicked) {
+                                                    boardWindow.close(); // Închide fereastra de joc
+                                                    boardWindowOpen = false; // Setează starea ferestrei de joc pe închis
+                                                    window.create(sf::VideoMode(1920, 1080), "Twixt Game Menu"); // Recreează fereastra de meniu
+                                                    closeMessageWindowClicked = false; // Reset the flag
+                                                }
+                                                messageWindow.clear();
+                                                messageWindow.draw(message);
+                                                messageWindow.draw(closeButton);
+                                                messageWindow.draw(closeButtonText);
+                                                messageWindow.display();
+
+                                            }
+                                            boardWindow.close();
+                                            break;
+
+                                        }
+                                      
+                                        break;
+                                    }
+                                    else // Black side's turn
+                                    {
+                                        if (blackPillars.size() < board.m_pillarNumberDef)
+                                        {
+                                            std::cout << "Black ";
+                                            Board::PlacePillar(board, blackPillars, tempPillar, player, pillarAdded);
+                                            Board::PlaceBridge(tempPillar, blackPillars, blackBridges, player);
+                                            if (blackPillars.size() == redPillars.size() && pillarAdded == 2) //Allow the black side to choose to swap sides after the first turn
+                                            {
+                                                //declare variables for window, window text, buttons and buttons text
+                                                sf::RenderWindow messageWindow(sf::VideoMode(500, 200), "Swap sides");
+                                                sf::Text text;
+                                                sf::Font font;
+                                                sf::RectangleShape yesButton(sf::Vector2f(75, 50));
+                                                sf::RectangleShape noButton(sf::Vector2f(75, 50));
+
+                                                //setting up buttons
+                                                yesButton.setFillColor(sf::Color::Red);
+                                                noButton.setFillColor(sf::Color::Red);
+                                                yesButton.setPosition(175, 150);
+                                                noButton.setPosition(250, 150);
+                                                sf::Text yesButtonText("Yes", font, 24);
+                                                sf::Text noButtonText("No", font, 24);
+                                                yesButtonText.setFillColor(sf::Color::Blue);
+                                                noButtonText.setFillColor(sf::Color::Blue);
+
+                                                sf::FloatRect textRect = yesButtonText.getLocalBounds();
+
+                                                // Position the text relative to the button
+
+                                                yesButtonText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+                                                yesButtonText.setPosition(sf::Vector2f(yesButton.getPosition().x + yesButton.getSize().x / 2.0f, yesButton.getPosition().y + yesButton.getSize().y / 2.0f));
+
+                                                noButtonText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+                                                noButtonText.setPosition(sf::Vector2f(noButton.getPosition().x + noButton.getSize().x / 2.0f, noButton.getPosition().y + noButton.getSize().y / 2.0f));
+
+
+                                                //setting up text on the window
+                                                font.loadFromFile("ARIAL.TTF");
+                                                text.setFont(font);
+                                                text.setString("Do you want to swap sides?");
+                                                text.setCharacterSize(24);
+                                                text.setFillColor(sf::Color::Red);
+
+                                                //setting up text on the window
+                                                textRect = text.getLocalBounds();
+                                                text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+                                                text.setPosition(messageWindow.getView().getCenter());
+
+
+
+                                                while (messageWindow.isOpen())
+                                                {
+                                                    sf::Event event;
+                                                    while (messageWindow.pollEvent(event))
+                                                    {
+                                                        if (event.type == sf::Event::Closed)
                                                             messageWindow.close();
+                                                        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                                                            sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
+                                                            if (yesButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                                                                std::cout << "\"Yes\" button clicked. Sides are swapped. Closing message window." << std::endl;
+                                                                // Swap the pillars and the drawn vertical/horizontal lines
+                                                                Board::SwapSides(redPillars, blackPillars);
+                                                                board.SwapLines();
+                                                                messageWindow.close(); // Close the message window
+                                                            }
+                                                            else if (noButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+                                                            {
+                                                                std::cout << "\"No\" button clicked. Sides are not swapped. Closing message window.\n";
+                                                                // do not swap sides
+                                                                messageWindow.close();
+                                                            }
+                                                        }
+
+                                                    }
+
+                                                    messageWindow.clear();
+                                                    messageWindow.draw(text);
+                                                    messageWindow.draw(yesButton);
+                                                    messageWindow.draw(yesButtonText);
+                                                    messageWindow.draw(noButton);
+                                                    messageWindow.draw(noButtonText);
+                                                    messageWindow.display();
+                                                }
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            std::cout << "Pillar limit reached!" << std::endl;
+                                            sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limit reached");
+                                            sf::Text message;
+                                            sf::Font font;
+                                            sf::RectangleShape closeButton(sf::Vector2f(200, 100));
+                                            closeButton.setFillColor(sf::Color::Red);
+                                            closeButton.setPosition(150, 100); // Position the button within the messageWindow
+                                            sf::Text closeButtonText("Close", font, 24);
+                                            closeButtonText.setFillColor(sf::Color::Blue);
+                                            closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
+
+                                            font.loadFromFile("ARIAL.TTF");
+                                            message.setFont(font);
+                                            message.setString("Limit of pillars reached");
+                                            message.setCharacterSize(24);
+                                            message.setFillColor(sf::Color::Red);
+
+                                            sf::FloatRect messageRect = message.getLocalBounds();
+                                            message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+                                            message.setPosition(messageWindow.getView().getCenter());
+
+                                            while (messageWindow.isOpen()) {
+                                                sf::Event event;
+                                                while (messageWindow.pollEvent(event)) {
+                                                    if (event.type == sf::Event::Closed)
+                                                        messageWindow.close();
+                                                    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                                                        sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
+                                                        if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                                                            std::cout << "Close button clicked. Closing message window." << std::endl;
+                                                            closeMessageWindowClicked = true;
+                                                            messageWindow.close(); // Close the message window
                                                         }
                                                     }
-                                                    
+                                                } if (closeMessageWindowClicked) {
+                                                    boardWindow.close(); // Închide fereastra de joc
+                                                    boardWindowOpen = false; // Setează starea ferestrei de joc pe închis
+                                                    window.create(sf::VideoMode(1920, 1080), "Twixt Game Menu"); // Recreează fereastra de meniu
+                                                    closeMessageWindowClicked = false; // Reset the flag
                                                 }
-
                                                 messageWindow.clear();
-                                                messageWindow.draw(text);
-                                                messageWindow.draw(yesButton);
-                                                messageWindow.draw(yesButtonText);
-                                                messageWindow.draw(noButton);
-                                                messageWindow.draw(noButtonText);
+                                                messageWindow.draw(message);
+                                                messageWindow.draw(closeButton);
+                                                messageWindow.draw(closeButtonText);
                                                 messageWindow.display();
                                             }
+                                            boardWindow.close();
+                                            break;
 
                                         }
-                                    }
-                                    else
-                                    {
-                                        std::cout << "Pillar limit reached!" << std::endl;
-                                        sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limit reached");
-                                        sf::Text message;
-                                        sf::Font font;
-                                        sf::RectangleShape closeButton(sf::Vector2f(200, 100));
-                                        closeButton.setFillColor(sf::Color::Red);
-                                        closeButton.setPosition(150, 100); // Position the button within the messageWindow
-                                        sf::Text closeButtonText("Close", font, 24);
-                                        closeButtonText.setFillColor(sf::Color::Blue);
-                                        closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
-
-                                        font.loadFromFile("ARIAL.TTF");
-                                        message.setFont(font);
-                                        message.setString("Limit of pillars reached");
-                                        message.setCharacterSize(24);
-                                        message.setFillColor(sf::Color::Red);
-
-                                        sf::FloatRect messageRect = message.getLocalBounds();
-                                        message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
-                                        message.setPosition(messageWindow.getView().getCenter());
-
-                                        while (messageWindow.isOpen()) {
-                                            sf::Event event;
-                                            while (messageWindow.pollEvent(event)) {
-                                                if (event.type == sf::Event::Closed)
-                                                    messageWindow.close();
-                                                if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                                                    sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
-                                                    if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
-                                                        std::cout << "Close button clicked. Closing message window." << std::endl;
-                                                        closeMessageWindowClicked = true;
-                                                        messageWindow.close(); // Close the message window
-                                                    }
-                                                }
-                                            } if (closeMessageWindowClicked) {
-                                                boardWindow.close(); // Închide fereastra de joc
-                                                boardWindowOpen = false; // Setează starea ferestrei de joc pe închis
-                                                window.create(sf::VideoMode(1920, 1080), "Twixt Game Menu"); // Recreează fereastra de meniu
-                                                closeMessageWindowClicked = false; // Reset the flag
-                                            }
-                                            messageWindow.clear();
-                                            messageWindow.draw(message);
-                                            messageWindow.draw(closeButton);
-                                            messageWindow.draw(closeButtonText);
-                                            messageWindow.display();
-                                        }
-                                        boardWindow.close();
+                                        player = sf::Color::Red;
                                         break;
-
                                     }
-                                    player = sf::Color::Red;
-                                    break;
-                                }
-                                
-                                
-                            }
 
+
+                              
+
+
+                            }
 
                         }
 
                     }
-
                 }
 
                 //boardWindow.clear(sf::Color::White);

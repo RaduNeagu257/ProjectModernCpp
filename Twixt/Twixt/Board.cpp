@@ -242,6 +242,13 @@ int Board::getTileSize()
 	return m_tileSize;
 }
 
+int Board::GetSize()
+{
+	return m_size;
+}
+
+
+
 
 void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 {

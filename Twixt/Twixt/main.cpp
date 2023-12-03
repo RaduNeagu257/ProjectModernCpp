@@ -8,9 +8,7 @@ float BRIDGE_LINE_THICKNESS = 5.0f;
 
 //SFML sample code - try to run
 int main() {
-    sf::Clock clockAnimation;
-    bool isAnimating = false; //for animation later on maybe
-
+   
     Board board;
     // Open the window
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Twixt Game");
@@ -270,7 +268,7 @@ int main() {
                                         //}
                                   if (player == sf::Color::Red) // Red side's turn
                                    {
-                                        if (redPillars.size() < board.m_pillarNumberDef)
+                                        if (redPillars.size() < board.GetSize())
                                         {
                                             if (board.PlacePillarInBase(tempPillar)){
                                                 std::cout << "Red ";
@@ -280,7 +278,30 @@ int main() {
 
                                             }
                                             else {
-                                                std::cout << "error in base";
+                                                std::cout << "error in base" << std::endl;
+                                                sf::RenderWindow errorMessageWindow(sf::VideoMode(500, 200), "Error: Wrong Base");
+                                                sf::Text errorMessage;
+                                                sf::Font font;
+                                                font.loadFromFile("ARIAL.TTF");
+                                                errorMessage.setFont(font);
+                                                errorMessage.setString("Error: Pillar placed in wrong base!");
+                                                errorMessage.setCharacterSize(24);
+                                                errorMessage.setFillColor(sf::Color::Red);
+                                                sf::FloatRect messageRect = errorMessage.getLocalBounds();
+                                                errorMessage.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+                                                errorMessage.setPosition(errorMessageWindow.getView().getCenter());
+
+                                                while (errorMessageWindow.isOpen()) {
+                                                    sf::Event event;
+                                                    while (errorMessageWindow.pollEvent(event)) {
+                                                        if (event.type == sf::Event::Closed)
+                                                            errorMessageWindow.close();
+                                                    }
+
+                                                    errorMessageWindow.clear();
+                                                    errorMessageWindow.draw(errorMessage);
+                                                    errorMessageWindow.display();
+                                                }
                                             }
                                         }
                                         else
@@ -342,11 +363,42 @@ int main() {
                                     }
                                     else // Black side's turn
                                     {
-                                        if (blackPillars.size() < board.m_pillarNumberDef)
+                                        if (blackPillars.size() < board.GetSize())
                                         {
-                                            std::cout << "Black ";
-                                            Board::PlacePillar(board, blackPillars, tempPillar, player, pillarAdded);
-                                            Board::PlaceBridge(tempPillar, blackPillars, blackBridges, player);
+                                            if (board.PlacePillarInBase(tempPillar)) {
+                                                std::cout << "Black ";
+                                                Board::PlacePillar(board, blackPillars, tempPillar, player, pillarAdded);
+                                                Board::PlaceBridge(tempPillar, blackPillars, blackBridges, player);
+                                                player = sf::Color::Red;
+
+                                            }
+                                            else {
+                                                std::cout << "error in base" << std::endl;
+                                                sf::RenderWindow errorMessageWindow(sf::VideoMode(500, 200), "Error: Wrong Base");
+                                                sf::Text errorMessage;
+                                                sf::Font font;
+                                                font.loadFromFile("ARIAL.TTF");
+                                                errorMessage.setFont(font);
+                                                errorMessage.setString("Error: Pillar placed in wrong base!");
+                                                errorMessage.setCharacterSize(24);
+                                                errorMessage.setFillColor(sf::Color::Red);
+                                                sf::FloatRect messageRect = errorMessage.getLocalBounds();
+                                                errorMessage.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+                                                errorMessage.setPosition(errorMessageWindow.getView().getCenter());
+
+                                                while (errorMessageWindow.isOpen()) {
+                                                    sf::Event event;
+                                                    while (errorMessageWindow.pollEvent(event)) {
+                                                        if (event.type == sf::Event::Closed)
+                                                            errorMessageWindow.close();
+                                                    }
+
+                                                    errorMessageWindow.clear();
+                                                    errorMessageWindow.draw(errorMessage);
+                                                    errorMessageWindow.display();
+                                                }
+                                            }
+                                            
                                             if (blackPillars.size() == redPillars.size() && pillarAdded == 2) //Allow the black side to choose to swap sides after the first turn
                                             {
                                                 //declare variables for window, window text, buttons and buttons text
@@ -480,7 +532,6 @@ int main() {
                                             break;
 
                                         }
-                                        player = sf::Color::Red;
                                         break;
                                     }
 

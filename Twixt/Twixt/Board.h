@@ -41,6 +41,7 @@ public:
 	
 	std::vector<std::tuple<sf::CircleShape, int, int>> getTiles();
 	int getTileSize();
+	int GetSize();
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
 	void SwapLines();
 	static bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar);

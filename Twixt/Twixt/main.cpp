@@ -217,7 +217,7 @@ int main() {
                                 //Create a new pillar and check its position before adding it to the vector
                                 //std::cout << std::get<1>(tile) << " " << std::get<2>(tile) << "\n";
                                 Pillar tempPillar(x* board.getTileSize(), y* board.getTileSize(), player, std::get<1>(tile), std::get<2>(tile));
-                                tempPillar.setPosition(std::get<0>(tile).getPosition());
+                                tempPillar.SetPosition(std::get<0>(tile).getPosition());
                                 
                                 /*if (player != sf::Color::Red)
                                     player = sf::Color::Red;*/

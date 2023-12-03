@@ -10,11 +10,12 @@ public:
 	Pillar(float x, float y, sf::Color c,int row,int col);
 	Pillar() = default;
 	sf::Vector2f GetPosition() const;
-	sf::Vector2f getCenter() const;
-	float getRadius() const;
+	sf::Vector2f GetCenter() const;
+	sf::Color GetColor() const;
+	float GetRadius() const;
 	void Draw(sf::RenderWindow& boardWindow);// desenare pilon intr-o fereastra
-	void setPosition(const sf::Vector2f& position);
-	void setColor(sf::Color color);
+	void SetPosition(const sf::Vector2f& position);
+	void SetColor(sf::Color color);
 	int m_row;
 	int m_col;
 	

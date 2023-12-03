@@ -17,22 +17,26 @@ sf::Vector2f Pillar::GetPosition() const
 	return m_position;
 }
 
-float Pillar::getRadius() const
+sf::Color Pillar::GetColor() const {
+	return color;
+}
+
+float Pillar::GetRadius() const
 {
 	return shape.getRadius();
 }
 
-void Pillar::setColor(sf::Color color)
+void Pillar::SetColor(sf::Color color)
 {
 	shape.setFillColor(color);
 }
 
-sf::Vector2f Pillar::getCenter() const
+sf::Vector2f Pillar::GetCenter() const
 {
 	sf::Vector2f center = sf::Vector2f(GetPosition().x + shape.getRadius(), GetPosition().y + shape.getRadius());
 	return center;
 }
-void Pillar::setPosition(const sf::Vector2f& position)
+void Pillar::SetPosition(const sf::Vector2f & position)
 {
 	m_position = position;
 }

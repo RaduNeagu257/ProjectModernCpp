@@ -21,7 +21,7 @@ Bridge::Bridge(const Pillar& startPillar, const Pillar& stopPillar, sf::Color co
     :m_startPillar(startPillar),
     m_stopPillar(stopPillar)
 {
-    sf::Vector2f direction = stopPillar.getCenter() - startPillar.getCenter();
+    sf::Vector2f direction = stopPillar.GetCenter() - startPillar.GetCenter();
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
     // Normalize the direction vector
@@ -34,7 +34,7 @@ Bridge::Bridge(const Pillar& startPillar, const Pillar& stopPillar, sf::Color co
     // Set the size, rotation, and position
     shape.setSize({ length, BRIDGE_LINE_THICKNESS });
     shape.setRotation(atan2(direction.y, direction.x) * 180 / PI);
-    shape.setPosition(startPillar.getCenter() - perpendicularOffset);
+    shape.setPosition(startPillar.GetCenter() - perpendicularOffset);
     shape.setFillColor(color);
 }
 

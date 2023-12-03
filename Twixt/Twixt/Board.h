@@ -38,7 +38,7 @@ public:
 	sf::RectangleShape button75bridges;
 
 	static void PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
-
+	
 	std::vector<std::tuple<sf::CircleShape, int, int>> getTiles();
 	int getTileSize();
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
@@ -46,7 +46,7 @@ public:
 	static bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar);
 	static void PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, int& pillarAdded);
 	static void SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blackPillars);
-	
+	bool PlacePillarInBase(const Pillar& pilar);
 private:
 	//std::vector<sf::CircleShape> m_tiles;
 	std::vector<std::tuple<sf::CircleShape, int, int>> m_tiles;

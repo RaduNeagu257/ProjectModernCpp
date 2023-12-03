@@ -390,15 +390,27 @@ void Board::PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& temp
 	}
 	else
 		std::cout << "There is already a pillar there!" << std::endl;
-}
 
+}
 void Board::SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blackPillars)
 {
 	// swap the pillars
 	std::swap(redPillars, blackPillars);
 	// swap the color of the pillars
 	for (auto& pillar : redPillars)
-		pillar.setColor(sf::Color::Red);
+		pillar.SetColor(sf::Color::Red);
 	for (auto& pillar : blackPillars)
-		pillar.setColor(sf::Color::Black);
+		pillar.SetColor(sf::Color::Black);
+}
+
+bool Board::PlacePillarInBase(const Pillar& pillar)
+{
+	if (pillar.m_col == 0 || pillar.m_col == m_boardSize1 - 1) {
+		return (pillar.GetColor() == m_verticalLine1.getFillColor() || pillar.GetColor() == m_verticalLine2.getFillColor());
+	}
+	else if (pillar.m_row == 0 || pillar.m_row == m_boardSize2 - 1) {
+		return (pillar.GetColor() == m_horizontalLine1.getFillColor() || pillar.GetColor() == m_horizontalLine2.getFillColor());
+
+	}
+	return true;
 }

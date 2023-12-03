@@ -403,14 +403,24 @@ void Board::SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blac
 		pillar.SetColor(sf::Color::Black);
 }
 
-bool Board::PlacePillarInBase(const Pillar& pillar)
-{
-	if (pillar.m_col == 0 || pillar.m_col == m_boardSize1 - 1) {
-		return (pillar.GetColor() == m_verticalLine1.getFillColor() || pillar.GetColor() == m_verticalLine2.getFillColor());
-	}
-	else if (pillar.m_row == 0 || pillar.m_row == m_boardSize2 - 1) {
-		return (pillar.GetColor() == m_horizontalLine1.getFillColor() || pillar.GetColor() == m_horizontalLine2.getFillColor());
+	bool Board::PlacePillarInBase(Pillar& pillar)
+	{
+		/*std::cout << "Pillar - pos" << " "<< pillar.m_row << " " << pillar.m_col;
+		std::cout << "Color vertical 1" << " " << static_cast<int>(m_verticalLine1.getFillColor().r) << " " << static_cast<int>(m_verticalLine1.getFillColor().g)<< " "<< 
+		static_cast<int>(m_verticalLine1.getFillColor().b) << std::endl;
+		std::cout << "Color vertical 2" << " " << static_cast<int>(m_verticalLine2.getFillColor().r) << " " << static_cast<int>(m_verticalLine2.getFillColor().g) << " " <<
+			static_cast<int>(m_verticalLine2.getFillColor().b) << std::endl;
+		std::cout << "Color horizontal 1" << " " << static_cast<int>(m_horizontalLine1.getFillColor().r) << " " << static_cast<int>(m_horizontalLine1.getFillColor().g) << " " <<
+			static_cast<int>(m_horizontalLine1.getFillColor().b) << std::endl;
+		std::cout << "Color horizontal 2" << " " << static_cast<int>(m_horizontalLine2.getFillColor().r) << " " << static_cast<int>(m_horizontalLine2.getFillColor().g) << " " <<
+			static_cast<int>(m_horizontalLine2.getFillColor().b) << std::endl;*/
 
+		if (pillar.m_col == 0 || pillar.m_col == m_size - 1) {
+			return (pillar.GetColor() == m_verticalLine1.getFillColor() || pillar.GetColor() == m_verticalLine2.getFillColor());
+		}
+		else if (pillar.m_row == 0 || pillar.m_row == m_size - 1) {
+			return (pillar.GetColor() == m_horizontalLine1.getFillColor() || pillar.GetColor() == m_horizontalLine2.getFillColor());
+
+		}
+		return true;
 	}
-	return true;
-}

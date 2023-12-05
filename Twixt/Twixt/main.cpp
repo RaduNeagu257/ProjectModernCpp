@@ -271,10 +271,15 @@ int main() {
                                         if (redPillars.size() < board.GetSize())
                                         {
                                             if (board.PlacePillarInBase(tempPillar)){
-                                                std::cout << "Red ";
-                                                Board::PlacePillar(board, redPillars, tempPillar, player, pillarAdded);
-                                                Board::PlaceBridge(tempPillar, redPillars, redBridges, player);
-                                                player = sf::Color::Black;
+                                                if (!board.IsPillarThere(redPillars, tempPillar) && !board.IsPillarThere(blackPillars, tempPillar))
+                                                {
+                                                    std::cout << "Red ";
+                                                    Board::PlacePillar(board, redPillars, tempPillar, player, pillarAdded);
+                                                    Board::PlaceBridge(tempPillar, redPillars, redBridges, player);
+                                                    player = sf::Color::Black;
+                                                }
+                                                else
+                                                    std::cout << "There is already a pillar there.\n";
 
                                             }
                                             else {
@@ -366,11 +371,15 @@ int main() {
                                         if (blackPillars.size() < board.GetSize())
                                         {
                                             if (board.PlacePillarInBase(tempPillar)) {
-                                                std::cout << "Black ";
-                                                Board::PlacePillar(board, blackPillars, tempPillar, player, pillarAdded);
-                                                Board::PlaceBridge(tempPillar, blackPillars, blackBridges, player);
-                                                player = sf::Color::Red;
-
+                                                if (!board.IsPillarThere(blackPillars, tempPillar) && !board.IsPillarThere(redPillars, tempPillar))
+                                                {
+                                                    std::cout << "Black ";
+                                                    Board::PlacePillar(board, blackPillars, tempPillar, player, pillarAdded);
+                                                    Board::PlaceBridge(tempPillar, blackPillars, blackBridges, player);
+                                                    player = sf::Color::Red;
+                                                }
+                                                else
+                                                    std::cout << "There is already a pillar there.\n";
                                             }
                                             else {
                                                 std::cout << "error in base" << std::endl;

@@ -224,7 +224,7 @@ U8 main() {
                                                 {
                                                     std::cout << "Red ";
                                                     Board::PlacePillar(board, redPillars, tempPillar, player, pillarAdded);
-                                                    Board::PlaceBridge(tempPillar, redPillars, redBridges, player);
+                                                    board.PlaceBridge(tempPillar, redPillars, redBridges, player);
                                                     player = sf::Color::Black;
                                                 }
                                                 else
@@ -324,7 +324,7 @@ U8 main() {
                                                 {
                                                     std::cout << "Black ";
                                                     Board::PlacePillar(board, blackPillars, tempPillar, player, pillarAdded);
-                                                    Board::PlaceBridge(tempPillar, blackPillars, blackBridges, player);
+                                                    board.PlaceBridge(tempPillar, blackPillars, blackBridges, player);
                                                     player = sf::Color::Red;
                                                 }
                                                 else
@@ -486,7 +486,7 @@ U8 main() {
                                                 messageWindow.draw(closeButtonText);
                                                 messageWindow.display();
                                             }
-                                         
+
                                             std::cout << "Pillar Limit: " << board.m_pillarNumberDef << std::endl;
                                             std::cout << "Board Size: " << board.GetSize() << std::endl;
                                             std::cout << "Red Pillars: " << redPillars.size() << std::endl;
@@ -509,6 +509,7 @@ U8 main() {
 
                     }
                 }
+
 
                 //boardWindow.clear(sf::Color::White);
                 board.Draw(boardWindow);

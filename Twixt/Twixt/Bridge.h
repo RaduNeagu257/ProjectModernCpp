@@ -2,6 +2,7 @@
 #include<SFML/Graphics.hpp>
 #include "Pillar.h"
 class Bridge {
+
 private:
 	sf::RectangleShape shape;
 	//sf::Vector2F startPosition;
@@ -16,4 +17,5 @@ public:
 	sf::Vector2f getEndPosition() const;
 	Pillar m_startPillar;
 	Pillar m_stopPillar;
+
 };

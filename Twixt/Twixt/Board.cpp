@@ -229,7 +229,16 @@ void Board::PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPil
 		std::cout << "Placed bridge\n";
 	else
 		std::cout << "Did not find any pillar to place a bridge between\n";
+	if (player == sf::Color::Red) {
+		redBridgeCount++;
+	}
+	else if (player == sf::Color::Black) {
+		blackBridgeCount++;
+	}
 
+}
+bool Board::isMaxBridgesReached() const {
+	return redBridgeCount >= maxBridges || blackBridgeCount >= maxBridges;
 }
 
 std::vector<std::tuple<sf::CircleShape, U8, U8>> Board::getTiles()

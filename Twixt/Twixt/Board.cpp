@@ -12,7 +12,7 @@ Board::Board()
 	m_pillarNumber3(78),
 	m_bridgesNumberDef(50),
 	m_bridgesNumber1(25),
-	m_bridgesNumber2(50),
+	m_bridgesNumber2(3),
 	m_bridgesNumber3(75)
 
 
@@ -197,7 +197,7 @@ void Board::SetPillarNumber(U8 pillarNumber)
 	m_pillarNumberDef = pillarNumber;
 }
 
-void Board::PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
+bool Board::PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
 	bool found = false;
 	for (auto& pillar : existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
@@ -229,16 +229,13 @@ void Board::PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPil
 		std::cout << "Placed bridge\n";
 	else
 		std::cout << "Did not find any pillar to place a bridge between\n";
-	if (player == sf::Color::Red) {
-		redBridgeCount++;
+	
+	if (existingBridges.size() >= m_bridgesNumberDef) {
+		std::cout << "Bridge limit reached, cannot place more bridges." << std::endl;
+		
+		return true;
 	}
-	else if (player == sf::Color::Black) {
-		blackBridgeCount++;
-	}
-
-}
-bool Board::isMaxBridgesReached() const {
-	return redBridgeCount >= maxBridges || blackBridgeCount >= maxBridges;
+	return false;
 }
 
 std::vector<std::tuple<sf::CircleShape, U8, U8>> Board::getTiles()
@@ -440,7 +437,9 @@ void Board::SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blac
 		}
 		return true;
 	}
-	int Board::GetPillarNumber() const {
+	U8 Board::GetPillarNumber() const {
 		return m_pillarNumberDef;
 	}
-	
+	void Board::SetBridgeNumber(U8 bridgeNumber) {
+		m_bridgesNumberDef = bridgeNumber;
+	}

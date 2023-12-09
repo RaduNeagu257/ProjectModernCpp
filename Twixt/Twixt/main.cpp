@@ -217,8 +217,13 @@ U8 main() {
                                 tempPillar.SetPosition(std::get<0>(tile).getPosition());
                                   if (player == sf::Color::Red) // Red side's turn
                                    {
-                                        if (redPillars.size() < board.GetPillarNumber())
+
+                                        
+
+                                          
+                                      if (redPillars.size() < board.GetSize())
                                         {
+
                                             if (board.PlacePillarInBase(tempPillar)){
                                                 if (!board.IsPillarThere(redPillars, tempPillar) && !board.IsPillarThere(blackPillars, tempPillar))
                                                 {
@@ -226,6 +231,7 @@ U8 main() {
                                                     Board::PlacePillar(board, redPillars, tempPillar, player, pillarAdded);
                                                     board.PlaceBridge(tempPillar, redPillars, redBridges, player);
                                                     player = sf::Color::Black;
+                                                    
                                                 }
                                                 else
                                                     std::cout << "There is already a pillar there.\n";
@@ -317,7 +323,7 @@ U8 main() {
                                     }
                                     else // Black side's turn
                                     {
-                                        if (blackPillars.size() < board.GetPillarNumber())
+                                        if (blackPillars.size() < board.GetSize())
                                         {
                                             if (board.PlacePillarInBase(tempPillar)) {
                                                 if (!board.IsPillarThere(blackPillars, tempPillar) && !board.IsPillarThere(redPillars, tempPillar))
@@ -486,7 +492,7 @@ U8 main() {
                                                 messageWindow.draw(closeButtonText);
                                                 messageWindow.display();
                                             }
-
+                                         
                                             std::cout << "Pillar Limit: " << board.m_pillarNumberDef << std::endl;
                                             std::cout << "Board Size: " << board.GetSize() << std::endl;
                                             std::cout << "Red Pillars: " << redPillars.size() << std::endl;
@@ -523,6 +529,7 @@ U8 main() {
                     bridge.draw(boardWindow);
                 boardWindow.display();
             }
+          
             std::cout << pillarAdded;//checks how many pillars we have(duplicate or unique pillars)
         }
 
@@ -628,24 +635,26 @@ U8 main() {
                         if (board.button25bridges.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
                             //board.SetBridgesNumber(board.m_bridgesNumber1);
+                            board.SetBridgeNumber(board.m_bridgesNumber1);
                             std::cout << "25 bridges button clicked!" << std::endl; // Debug message
                             selectedButtonShadowBridges = &board.button25bridges;
                         }
                         // Check if the 50 bridges button was pressed
                         else if (board.button50bridges.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
-                            //board.SetBridgesNumber(board.m_bridgesNumber2);
+                            board.SetBridgeNumber(board.m_bridgesNumber2);
                             std::cout << "50 bridges button clicked!" << std::endl; // Debug message
                             selectedButtonShadowBridges = &board.button50bridges;
                         }
                         // Check if the 75 bridges button was pressed
                         else if (board.button75bridges.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
-                           // board.SetBridgesNumber(board.m_bridgesNumber3);
+                           board.SetBridgeNumber(board.m_bridgesNumber3);
                             std::cout << "75 bridges button clicked!" << std::endl; // Debug message
                             selectedButtonShadowBridges = &board.button75bridges;
                         }
                     }
+                    
                 }
                 settingsWindow.clear(sf::Color::Red);
                 if (selectedButtonShadow != nullptr)

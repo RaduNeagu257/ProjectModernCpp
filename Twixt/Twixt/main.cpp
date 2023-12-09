@@ -217,7 +217,7 @@ U8 main() {
                                 tempPillar.SetPosition(std::get<0>(tile).getPosition());
                                   if (player == sf::Color::Red) // Red side's turn
                                    {
-                                        if (redPillars.size() < board.GetSize())
+                                        if (redPillars.size() < board.GetPillarNumber())
                                         {
                                             if (board.PlacePillarInBase(tempPillar)){
                                                 if (!board.IsPillarThere(redPillars, tempPillar) && !board.IsPillarThere(blackPillars, tempPillar))
@@ -317,7 +317,7 @@ U8 main() {
                                     }
                                     else // Black side's turn
                                     {
-                                        if (blackPillars.size() < board.GetSize())
+                                        if (blackPillars.size() < board.GetPillarNumber())
                                         {
                                             if (board.PlacePillarInBase(tempPillar)) {
                                                 if (!board.IsPillarThere(blackPillars, tempPillar) && !board.IsPillarThere(redPillars, tempPillar))
@@ -486,11 +486,7 @@ U8 main() {
                                                 messageWindow.draw(closeButtonText);
                                                 messageWindow.display();
                                             }
-                                            if (board.isMaxBridgesReached()) {
-                                                std::cout << "Maximum number of bridges reached. Closing game window." << std::endl;
-                                                boardWindow.close();
-                                                boardWindowOpen = false;
-                                            }
+
                                             std::cout << "Pillar Limit: " << board.m_pillarNumberDef << std::endl;
                                             std::cout << "Board Size: " << board.GetSize() << std::endl;
                                             std::cout << "Red Pillars: " << redPillars.size() << std::endl;

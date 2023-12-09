@@ -537,6 +537,11 @@ int main() {
                                                 messageWindow.draw(closeButtonText);
                                                 messageWindow.display();
                                             }
+                                            std::cout << "Pillar Limit: " << board.m_pillarNumberDef << std::endl;
+                                            std::cout << "Board Size: " << board.GetSize() << std::endl;
+                                            std::cout << "Red Pillars: " << redPillars.size() << std::endl;
+                                            std::cout << "Black Pillars: " << blackPillars.size() << std::endl;
+
                                             boardWindow.close();
                                             break;
 

@@ -103,9 +103,9 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 
 	// Centering the array using the previously calculated offsets
 
-	for (int i = 0; i < m_size; ++i)
+	for (U8 i = 0; i < m_size; ++i)
 	{
-		for (int j = 0; j < m_size; ++j)
+		for (U8 j = 0; j < m_size; ++j)
 		{
 			// Create the 2D array for the board
 			sf::CircleShape tile(DOT_RADIUS);
@@ -153,15 +153,15 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	BoardWindow.draw(button24x24);
 	BoardWindow.draw(button30x30);
 	}
-void Board::SetBoardSize(int size)
+void Board::SetBoardSize(U8 size)
 {
 	m_size = size;
-	m_tileSize = 30; // Setează dimensiunea inițială a fiecărui pătrat
-	m_tiles.clear(); // Curăță vectorul de cercuri pentru a adăuga noi cercuri cu dimensiunile actualizate
+	m_tiles.clear(); // clean the tiles vector to add new tiles
+	
 
-	for (int i = 0; i < m_size; ++i)
+	for (U8 i = 0; i < m_size; ++i)
 	{
-		for (int j = 0; j < m_size; ++j)
+		for (U8 j = 0; j < m_size; ++j)
 		{
 			sf::CircleShape tile(DOT_RADIUS);
 			tile.setPosition(i * m_tileSize, j * m_tileSize);
@@ -171,7 +171,7 @@ void Board::SetBoardSize(int size)
 		}
 	}
 
-	// Regenerează liniile orizontale roșii
+	// Redraw the horizontal lines
 	float lineWidth = (m_tileSize + 1) * m_size;
 	m_horizontalLine1.setSize({ lineWidth, LINE_THICKNESS });
 	m_horizontalLine1.setFillColor(sf::Color::Red);
@@ -181,7 +181,7 @@ void Board::SetBoardSize(int size)
 	m_horizontalLine2.setFillColor(sf::Color::Red);
 	m_horizontalLine2.setPosition(0, (m_size - 1) * m_tileSize - 2);
 
-	// Regenerează liniile verticale negre
+	// Redraw the vertical lines
 	float lineHeight = (m_tileSize + 1) * m_size;
 	m_verticalLine1.setSize({ LINE_THICKNESS, lineHeight });
 	m_verticalLine1.setFillColor(sf::Color::Black);
@@ -192,7 +192,7 @@ void Board::SetBoardSize(int size)
 	m_verticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
-void Board::SetPillarNumber(int pillarNumber)
+void Board::SetPillarNumber(U8 pillarNumber)
 {
 	m_pillarNumberDef = pillarNumber;
 }
@@ -203,8 +203,8 @@ void Board::PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPil
 	for (auto& pillar : existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
 		if (selectedPillar.GetPosition() != pillar.GetPosition()) // avoid checking the same pillar
 		{
-			int dx = std::abs(pillar.m_col - selectedPillar.m_col);
-			int dy = std::abs(pillar.m_row - selectedPillar.m_row);
+			U8 dx = std::abs(pillar.m_col - selectedPillar.m_col);
+			U8 dy = std::abs(pillar.m_row - selectedPillar.m_row);
 			std::cout << dx << " " << dy << "\n";
 			if (((dx == 2 && dy == 1) || (dx == 1 && dy == 2))) // check if pillars are in an L shape
 			{
@@ -232,17 +232,17 @@ void Board::PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPil
 
 }
 
-std::vector<std::tuple<sf::CircleShape, int, int>> Board::getTiles()
+std::vector<std::tuple<sf::CircleShape, U8, U8>> Board::getTiles()
 {
 	return m_tiles;
 }
 
-int Board::getTileSize()
+U8 Board::getTileSize()
 {
 	return m_tileSize;
 }
 
-int Board::GetSize()
+U8 Board::GetSize()
 {
 	return m_size;
 }
@@ -382,7 +382,7 @@ bool Board::IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& temp
 	return false;
 }
 
-void Board::PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, int& pillarAdded)
+void Board::PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, U16& pillarAdded)
 {
 	if (pillars.size() < board.m_pillarNumberDef)
 	{
@@ -413,14 +413,14 @@ void Board::SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blac
 	bool Board::PlacePillarInBase(Pillar& pillar)
 	{
 		/*std::cout << "Pillar - pos" << " "<< pillar.m_row << " " << pillar.m_col;
-		std::cout << "Color vertical 1" << " " << static_cast<int>(m_verticalLine1.getFillColor().r) << " " << static_cast<int>(m_verticalLine1.getFillColor().g)<< " "<< 
-		static_cast<int>(m_verticalLine1.getFillColor().b) << std::endl;
-		std::cout << "Color vertical 2" << " " << static_cast<int>(m_verticalLine2.getFillColor().r) << " " << static_cast<int>(m_verticalLine2.getFillColor().g) << " " <<
-			static_cast<int>(m_verticalLine2.getFillColor().b) << std::endl;
-		std::cout << "Color horizontal 1" << " " << static_cast<int>(m_horizontalLine1.getFillColor().r) << " " << static_cast<int>(m_horizontalLine1.getFillColor().g) << " " <<
-			static_cast<int>(m_horizontalLine1.getFillColor().b) << std::endl;
-		std::cout << "Color horizontal 2" << " " << static_cast<int>(m_horizontalLine2.getFillColor().r) << " " << static_cast<int>(m_horizontalLine2.getFillColor().g) << " " <<
-			static_cast<int>(m_horizontalLine2.getFillColor().b) << std::endl;*/
+		std::cout << "Color vertical 1" << " " << static_cast<U8>(m_verticalLine1.getFillColor().r) << " " << static_cast<U8>(m_verticalLine1.getFillColor().g)<< " "<< 
+		static_cast<U8>(m_verticalLine1.getFillColor().b) << std::endl;
+		std::cout << "Color vertical 2" << " " << static_cast<U8>(m_verticalLine2.getFillColor().r) << " " << static_cast<U8>(m_verticalLine2.getFillColor().g) << " " <<
+			static_cast<U8>(m_verticalLine2.getFillColor().b) << std::endl;
+		std::cout << "Color horizontal 1" << " " << static_cast<U8>(m_horizontalLine1.getFillColor().r) << " " << static_cast<U8>(m_horizontalLine1.getFillColor().g) << " " <<
+			static_cast<U8>(m_horizontalLine1.getFillColor().b) << std::endl;
+		std::cout << "Color horizontal 2" << " " << static_cast<U8>(m_horizontalLine2.getFillColor().r) << " " << static_cast<U8>(m_horizontalLine2.getFillColor().g) << " " <<
+			static_cast<U8>(m_horizontalLine2.getFillColor().b) << std::endl;*/
 
 		if (pillar.m_col == 0 || pillar.m_col == m_size - 1) {
 			return (pillar.GetColor() == m_verticalLine1.getFillColor() || pillar.GetColor() == m_verticalLine2.getFillColor());

@@ -7,7 +7,7 @@
 float BRIDGE_LINE_THICKNESS = 5.0f;
 
 //SFML sample code - try to run
-int main() {
+U8 main() {
    
     Board board;
     // Open the window
@@ -175,7 +175,7 @@ int main() {
         }
 
         if (boardWindowOpen) {
-            int pillarAdded = 0;
+            U16 pillarAdded = 0;
 
             if (!boardWindow.isOpen()) {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
@@ -208,64 +208,13 @@ int main() {
                             mousePositionFloat = sf::Vector2f(mousePosition.x, mousePosition.y);
 
                             // Check if the mouse is over a cell.
-                            int x = mousePositionFloat.x / board.getTileSize();
-                            int y = mousePositionFloat.y / board.getTileSize();
+                            U8 x = mousePositionFloat.x / board.getTileSize();
+                            U8 y = mousePositionFloat.y / board.getTileSize();
                             if (std::get<0>(tile).getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                             {
                                 //Create a new pillar and check its position before adding it to the vector
-                                //std::cout << std::get<1>(tile) << " " << std::get<2>(tile) << "\n";
                                 Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player, std::get<1>(tile), std::get<2>(tile));
                                 tempPillar.SetPosition(std::get<0>(tile).getPosition());
-
-                                /*if (player != sf::Color::Red)
-                                    player = sf::Color::Red;*/
-
-                                    //else
-                                    //{
-                                        //if (redPillars.size() < board.m_pillarNumberDef)
-                                        //{
-                                        //    if (!IsPillarThere(redPillars, tempPillar)) {
-
-                                        //        std::cout << "Pillar button clicked!" << std::endl; // debug message
-                                        //        pillarAdded++;
-                                        //        redPillars.push_back(tempPillar); //pillar is added to the vector of existing pillars
-                                        //        // alternate between the red and black sides
-
-
-                                        //        //aici
-                                        //        if (!isSelecting)
-                                        //        {
-                                        //            startPillar = tempPillar;
-                                        //            isSelecting = true;
-                                        //        }
-                                        //        else
-                                        //        {
-                                        //            isSelecting = false;
-                                        //            stopPillar = tempPillar;
-
-                                        //            //if (Bridge::canPlaceBridge(startPosition, endPosition, existingBridges))
-                                        //            if (Bridge::canPlaceBridge(startPillar, stopPillar, redBridges))
-                                        //            {
-                                        //                std::cout << "Bridge Placed!\n";
-                                        //                redBridges.emplace_back(startPillar, stopPillar, player);
-                                        //                //existingBridges.emplace_back(startPosition, endPosition, sf::Color::Red);
-                                        //            }
-                                        //            else
-                                        //                std::cout << "Can't place\n" << startPillar.m_row << " " << startPillar.m_col << "\n" << stopPillar.m_row << " " << stopPillar.m_col << "\n";
-                                        //        }
-                                        //        if (player == sf::Color::Red)
-                                        //            player = sf::Color::Black;
-                                        //        else
-                                        //            player = sf::Color::Red;
-                                        //        break;
-                                        //    }
-                                        //    else
-                                        //    {
-                                        //        std::cout << "There is already a pillar there!" << std::endl;
-                                        //        break;
-                                        //    }
-
-                                        //}
                                   if (player == sf::Color::Red) // Red side's turn
                                    {
                                         if (redPillars.size() < board.GetPillarNumber())

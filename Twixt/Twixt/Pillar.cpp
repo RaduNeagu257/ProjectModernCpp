@@ -1,7 +1,7 @@
 #include "Pillar.h"
 #include "Board.h"
 
-Pillar::Pillar(float x, float y, sf::Color c,int row,int col) 
+Pillar::Pillar(float x, float y, sf::Color c,U8 row,U8 col) 
 	: shape(DOT_RADIUS),
 	color(c),
 	m_row(row),

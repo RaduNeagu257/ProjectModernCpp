@@ -38,9 +38,11 @@ public:
 
 	static void PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
 	
-	std::vector<std::tuple<sf::CircleShape, U8, U8>> getTiles();
+  std::vector<std::tuple<sf::CircleShape, U8, U8>> getTiles();
 	U8 getTileSize();
 	U8 GetSize();
+	U8 GetPillarNumber() const;
+
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
 	void SwapLines();
 	static bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar);

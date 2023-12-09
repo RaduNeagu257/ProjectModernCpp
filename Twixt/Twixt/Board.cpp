@@ -431,3 +431,7 @@ void Board::SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blac
 		}
 		return true;
 	}
+	int Board::GetPillarNumber() const {
+		return m_pillarNumberDef;
+	}
+	

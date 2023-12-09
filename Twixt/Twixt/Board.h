@@ -15,8 +15,8 @@ public:
 	void Draw(sf::RenderWindow& BoardWndow);
 	void SetBoardSize(U8 size);
 	void SetPillarNumber(U8 pillarNumber);
-	void PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
-	bool isMaxBridgesReached() const;
+	bool PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
+	
 
 	U8 m_boardSize1;
 	U8 m_boardSize2;
@@ -25,6 +25,7 @@ public:
 	U8 m_pillarNumber1;
 	U8 m_pillarNumber2;
 	U8 m_pillarNumber3;
+
 	U8 m_bridgesNumberDef;
 	U8 m_bridgesNumber1;
 	U8 m_bridgesNumber2;
@@ -55,13 +56,12 @@ public:
 	static void PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, U16& pillarAdded);
 	static void SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blackPillars);
 	bool PlacePillarInBase(Pillar& pilar);
+    void SetBridgeNumber(U8 bridgeNumber);
 private:
 	//std::vector<sf::CircleShape> m_tiles;
 	std::vector<std::tuple<sf::CircleShape, U8, U8>> m_tiles;
 	U8 m_size;
-	int redBridgeCount = 0;
-	int blackBridgeCount = 0;
-	const int maxBridges = 4;
+	
 	float m_tileSize;
 	sf::RectangleShape m_horizontalLine1;
 	sf::RectangleShape m_horizontalLine2;

@@ -268,7 +268,7 @@ int main() {
                                         //}
                                   if (player == sf::Color::Red) // Red side's turn
                                    {
-                                        if (redPillars.size() < board.GetSize())
+                                        if (redPillars.size() < board.GetPillarNumber())
                                         {
                                             if (board.PlacePillarInBase(tempPillar)){
                                                 if (!board.IsPillarThere(redPillars, tempPillar) && !board.IsPillarThere(blackPillars, tempPillar))
@@ -368,7 +368,7 @@ int main() {
                                     }
                                     else // Black side's turn
                                     {
-                                        if (blackPillars.size() < board.GetSize())
+                                        if (blackPillars.size() < board.GetPillarNumber())
                                         {
                                             if (board.PlacePillarInBase(tempPillar)) {
                                                 if (!board.IsPillarThere(blackPillars, tempPillar) && !board.IsPillarThere(redPillars, tempPillar))
@@ -537,6 +537,7 @@ int main() {
                                                 messageWindow.draw(closeButtonText);
                                                 messageWindow.display();
                                             }
+                                         
                                             std::cout << "Pillar Limit: " << board.m_pillarNumberDef << std::endl;
                                             std::cout << "Board Size: " << board.GetSize() << std::endl;
                                             std::cout << "Red Pillars: " << redPillars.size() << std::endl;

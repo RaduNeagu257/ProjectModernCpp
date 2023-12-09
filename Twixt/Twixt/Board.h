@@ -12,20 +12,19 @@ class Board
 public:
 	Board();
 	void Draw(sf::RenderWindow& BoardWndow);
-	void SetBoardSize(int size);
-	void SetPillarNumber(int pillarNumber);
-	int m_boardSize1;
-	int m_boardSize2;
-	int m_boardSize3;
-	int m_pillarNumberDef;
-	int m_pillarNumber1;
-	int m_pillarNumber2;
-	int m_pillarNumber3;
-	int m_bridgesNumberDef;
-	int m_bridgesNumber1;
-	int m_bridgesNumber2;
-	int m_bridgesNumber3;
-
+	void SetBoardSize(U8 size);
+	void SetPillarNumber(U8 pillarNumber);
+	U8 m_boardSize1;
+	U8 m_boardSize2;
+	U8 m_boardSize3;
+	U8 m_pillarNumberDef;
+	U8 m_pillarNumber1;
+	U8 m_pillarNumber2;
+	U8 m_pillarNumber3;
+	U8 m_bridgesNumberDef;
+	U8 m_bridgesNumber1;
+	U8 m_bridgesNumber2;
+	U8 m_bridgesNumber3;
 
 	sf::RectangleShape button18x18;
 	sf::RectangleShape button24x24;
@@ -39,19 +38,19 @@ public:
 
 	static void PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
 	
-	std::vector<std::tuple<sf::CircleShape, int, int>> getTiles();
-	int getTileSize();
-	int GetSize();
+	std::vector<std::tuple<sf::CircleShape, U8, U8>> getTiles();
+	U8 getTileSize();
+	U8 GetSize();
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
 	void SwapLines();
 	static bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar);
-	static void PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, int& pillarAdded);
+	static void PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, U16& pillarAdded);
 	static void SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blackPillars);
 	bool PlacePillarInBase(Pillar& pilar);
 private:
 	//std::vector<sf::CircleShape> m_tiles;
-	std::vector<std::tuple<sf::CircleShape, int, int>> m_tiles;
-	int m_size;
+	std::vector<std::tuple<sf::CircleShape, U8, U8>> m_tiles;
+	U8 m_size;
 	float m_tileSize;
 	sf::RectangleShape m_horizontalLine1;
 	sf::RectangleShape m_horizontalLine2;

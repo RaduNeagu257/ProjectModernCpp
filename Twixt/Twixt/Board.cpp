@@ -18,9 +18,11 @@ Board::Board()
 	button24x24({ 100, 50 }),
 	button30x30({ 100, 50 }),
 	button28pillars({ 100, 50 }),
-	button50pillars({ 100, 50 })
-
-
+	button50pillars({ 100, 50 }),
+	button78pillars({ 100, 50 }),
+	button25bridges({ 120,50 }),
+	button50bridges({ 120,50 }),
+	button75bridges({ 120, 50 })
 
 
 {
@@ -39,19 +41,15 @@ Board::Board()
 	button50pillars.setFillColor(sf::Color::White);
 	button50pillars.setPosition(450, 140);
 
-	button78pillars.setSize({ 100, 50 });
 	button78pillars.setFillColor(sf::Color::White);
 	button78pillars.setPosition(450, 200);
 
-	button25bridges.setSize({ 120,50 });
 	button25bridges.setFillColor(sf::Color::White);
 	button25bridges.setPosition(800, 80);
 
-	button50bridges.setSize({ 120,50 });
 	button50bridges.setFillColor(sf::Color::White);
 	button50bridges.setPosition(800, 140);
 
-	button75bridges.setSize({ 120,50 });
 	button75bridges.setFillColor(sf::Color::White);
 	button75bridges.setPosition(800, 200);
 
@@ -207,7 +205,30 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 				std::cout << "size "<<existingBridges.size() << "\n";
 				if (existingBridges.empty()) // check if there are no bridges for optimization purposes
 				{
-					std::cout << "No existing Bridges\n";
+					std::cout << "No existing Bridges\n"; std::cout << "Did not find any pillar to place a bridge between\n";
+					//// Create a pop-up window indicating that there are no pillars to place a bridge between
+					//sf::RenderWindow noBridgeWindow(sf::VideoMode(300, 100), "No Pillars for Bridge", sf::Style::Close);
+
+					//// Create a text message
+					//sf::Font font;
+					//font.loadFromFile("arial.ttf");
+					//sf::Text text("No pillars found to place a bridge.", font, 16);
+					//text.setPosition(10, 20);
+
+					//// Draw the text
+					//noBridgeWindow.clear(sf::Color::White);
+					//noBridgeWindow.draw(text);
+					//noBridgeWindow.display();
+
+					//sf::Event event;
+					//while (noBridgeWindow.isOpen())
+					//{
+					//	while (noBridgeWindow.pollEvent(event))
+					//	{
+					//		if (event.type == sf::Event::Closed)
+					//			noBridgeWindow.close();
+					//	}
+					//}
 					found = true;
 					existingBridges.emplace_back(selectedPillar, pillar, player);
 				}

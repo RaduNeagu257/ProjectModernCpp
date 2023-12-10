@@ -13,28 +13,29 @@ Board::Board()
 	m_bridgesNumberDef(50),
 	m_bridgesNumber1(25),
 	m_bridgesNumber2(3),
-	m_bridgesNumber3(75)
+	m_bridgesNumber3(75),
+	button18x18({ 100, 50 }),
+	button24x24({ 100, 50 }),
+	button30x30({ 100, 50 }),
+	button28pillars({ 100, 50 }),
+	button50pillars({ 100, 50 })
+
 
 
 
 {
-	button18x18.setSize({ 100, 50 });
 	button18x18.setFillColor(sf::Color::White);
 	button18x18.setPosition(50, 80); 
 
-	button24x24.setSize({ 100, 50 });
 	button24x24.setFillColor(sf::Color::White);
 	button24x24.setPosition(50, 140); 
 
-	button30x30.setSize({ 100, 50 });
 	button30x30.setFillColor(sf::Color::White);
 	button30x30.setPosition(50, 200);
 
-	button28pillars.setSize({ 100, 50 });
 	button28pillars.setFillColor(sf::Color::White);
 	button28pillars.setPosition(450, 80);
 
-	button50pillars.setSize({ 100, 50 });
 	button50pillars.setFillColor(sf::Color::White);
 	button50pillars.setPosition(450, 140);
 
@@ -192,7 +193,7 @@ void Board::SetBoardSize(U8 size)
 	m_verticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
-bool Board::PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
+bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
 	bool found = false;
 	for (auto& pillar : existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
@@ -233,17 +234,17 @@ bool Board::PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPil
 	return false;
 }
 
-std::vector<std::tuple<sf::CircleShape, U8, U8>> Board::getTiles()
+std::vector<std::tuple<sf::CircleShape, U8, U8>> Board::getTiles() const
 {
 	return m_tiles;
 }
 
-U8 Board::getTileSize()
+U8 Board::getTileSize() const
 {
 	return m_tileSize;
 }
 
-U8 Board::GetSize()
+U8 Board::GetSize() const
 {
 	return m_size;
 }

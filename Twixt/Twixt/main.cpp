@@ -216,12 +216,10 @@ U8 main() {
                                 Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player, std::get<1>(tile), std::get<2>(tile));
                                 tempPillar.SetPosition(std::get<0>(tile).getPosition());
                                   if (player == sf::Color::Red) // Red side's turn
-                                   {
+                                  {
 
-                                        
-
-                                          
-                                      if (redPillars.size() < board.GetSize())
+                                         
+                                      if (redPillars.size() < board.GetMaxPillarNumber())
                                         {
 
                                             if (board.PlacePillarInBase(tempPillar)){
@@ -323,7 +321,7 @@ U8 main() {
                                     }
                                     else // Black side's turn
                                     {
-                                        if (blackPillars.size() < board.GetSize())
+                                        if (blackPillars.size() < board.GetMaxPillarNumber())
                                         {
                                             if (board.PlacePillarInBase(tempPillar)) {
                                                 if (!board.IsPillarThere(blackPillars, tempPillar) && !board.IsPillarThere(redPillars, tempPillar))
@@ -635,21 +633,21 @@ U8 main() {
                         if (board.button25bridges.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
                             //board.SetBridgesNumber(board.m_bridgesNumber1);
-                            board.SetBridgeNumber(board.m_bridgesNumber1);
+                            board.SetMaxBridgeNumber(board.m_bridgesNumber1);
                             std::cout << "25 bridges button clicked!" << std::endl; // Debug message
                             selectedButtonShadowBridges = &board.button25bridges;
                         }
                         // Check if the 50 bridges button was pressed
                         else if (board.button50bridges.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
-                            board.SetBridgeNumber(board.m_bridgesNumber2);
+                            board.SetMaxBridgeNumber(board.m_bridgesNumber2);
                             std::cout << "50 bridges button clicked!" << std::endl; // Debug message
                             selectedButtonShadowBridges = &board.button50bridges;
                         }
                         // Check if the 75 bridges button was pressed
                         else if (board.button75bridges.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
-                           board.SetBridgeNumber(board.m_bridgesNumber3);
+                           board.SetMaxBridgeNumber(board.m_bridgesNumber3);
                             std::cout << "75 bridges button clicked!" << std::endl; // Debug message
                             selectedButtonShadowBridges = &board.button75bridges;
                         }

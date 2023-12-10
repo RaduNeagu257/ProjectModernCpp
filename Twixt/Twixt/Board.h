@@ -15,7 +15,7 @@ public:
 	void Draw(sf::RenderWindow& BoardWndow);
 	void SetBoardSize(U8 size);
 	void SetPillarNumber(U8 pillarNumber);
-	bool PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
+	bool PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
 	
 
 	U8 m_boardSize1;
@@ -45,9 +45,9 @@ public:
 
 	// void PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
 	
-  std::vector<std::tuple<sf::CircleShape, U8, U8>> getTiles();
-	U8 getTileSize();
-	U8 GetSize();
+  std::vector<std::tuple<sf::CircleShape, U8, U8>> getTiles() const;
+	U8 getTileSize() const;
+	U8 GetSize() const;
 	U8 GetMaxPillarNumber() const;
 	U8 GetMaxBridgeNumber() const;
 

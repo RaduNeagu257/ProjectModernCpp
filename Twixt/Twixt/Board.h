@@ -48,7 +48,8 @@ public:
   std::vector<std::tuple<sf::CircleShape, U8, U8>> getTiles();
 	U8 getTileSize();
 	U8 GetSize();
-	U8 GetPillarNumber() const;
+	U8 GetMaxPillarNumber() const;
+	U8 GetMaxBridgeNumber() const;
 
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
 	void SwapLines();
@@ -56,7 +57,7 @@ public:
 	static void PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, U16& pillarAdded);
 	static void SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blackPillars);
 	bool PlacePillarInBase(Pillar& pilar);
-    void SetBridgeNumber(U8 bridgeNumber);
+    void SetMaxBridgeNumber(U8 bridgeNumber);
 private:
 	//std::vector<sf::CircleShape> m_tiles;
 	std::vector<std::tuple<sf::CircleShape, U8, U8>> m_tiles;

@@ -192,11 +192,6 @@ void Board::SetBoardSize(U8 size)
 	m_verticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
-void Board::SetPillarNumber(U8 pillarNumber)
-{
-	m_pillarNumberDef = pillarNumber;
-}
-
 bool Board::PlaceBridge(Pillar& selectedPillar, std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
 	bool found = false;
@@ -437,9 +432,23 @@ void Board::SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blac
 		}
 		return true;
 	}
-	U8 Board::GetPillarNumber() const {
+
+	U8 Board::GetMaxPillarNumber() const {
 		return m_pillarNumberDef;
 	}
-	void Board::SetBridgeNumber(U8 bridgeNumber) {
+
+	U8 Board::GetMaxBridgeNumber() const
+	{
+		return m_bridgesNumberDef;
+	}
+
+
+	void Board::SetMaxBridgeNumber(U8 bridgeNumber) {
 		m_bridgesNumberDef = bridgeNumber;
 	}
+
+	void Board::SetPillarNumber(U8 pillarNumber)
+	{
+		m_pillarNumberDef = pillarNumber;
+	}
+

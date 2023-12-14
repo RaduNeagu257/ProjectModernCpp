@@ -191,8 +191,10 @@ void Board::SetBoardSize(U8 size)
 	m_verticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
-bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
+void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
+	if (existingBridges.size() == m_bridgesNumberDef) //check if number of maximum allowed bridges has been reached
+		return;// expand outcome later
 	bool found = false;
 	for (auto& pillar : existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
 		if (selectedPillar.GetPosition() != pillar.GetPosition()) // avoid checking the same pillar
@@ -205,7 +207,7 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 				std::cout << "size "<<existingBridges.size() << "\n";
 				if (existingBridges.empty()) // check if there are no bridges for optimization purposes
 				{
-					std::cout << "No existing Bridges\n"; std::cout << "Did not find any pillar to place a bridge between\n";
+					std::cout << "No existing Bridges\n";
 					//// Create a pop-up window indicating that there are no pillars to place a bridge between
 					//sf::RenderWindow noBridgeWindow(sf::VideoMode(300, 100), "No Pillars for Bridge", sf::Style::Close);
 
@@ -231,6 +233,8 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 					//}
 					found = true;
 					existingBridges.emplace_back(selectedPillar, pillar, player);
+					if (existingBridges.size() == m_bridgesNumberDef) // check if number of maximum allowed bridges has been reached
+						return; //expand outcome later
 				}
 				else
 				for (auto& bridge : existingBridges) // check all existing bridges in order to make sure that a bridge doesn't already exist between 2 pillars
@@ -239,6 +243,8 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 					{
 						found = true;
 						existingBridges.emplace_back(selectedPillar, pillar, player);
+						if (existingBridges.size() == m_bridgesNumberDef) // check if number of maximum allowed bridges has been reached
+							return; //expand outcome later
 					}
 			}
 		}
@@ -247,12 +253,11 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 	else
 		std::cout << "Did not find any pillar to place a bridge between\n";
 	
-	if (existingBridges.size() >= m_bridgesNumberDef) {
+	/*if (existingBridges.size() >= m_bridgesNumberDef) {
 		std::cout << "Bridge limit reached, cannot place more bridges." << std::endl;
 		
 		return true;
-	}
-	return false;
+	}*/
 }
 
 std::vector<std::tuple<sf::CircleShape, U8, U8>> Board::getTiles() const
@@ -269,9 +274,6 @@ U8 Board::GetSize() const
 {
 	return m_size;
 }
-
-
-
 
 void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 {
@@ -433,40 +435,40 @@ void Board::SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blac
 		pillar.SetColor(sf::Color::Black);
 }
 
-	bool Board::PlacePillarInBase(Pillar& pillar)
-	{
-		// check if a pillar is to be placed in one of the inaccessible four corners of the board
-		if ((pillar.m_col == 0 && (pillar.m_row == 0) || pillar.m_col == m_size - 1))
-			return false;
-		if ((pillar.m_col == m_size - 1 && (pillar.m_row == 0) || pillar.m_col == m_size - 1))
-			return false;
-		// check if pillar is to be placed in a base
-		if (pillar.m_col == 0 || pillar.m_col == m_size - 1) {
-			return (pillar.GetColor() == m_verticalLine1.getFillColor() || pillar.GetColor() == m_verticalLine2.getFillColor());
-		}
-		if (pillar.m_row == 0 || pillar.m_row == m_size - 1) {
-			return (pillar.GetColor() == m_horizontalLine1.getFillColor() || pillar.GetColor() == m_horizontalLine2.getFillColor());
+bool Board::PlacePillarInBase(Pillar& pillar)
+{
+	// check if a pillar is to be placed in one of the inaccessible four corners of the board
+	if ((pillar.m_col == 0 && (pillar.m_row == 0) || pillar.m_col == m_size - 1))
+		return false;
+	if ((pillar.m_col == m_size - 1 && (pillar.m_row == 0) || pillar.m_col == m_size - 1))
+		return false;
 
-		}
-		return true;
-	}
+	// check if pillar is to be placed in a base
+	if (pillar.m_col == 0 || pillar.m_col == m_size - 1) 
+		return (pillar.GetColor() == m_verticalLine1.getFillColor() || pillar.GetColor() == m_verticalLine2.getFillColor());
+	if (pillar.m_row == 0 || pillar.m_row == m_size - 1)
+		return (pillar.GetColor() == m_horizontalLine1.getFillColor() || pillar.GetColor() == m_horizontalLine2.getFillColor());
 
-	U8 Board::GetMaxPillarNumber() const {
-		return m_pillarNumberDef;
-	}
+	return true;
+}
 
-	U8 Board::GetMaxBridgeNumber() const
-	{
-		return m_bridgesNumberDef;
-	}
+U8 Board::GetMaxPillarNumber() const 
+{
+	return m_pillarNumberDef;
+}
 
+U8 Board::GetMaxBridgeNumber() const
+{
+	return m_bridgesNumberDef;
+}
 
-	void Board::SetMaxBridgeNumber(U8 bridgeNumber) {
-		m_bridgesNumberDef = bridgeNumber;
-	}
+void Board::SetMaxBridgeNumber(U8 bridgeNumber) 
+{
+	m_bridgesNumberDef = bridgeNumber;
+}
 
-	void Board::SetPillarNumber(U8 pillarNumber)
-	{
-		m_pillarNumberDef = pillarNumber;
-	}
+void Board::SetPillarNumber(U8 pillarNumber)
+{
+	m_pillarNumberDef = pillarNumber;
+}
 

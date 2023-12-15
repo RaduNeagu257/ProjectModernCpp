@@ -467,6 +467,16 @@ void Board::SetMaxBridgeNumber(U8 bridgeNumber)
 	m_bridgesNumberDef = bridgeNumber;
 }
 
+bool Board::CheckMaxNumberPillarsReached(std::vector<Pillar> pillars)
+{
+	return pillars.size() >= m_pillarNumberDef;
+}
+
+bool Board::CheckMaxNumberBridgesReached(std::vector<Bridge> bridges)
+{
+	return bridges.size() >= m_bridgesNumberDef;
+}
+
 void Board::SetPillarNumber(U8 pillarNumber)
 {
 	m_pillarNumberDef = pillarNumber;

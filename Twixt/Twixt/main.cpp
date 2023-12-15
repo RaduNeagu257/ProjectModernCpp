@@ -7,7 +7,7 @@
 float BRIDGE_LINE_THICKNESS = 5.0f;
 
 void DrawErrorWindow(const std::string& errorText);
-
+void DrawSwapWindow(bool& answer);
 
 //SFML sample code - try to run
 U8 main() {
@@ -179,11 +179,23 @@ U8 main() {
 
         if (boardWindowOpen) {
             U16 pillarAdded = 0;
-            //Testing error window
-            std::string errorText = "An error occurred!";
-            DrawErrorWindow(errorText);
+            ////Testing error window
+            //std::string errorText = "An error occurred!";
+            //DrawErrorWindow(errorText);
             
-            
+            //Testing swap window
+            bool swapAnswer = false;
+            DrawSwapWindow(swapAnswer);
+
+            if (swapAnswer) {
+                std::cout << "Swapping sides..." << std::endl;
+
+            }
+            else {
+                std::cout << "Not swapping sides." << std::endl;
+
+            }
+
             if (!boardWindow.isOpen()) {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
                 boardWindow.setFramerateLimit(60);
@@ -730,6 +742,7 @@ void DrawErrorWindow(const std::string& errorText)
     errorMessage.setCharacterSize(24);
     errorMessage.setFillColor(sf::Color::Red);
 
+    //Making sure its in the center
     sf::FloatRect textRect = errorMessage.getLocalBounds();
     errorMessage.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
     errorMessage.setPosition(errorWindow.getView().getCenter());
@@ -745,4 +758,73 @@ void DrawErrorWindow(const std::string& errorText)
         errorWindow.draw(errorMessage);
         errorWindow.display();
     }
+}
+
+void DrawSwapWindow(bool& answer)
+{
+    sf::RenderWindow swapWindow(sf::VideoMode(500, 200), "Swap sides");
+
+    sf::Text text;
+    sf::Font font;
+
+    if (!font.loadFromFile("ARIAL.TTF")) {
+        std::cerr << "Error: Font not found!" << std::endl;
+        return;
+    }
+    text.setFont(font);
+    text.setString("Do you want to swap sides?");
+    text.setCharacterSize(24);
+    text.setFillColor(sf::Color::Red);
+    
+    //Making sure its in the center
+    sf::FloatRect textRect = text.getLocalBounds();
+    text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+    text.setPosition(swapWindow.getView().getCenter());
+
+    //yes or no buttons
+    sf::RectangleShape yesButton(sf::Vector2f(75, 50));
+    sf::RectangleShape noButton(sf::Vector2f(75, 50));
+    yesButton.setFillColor(sf::Color::Red);
+    noButton.setFillColor(sf::Color::Red);
+    yesButton.setPosition(175, 150);
+    noButton.setPosition(250, 150);
+
+    sf::Text yesButtonText("Yes", font, 24);
+    sf::Text noButtonText("No", font, 24);
+    yesButtonText.setFillColor(sf::Color::Blue);
+    noButtonText.setFillColor(sf::Color::Blue);
+    yesButtonText.setOrigin(yesButtonText.getLocalBounds().width / 2, yesButtonText.getLocalBounds().height / 2);
+    noButtonText.setOrigin(noButtonText.getLocalBounds().width / 2, noButtonText.getLocalBounds().height / 2);
+    yesButtonText.setPosition(yesButton.getPosition().x + yesButton.getSize().x / 2, yesButton.getPosition().y + yesButton.getSize().y / 2);
+    noButtonText.setPosition(noButton.getPosition().x + noButton.getSize().x / 2, noButton.getPosition().y + noButton.getSize().y / 2);
+    
+    while(swapWindow.isOpen()){
+        sf::Event event;
+        while (swapWindow.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                swapWindow.close();
+            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(swapWindow);
+                if (yesButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                    answer = true;
+                    swapWindow.close();
+                }
+                else if (noButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                    answer = false;
+                    swapWindow.close();
+    
+                }
+            }
+        }
+        swapWindow.clear();
+        swapWindow.draw(text);
+        swapWindow.draw(yesButton);
+        swapWindow.draw(noButton);
+        swapWindow.draw(yesButtonText);
+        swapWindow.draw(noButtonText);
+        swapWindow.display();
+    }
+
+
+
 }

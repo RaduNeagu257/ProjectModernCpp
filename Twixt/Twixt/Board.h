@@ -58,8 +58,8 @@ public:
 	static void SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blackPillars);
 	bool PlacePillarInBase(Pillar& pilar);
     void SetMaxBridgeNumber(U8 bridgeNumber);
-    bool CheckMaxNumberPillarsReached(const std::vector<Pillar>& pillars);
-	bool CheckMaxNumberBridgesReached(const std::vector<Bridge>& bridges);
+    bool CheckMaxNumberPillarsReached(std::vector<Pillar>& pillars);
+	bool CheckMaxNumberBridgesReached(std::vector<Bridge>& bridges);
 
 
 private:

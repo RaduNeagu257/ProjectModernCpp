@@ -6,6 +6,9 @@
 #include "Bridge.h"
 float BRIDGE_LINE_THICKNESS = 5.0f;
 
+void DrawErrorWindow(std::string errorText);
+
+
 //SFML sample code - try to run
 U8 main() {
    
@@ -219,7 +222,7 @@ U8 main() {
                                   {
 
                                          
-                                      if(Board::CheckMaxNumberPillarsReached(redPillars))
+                                      if(board.CheckMaxNumberPillarsReached(redPillars))
                                         {
 
                                             if (board.PlacePillarInBase(tempPillar)){
@@ -321,7 +324,7 @@ U8 main() {
                                     }
                                     else // Black side's turn
                                     {
-                                        if (Board::CheckMaxNumberPillarsReached(blackPillars))
+                                        if (board.CheckMaxNumberPillarsReached(blackPillars))
                                         {
                                             if (board.PlacePillarInBase(tempPillar)) {
                                                 if (!board.IsPillarThere(blackPillars, tempPillar) && !board.IsPillarThere(redPillars, tempPillar))

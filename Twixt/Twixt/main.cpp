@@ -219,7 +219,7 @@ U8 main() {
                                   {
 
                                          
-                                      if (redPillars.size() < board.GetMaxPillarNumber())
+                                      if(Board::CheckMaxNumberPillarsReached(redPillars))
                                         {
 
                                             if (board.PlacePillarInBase(tempPillar)){
@@ -321,7 +321,7 @@ U8 main() {
                                     }
                                     else // Black side's turn
                                     {
-                                        if (blackPillars.size() < board.GetMaxPillarNumber())
+                                        if (Board::CheckMaxNumberPillarsReached(blackPillars))
                                         {
                                             if (board.PlacePillarInBase(tempPillar)) {
                                                 if (!board.IsPillarThere(blackPillars, tempPillar) && !board.IsPillarThere(redPillars, tempPillar))

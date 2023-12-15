@@ -6,7 +6,7 @@
 #include "Bridge.h"
 float BRIDGE_LINE_THICKNESS = 5.0f;
 
-void DrawErrorWindow(std::string errorText);
+void DrawErrorWindow(const std::string& errorText);
 
 
 //SFML sample code - try to run
@@ -179,7 +179,11 @@ U8 main() {
 
         if (boardWindowOpen) {
             U16 pillarAdded = 0;
-
+            //Testing error window
+            std::string errorText = "An error occurred!";
+            DrawErrorWindow(errorText);
+            
+            
             if (!boardWindow.isOpen()) {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
                 boardWindow.setFramerateLimit(60);
@@ -710,3 +714,35 @@ U8 main() {
     return 0;
 }
 
+void DrawErrorWindow(const std::string& errorText)
+{
+    sf::RenderWindow errorWindow(sf::VideoMode(500, 200), "Error");
+    sf::Text errorMessage;
+    sf::Font font;
+
+    if (!font.loadFromFile("ARIAL.TTF")) {
+        std::cerr << "Error: Fond not foumd!! " << std::endl;
+        return;
+    
+    }
+    errorMessage.setFont(font);
+    errorMessage.setString(errorText);
+    errorMessage.setCharacterSize(24);
+    errorMessage.setFillColor(sf::Color::Red);
+
+    sf::FloatRect textRect = errorMessage.getLocalBounds();
+    errorMessage.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+    errorMessage.setPosition(errorWindow.getView().getCenter());
+
+    while (errorWindow.isOpen()) {
+        sf::Event event;
+        while (errorWindow.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                errorWindow.close();
+        }
+
+        errorWindow.clear();
+        errorWindow.draw(errorMessage);
+        errorWindow.display();
+    }
+}

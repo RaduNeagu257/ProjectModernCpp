@@ -193,8 +193,8 @@ void Board::SetBoardSize(U8 size)
 
 void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
-	if (existingBridges.size() == m_bridgesNumberDef) //check if number of maximum allowed bridges has been reached
-		return;// expand outcome later
+	if(CheckMaxNumberBridgesReached(existingBridges))    //check if number of maximum allowed bridges has been reached
+		return;    // expand outcome later
 	bool found = false;
 	for (auto& pillar : existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
 		if (selectedPillar.GetPosition() != pillar.GetPosition()) // avoid checking the same pillar
@@ -233,7 +233,7 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 					//}
 					found = true;
 					existingBridges.emplace_back(selectedPillar, pillar, player);
-					if (existingBridges.size() == m_bridgesNumberDef) // check if number of maximum allowed bridges has been reached
+					if(CheckMaxNumberBridgesReached(existingBridges)) // check if number of maximum allowed bridges has been reached
 						return; //expand outcome later
 				}
 				else
@@ -243,7 +243,7 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 					{
 						found = true;
 						existingBridges.emplace_back(selectedPillar, pillar, player);
-						if (existingBridges.size() == m_bridgesNumberDef) // check if number of maximum allowed bridges has been reached
+						if(CheckMaxNumberBridgesReached(existingBridges))// check if number of maximum allowed bridges has been reached
 							return; //expand outcome later
 					}
 			}
@@ -253,7 +253,7 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 	else
 		std::cout << "Did not find any pillar to place a bridge between\n";
 	
-	/*if (existingBridges.size() >= m_bridgesNumberDef) {
+	/*if(CheckMaxNumberBridgesReached(existingBridges)) {
 		std::cout << "Bridge limit reached, cannot place more bridges." << std::endl;
 		
 		return true;
@@ -465,6 +465,16 @@ U8 Board::GetMaxBridgeNumber() const
 void Board::SetMaxBridgeNumber(U8 bridgeNumber) 
 {
 	m_bridgesNumberDef = bridgeNumber;
+}
+
+bool Board::CheckMaxNumberPillarsReached(std::vector<Pillar>& pillars)
+{
+	return pillars.size() >= m_pillarNumberDef;
+}
+
+bool Board::CheckMaxNumberBridgesReached(std::vector<Bridge>& bridges)
+{
+	return bridges.size() >= m_bridgesNumberDef;
 }
 
 void Board::SetPillarNumber(U8 pillarNumber)

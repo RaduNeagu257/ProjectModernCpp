@@ -54,12 +54,13 @@ public:
 	void DrawSettingsButtons(sf::RenderWindow& settingsWindow);
 	void SwapLines();
 	static bool IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& tempPillar);
-	static void PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, U16& pillarAdded);
+	void PlacePillar(std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, U16& pillarAdded);
 	static void SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blackPillars);
 	bool PlacePillarInBase(Pillar& pilar);
     void SetMaxBridgeNumber(U8 bridgeNumber);
     bool MaxNumberPillarsReached(std::vector<Pillar>& pillars);
 	bool MaxNumberBridgesReached(std::vector<Bridge>& bridges);
+	bool WinningChainCreated(std::vector<Bridge>& bridges);
 
 
 private:

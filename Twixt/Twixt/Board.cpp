@@ -193,7 +193,6 @@ void Board::SetBoardSize(U8 size)
 
 void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
-	//std::cout << MaxNumberBridgesReached(existingBridges) << "\n\n";
 	if (MaxNumberBridgesReached(existingBridges))    //check if number of maximum allowed bridges has been reached
 	{
 		return;
@@ -204,7 +203,7 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 		{
 			U8 dx = std::abs(pillar.m_col - selectedPillar.m_col);
 			U8 dy = std::abs(pillar.m_row - selectedPillar.m_row);
-			std::cout << dx << " " << dy << "\n";
+			std::cout << unsigned(dx) << " " << unsigned(dy) << "\n";
 			if (((dx == 2 && dy == 1) || (dx == 1 && dy == 2))) // check if pillars are in an L shape
 			{
 				if (existingBridges.empty()) // check if there are no bridges for optimization purposes
@@ -407,9 +406,9 @@ bool Board::IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& temp
 	return false;
 }
 
-void Board::PlacePillar(Board& board, std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, U16& pillarAdded)
+void Board::PlacePillar(std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, U16& pillarAdded)
 {
-	if (pillars.size() < board.m_pillarNumberDef)
+	if(!MaxNumberPillarsReached(pillars))
 	{
 		if (!IsPillarThere(pillars, tempPillar))
 		{
@@ -475,6 +474,13 @@ bool Board::MaxNumberPillarsReached(std::vector<Pillar>& pillars)
 bool Board::MaxNumberBridgesReached(std::vector<Bridge>& bridges)
 {
 	return bridges.size() >= m_bridgesNumberDef;
+}
+
+bool Board::WinningChainCreated(std::vector<Bridge>& bridges)
+{
+	U8 minimumBridgesNumber = m_size / 2 + m_size % 2;
+	if (bridges.size() < minimumBridgesNumber) // check if the number of placed bridges is lower than the minimum required to create a chain from one border to the next
+		return false;
 }
 
 void Board::SetPillarNumber(U8 pillarNumber)

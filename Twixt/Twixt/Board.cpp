@@ -12,7 +12,7 @@ Board::Board()
 	m_pillarNumber3(78),
 	m_bridgesNumberDef(50),
 	m_bridgesNumber1(25),
-	m_bridgesNumber2(3),
+	m_bridgesNumber2(50),
 	m_bridgesNumber3(75),
 	button18x18({ 100, 50 }),
 	button24x24({ 100, 50 }),
@@ -193,8 +193,11 @@ void Board::SetBoardSize(U8 size)
 
 void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
-	if(CheckMaxNumberBridgesReached(existingBridges))    //check if number of maximum allowed bridges has been reached
-		return;    // expand outcome later
+	//std::cout << MaxNumberBridgesReached(existingBridges) << "\n\n";
+	if (MaxNumberBridgesReached(existingBridges))    //check if number of maximum allowed bridges has been reached
+	{
+		return;
+	}
 	bool found = false;
 	for (auto& pillar : existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
 		if (selectedPillar.GetPosition() != pillar.GetPosition()) // avoid checking the same pillar
@@ -204,7 +207,6 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 			std::cout << dx << " " << dy << "\n";
 			if (((dx == 2 && dy == 1) || (dx == 1 && dy == 2))) // check if pillars are in an L shape
 			{
-				std::cout << "size "<<existingBridges.size() << "\n";
 				if (existingBridges.empty()) // check if there are no bridges for optimization purposes
 				{
 					std::cout << "No existing Bridges\n";
@@ -233,8 +235,10 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 					//}
 					found = true;
 					existingBridges.emplace_back(selectedPillar, pillar, player);
-					if(CheckMaxNumberBridgesReached(existingBridges)) // check if number of maximum allowed bridges has been reached
-						return; //expand outcome later
+					if (MaxNumberBridgesReached(existingBridges)) // check if number of maximum allowed bridges has been reached
+					{
+						return;
+					}
 				}
 				else
 				for (auto& bridge : existingBridges) // check all existing bridges in order to make sure that a bridge doesn't already exist between 2 pillars
@@ -243,8 +247,10 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 					{
 						found = true;
 						existingBridges.emplace_back(selectedPillar, pillar, player);
-						if(CheckMaxNumberBridgesReached(existingBridges))// check if number of maximum allowed bridges has been reached
+						if (MaxNumberBridgesReached(existingBridges))// check if number of maximum allowed bridges has been reached
+						{
 							return; //expand outcome later
+						}
 					}
 			}
 		}
@@ -252,12 +258,6 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 		std::cout << "Placed bridge\n";
 	else
 		std::cout << "Did not find any pillar to place a bridge between\n";
-	
-	/*if(CheckMaxNumberBridgesReached(existingBridges)) {
-		std::cout << "Bridge limit reached, cannot place more bridges." << std::endl;
-		
-		return true;
-	}*/
 }
 
 std::vector<std::tuple<sf::CircleShape, U8, U8>> Board::getTiles() const
@@ -467,12 +467,12 @@ void Board::SetMaxBridgeNumber(U8 bridgeNumber)
 	m_bridgesNumberDef = bridgeNumber;
 }
 
-bool Board::CheckMaxNumberPillarsReached(std::vector<Pillar>& pillars)
+bool Board::MaxNumberPillarsReached(std::vector<Pillar>& pillars)
 {
 	return pillars.size() >= m_pillarNumberDef;
 }
 
-bool Board::CheckMaxNumberBridgesReached(std::vector<Bridge>& bridges)
+bool Board::MaxNumberBridgesReached(std::vector<Bridge>& bridges)
 {
 	return bridges.size() >= m_bridgesNumberDef;
 }

@@ -184,7 +184,8 @@ U8 main() {
             //DrawErrorWindow(errorText);
             
             //Testing swap window
-            bool swapAnswer = false;
+
+           /* bool swapAnswer = false;
             DrawSwapWindow(swapAnswer);
 
             if (swapAnswer) {
@@ -194,7 +195,7 @@ U8 main() {
             else {
                 std::cout << "Not swapping sides." << std::endl;
 
-            }
+            }*/
 
             if (!boardWindow.isOpen()) {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
@@ -203,7 +204,7 @@ U8 main() {
             }
             std::vector<Pillar> redPillars, blackPillars;
             std::vector<Bridge> redBridges, blackBridges;
-            
+            std::cout << unsigned(board.m_bridgesNumber1)<<" "<<unsigned(board.m_bridgesNumber2)<<" "<<unsigned(board.m_bridgesNumber3)<<" " << unsigned(board.m_bridgesNumberDef) << "\n";
             sf::Color player = sf::Color::Red;
             while (boardWindow.isOpen()) {
 
@@ -238,7 +239,7 @@ U8 main() {
                                   {
 
                                          
-                                      if(board.CheckMaxNumberPillarsReached(redPillars))
+                                      if(!board.MaxNumberPillarsReached(redPillars))
                                         {
 
                                             if (board.PlacePillarInBase(tempPillar)){
@@ -340,7 +341,7 @@ U8 main() {
                                     }
                                     else // Black side's turn
                                     {
-                                        if (board.CheckMaxNumberPillarsReached(blackPillars))
+                                        if (!board.MaxNumberPillarsReached(blackPillars))
                                         {
                                             if (board.PlacePillarInBase(tempPillar)) {
                                                 if (!board.IsPillarThere(blackPillars, tempPillar) && !board.IsPillarThere(redPillars, tempPillar))
@@ -651,7 +652,6 @@ U8 main() {
                         // Check if the 25 bridges button was pressed
                         if (board.button25bridges.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
                         {
-                            //board.SetBridgesNumber(board.m_bridgesNumber1);
                             board.SetMaxBridgeNumber(board.m_bridgesNumber1);
                             std::cout << "25 bridges button clicked!" << std::endl; // Debug message
                             selectedButtonShadowBridges = &board.button25bridges;

@@ -204,15 +204,20 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 		text.setPosition(10, 20);
 
 		sf::RectangleShape closeButton(sf::Vector2f(80, 30));
-		closeButton.setPosition(110, 60);
+		closeButton.setPosition(350, 240);
 		closeButton.setFillColor(sf::Color::Red);
 
-		sf::Text closeButtonText("Close", font, 16);
-		closeButtonText.setPosition(130, 65);
+		sf::Text messageText("Bridges limit reached", font, 16);
+		messageText.setPosition(10, 60);
+		messageText.setFillColor(sf::Color::Black);
+
+		sf::Text closeButtonText("Close", font, 18);
+		closeButtonText.setPosition(350, 240);
 		closeButtonText.setFillColor(sf::Color::White);
 
 		limitWindow.clear(sf::Color::White);
 		limitWindow.draw(text);
+		limitWindow.draw(messageText);
 		limitWindow.draw(closeButton);
 		limitWindow.draw(closeButtonText);
 		limitWindow.display();

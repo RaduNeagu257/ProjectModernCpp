@@ -11,7 +11,7 @@ Board::Board()
 	m_pillarNumber2(50),
 	m_pillarNumber3(78),
 	m_bridgesNumberDef(50),
-	m_bridgesNumber1(25),
+	m_bridgesNumber1(2),
 	m_bridgesNumber2(50),
 	m_bridgesNumber3(75),
 	button18x18({ 100, 50 }),
@@ -194,7 +194,27 @@ void Board::SetBoardSize(U8 size)
 void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
 	if (MaxNumberBridgesReached(existingBridges))    //check if number of maximum allowed bridges has been reached
-	{
+	{// Afiseaza fereastra atunci cand se atinge limita de poduri
+		sf::RenderWindow limitWindow(sf::VideoMode(300, 100), "Limita de Poduri Atinsa", sf::Style::Close);
+
+		sf::Font font;
+		font.loadFromFile("arial.ttf");
+		sf::Text text("Limita de poduri a fost atinsa!", font, 16);
+		text.setPosition(10, 20);
+
+		limitWindow.clear(sf::Color::White);
+		limitWindow.draw(text);
+		limitWindow.display();
+
+		sf::Event event;
+		while (limitWindow.isOpen())
+		{
+			while (limitWindow.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					limitWindow.close();
+			}
+		}
 		return;
 	}
 	bool found = false;
@@ -209,6 +229,7 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 				if (existingBridges.empty()) // check if there are no bridges for optimization purposes
 				{
 					std::cout << "No existing Bridges\n";
+
 					//// Create a pop-up window indicating that there are no pillars to place a bridge between
 					//sf::RenderWindow noBridgeWindow(sf::VideoMode(300, 100), "No Pillars for Bridge", sf::Style::Close);
 
@@ -248,6 +269,7 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 						existingBridges.emplace_back(selectedPillar, pillar, player);
 						if (MaxNumberBridgesReached(existingBridges))// check if number of maximum allowed bridges has been reached
 						{
+							
 							return; //expand outcome later
 						}
 					}
@@ -257,6 +279,23 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 		std::cout << "Placed bridge\n";
 	else
 		std::cout << "Did not find any pillar to place a bridge between\n";
+	//if (!found)
+	//{
+	//	sf::RenderWindow messageWindow2(sf::VideoMode(500, 300), "limit of bridges reached");
+	//	sf::Text message;
+	//	sf::Font font;
+	//	font.loadFromFile("ARIAL.TFF");
+	//	message.setFont(font);
+	//	message.setString("Limit of pillars reached");
+	//	message.setCharacterSize(24);
+	//	message.setFillColor(sf::Color::Red);
+	//	sf::FloatRect messageRect = message.getLocalBounds();
+	//	 message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+	//	 message.setPosition(messageWindow2.getView().getCenter());
+	//	 messageWindow2.clear();
+	//	 messageWindow2.draw(message);
+ //                                  
+	//}
 }
 
 std::vector<std::tuple<sf::CircleShape, U8, U8>> Board::getTiles() const

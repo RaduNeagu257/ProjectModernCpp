@@ -193,17 +193,28 @@ void Board::SetBoardSize(U8 size)
 
 void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
-	if (MaxNumberBridgesReached(existingBridges))    //check if number of maximum allowed bridges has been reached
-	{// Afiseaza fereastra atunci cand se atinge limita de poduri
-		sf::RenderWindow limitWindow(sf::VideoMode(300, 100), "Limita de Poduri Atinsa", sf::Style::Close);
+	if (MaxNumberBridgesReached(existingBridges))
+	{
+		// Afiseaza fereastra atunci cand se atinge limita de poduri
+		sf::RenderWindow limitWindow(sf::VideoMode(500, 300), "Limita de Poduri Atinsa", sf::Style::Close);
 
 		sf::Font font;
 		font.loadFromFile("arial.ttf");
 		sf::Text text("Limita de poduri a fost atinsa!", font, 16);
 		text.setPosition(10, 20);
 
+		sf::RectangleShape closeButton(sf::Vector2f(80, 30));
+		closeButton.setPosition(110, 60);
+		closeButton.setFillColor(sf::Color::Red);
+
+		sf::Text closeButtonText("Close", font, 16);
+		closeButtonText.setPosition(130, 65);
+		closeButtonText.setFillColor(sf::Color::White);
+
 		limitWindow.clear(sf::Color::White);
 		limitWindow.draw(text);
+		limitWindow.draw(closeButton);
+		limitWindow.draw(closeButtonText);
 		limitWindow.display();
 
 		sf::Event event;
@@ -213,8 +224,22 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 			{
 				if (event.type == sf::Event::Closed)
 					limitWindow.close();
+				else if (event.type == sf::Event::MouseButtonPressed)
+				{
+					if (event.mouseButton.button == sf::Mouse::Left)
+					{
+						sf::Vector2f mousePosition = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
+						if (closeButton.getGlobalBounds().contains(mousePosition))
+						{
+							limitWindow.close();
+							// Închide jocul
+							exit(0);
+						}
+					}
+				}
 			}
 		}
+
 		return;
 	}
 	bool found = false;

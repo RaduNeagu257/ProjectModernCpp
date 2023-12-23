@@ -9,6 +9,16 @@ float BRIDGE_LINE_THICKNESS = 5.0f;
 void DrawErrorWindow(const std::string& errorText);
 void DrawSwapWindow(bool& answer);
 
+enum ErrorMessages{
+    PillarLimit,
+    BridgesLimit
+};
+
+const std::map<ErrorMessages, std::pair<std::string, std::string>> message = {
+    {PillarLimit, {"Limit reached", "Limit of pillars reached"}},
+    {BridgesLimit, {"Limit reached", "Limit of bridges reached"}}
+};
+
 //SFML sample code - try to run
 U8 main() {
    

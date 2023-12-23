@@ -191,61 +191,61 @@ void Board::SetBoardSize(U8 size)
 	m_verticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
-void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
+bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
 {
 	if (MaxNumberBridgesReached(existingBridges))
 	{
-		// Afiseaza fereastra atunci cand se atinge limita de poduri
-		sf::RenderWindow limitWindow(sf::VideoMode(500, 300), "Limita de Poduri Atinsa", sf::Style::Close);
+		//// Afiseaza fereastra atunci cand se atinge limita de poduri
+		//sf::RenderWindow limitWindow(sf::VideoMode(500, 300), "Limita de Poduri Atinsa", sf::Style::Close);
 
-		sf::Font font;
-		font.loadFromFile("arial.ttf");
-		sf::Text text("Limita de poduri a fost atinsa!", font, 16);
-		text.setPosition(10, 20);
+		//sf::Font font;
+		//font.loadFromFile("arial.ttf");
+		//sf::Text text("Limita de poduri a fost atinsa!", font, 16);
+		//text.setPosition(10, 20);
 
-		sf::RectangleShape closeButton(sf::Vector2f(80, 30));
-		closeButton.setPosition(350, 240);
-		closeButton.setFillColor(sf::Color::Red);
+		//sf::RectangleShape closeButton(sf::Vector2f(80, 30));
+		//closeButton.setPosition(350, 240);
+		//closeButton.setFillColor(sf::Color::Red);
 
-		sf::Text messageText("Bridges limit reached", font, 16);
-		messageText.setPosition(10, 60);
-		messageText.setFillColor(sf::Color::Black);
+		//sf::Text messageText("Bridges limit reached", font, 16);
+		//messageText.setPosition(10, 60);
+		//messageText.setFillColor(sf::Color::Black);
 
-		sf::Text closeButtonText("Close", font, 18);
-		closeButtonText.setPosition(350, 240);
-		closeButtonText.setFillColor(sf::Color::White);
+		//sf::Text closeButtonText("Close", font, 18);
+		//closeButtonText.setPosition(350, 240);
+		//closeButtonText.setFillColor(sf::Color::White);
 
-		limitWindow.clear(sf::Color::White);
-		limitWindow.draw(text);
-		limitWindow.draw(messageText);
-		limitWindow.draw(closeButton);
-		limitWindow.draw(closeButtonText);
-		limitWindow.display();
+		//limitWindow.clear(sf::Color::White);
+		//limitWindow.draw(text);
+		//limitWindow.draw(messageText);
+		//limitWindow.draw(closeButton);
+		//limitWindow.draw(closeButtonText);
+		//limitWindow.display();
 
-		sf::Event event;
-		while (limitWindow.isOpen())
-		{
-			while (limitWindow.pollEvent(event))
-			{
-				if (event.type == sf::Event::Closed)
-					limitWindow.close();
-				else if (event.type == sf::Event::MouseButtonPressed)
-				{
-					if (event.mouseButton.button == sf::Mouse::Left)
-					{
-						sf::Vector2f mousePosition = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
-						if (closeButton.getGlobalBounds().contains(mousePosition))
-						{
-							limitWindow.close();
-							// Închide jocul
-							exit(0);
-						}
-					}
-				}
-			}
-		}
-
-		return;
+		//sf::Event event;
+		//while (limitWindow.isOpen())
+		//{
+		//	while (limitWindow.pollEvent(event))
+		//	{
+		//		if (event.type == sf::Event::Closed)
+		//			limitWindow.close();
+		//		else if (event.type == sf::Event::MouseButtonPressed)
+		//		{
+		//			if (event.mouseButton.button == sf::Mouse::Left)
+		//			{
+		//				sf::Vector2f mousePosition = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
+		//				if (closeButton.getGlobalBounds().contains(mousePosition))
+		//				{
+		//					limitWindow.close();
+		//					// Închide jocul
+		//					exit(0);
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
+	
+		return false;
 	}
 	bool found = false;
 	for (auto& pillar : existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
@@ -287,7 +287,7 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 					existingBridges.emplace_back(selectedPillar, pillar, player);
 					if (MaxNumberBridgesReached(existingBridges)) // check if number of maximum allowed bridges has been reached
 					{
-						return;
+						return false;
 					}
 				}
 				else
@@ -300,7 +300,7 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 						if (MaxNumberBridgesReached(existingBridges))// check if number of maximum allowed bridges has been reached
 						{
 							
-							return; //expand outcome later
+							return false; //expand outcome later
 						}
 					}
 			}
@@ -326,6 +326,7 @@ void Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 	//	 messageWindow2.draw(message);
  //                                  
 	//}
+	return true;
 }
 
 std::vector<std::tuple<sf::CircleShape, U8, U8>> Board::getTiles() const

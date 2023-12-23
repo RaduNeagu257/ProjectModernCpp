@@ -15,7 +15,7 @@ public:
 	void Draw(sf::RenderWindow& BoardWndow);
 	void SetBoardSize(U8 size);
 	void SetPillarNumber(U8 pillarNumber);
-	void PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
+	bool PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
 	
 
 	U8 m_boardSize1;

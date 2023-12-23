@@ -11,17 +11,22 @@ void DrawSwapWindow(bool& answer);
 
 enum ErrorMessages{
     PillarLimit,
-    BridgesLimit
+    BridgesLimit,
+    WrongBase
 };
 
-const std::map<ErrorMessages, std::pair<std::string, std::string>> message = {
-    {PillarLimit, {"Limit reached", "Limit of pillars reached"}},
-    {BridgesLimit, {"Limit reached", "Limit of bridges reached"}}
-};
+const std::map<ErrorMessages, std::tuple<std::string, std::string, bool>> message = {
+    {PillarLimit, {"Limit reached", "Limit of pillars reached", true}},
+    {BridgesLimit, {"Limit reached", "Limit of bridges reached", true}},
+    {WrongBase, {"Wrong base", "Pillar placed in the wrong base", false}}
 
-void showMessage(ErrorMessages errorMessage) {
+};
+void showMessage(ErrorMessages errorMessage, sf::RenderWindow& gameWindow) {
+    bool closeGame = std::get<2>(message.at(errorMessage));
+      if (closeGame) {
+            gameWindow.close();
+      }
     sf::RenderWindow messageWindow(sf::VideoMode(500, 300), "Message");
-
     sf::Text messageText;
     sf::Font font;
     sf::RectangleShape closeButton(sf::Vector2f(70, 30));
@@ -32,11 +37,19 @@ void showMessage(ErrorMessages errorMessage) {
     closeButtonText.setFillColor(sf::Color::Blue);
     closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10));
 
-    font.loadFromFile("ARIAL.TTF");
-    messageText.setFont(font);
+    if (!font.loadFromFile("ARIAL.TTF")) {
+        // Tratarea cazului în care încărcarea fontului a eșuat
+        std::cerr << "Failed to load font!" << std::endl;
+        return;
+    }
 
-    messageText.setString(message.at(errorMessage).second);
-    messageWindow.setTitle(message.at(errorMessage).first);
+    messageText.setFont(font);
+   
+    messageText.setString(std::get<1>(message.at(errorMessage)));
+    messageWindow.setTitle(std::get<0>(message.at(errorMessage)));
+
+    //std::make_tuple(std::string text, std::string title);
+    //std::tie(messageText.setString(text), messageWindow.setTitle(title));
 
     messageText.setCharacterSize(24);
     messageText.setFillColor(sf::Color::Red);
@@ -51,6 +64,12 @@ void showMessage(ErrorMessages errorMessage) {
             if (event.type == sf::Event::Closed) {
                 messageWindow.close();
             }
+            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
+                if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                    messageWindow.close();
+                }
+            }
         }
 
         messageWindow.clear();
@@ -60,6 +79,7 @@ void showMessage(ErrorMessages errorMessage) {
         messageWindow.display();
     }
 }
+
 
 //SFML sample code - try to run
 U8 main() {
@@ -299,7 +319,9 @@ U8 main() {
                                                 {
                                                     std::cout << "Red ";
                                                     board.PlacePillar(redPillars, tempPillar, player, pillarAdded);
-                                                    board.PlaceBridge(tempPillar, redPillars, redBridges, player);
+                                                    if (!board.PlaceBridge(tempPillar, redPillars, redBridges, player)) {
+                                                        showMessage(BridgesLimit, boardWindow);
+                                                    }
                                                     player = sf::Color::Black;
                                                     
                                                 }
@@ -308,7 +330,9 @@ U8 main() {
 
                                             }
                                             else {
-                                                std::cout << "error in base" << std::endl;
+                                                showMessage(WrongBase, boardWindow);
+
+                                               /* std::cout << "error in base" << std::endl;
                                                 sf::RenderWindow errorMessageWindow(sf::VideoMode(500, 200), "Error: Wrong Base");
                                                 sf::Text errorMessage;
                                                 sf::Font font;
@@ -331,59 +355,60 @@ U8 main() {
                                                     errorMessageWindow.clear();
                                                     errorMessageWindow.draw(errorMessage);
                                                     errorMessageWindow.display();
-                                                }
+                                                }*/
                                             }
                                         }
                                         else
                                         {
-                                            std::cout << "Pillar limit reached!" << std::endl;
-                                            sf::RenderWindow messageWindow(sf::VideoMode(500, 300), "Limit reached");
-                                            sf::Text message;
-                                            sf::Font font;
-                                            sf::RectangleShape closeButton(sf::Vector2f(70, 30));
-                                            closeButton.setFillColor(sf::Color::Red);
-                                            closeButton.setPosition(350, 240); // Position the button within the messageWindow
-                                            sf::Text closeButtonText("Close", font, 18);
-                                            closeButtonText.setFillColor(sf::Color::Blue);
-                                            closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
+                                          showMessage(PillarLimit, boardWindow);
+                                            //std::cout << "Pillar limit reached!" << std::endl;
+                                            //sf::RenderWindow messageWindow(sf::VideoMode(500, 300), "Limit reached");
+                                            //sf::Text message;
+                                            //sf::Font font;
+                                            //sf::RectangleShape closeButton(sf::Vector2f(70, 30));
+                                            //closeButton.setFillColor(sf::Color::Red);
+                                            //closeButton.setPosition(350, 240); // Position the button within the messageWindow
+                                            //sf::Text closeButtonText("Close", font, 18);
+                                            //closeButtonText.setFillColor(sf::Color::Blue);
+                                            //closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
 
-                                            font.loadFromFile("ARIAL.TTF");
-                                            message.setFont(font);
-                                            message.setString("Limit of pillars reached");
-                                            message.setCharacterSize(24);
-                                            message.setFillColor(sf::Color::Red);
+                                            //font.loadFromFile("ARIAL.TTF");
+                                            //message.setFont(font);
+                                            //message.setString("Limit of pillars reached");
+                                            //message.setCharacterSize(24);
+                                            //message.setFillColor(sf::Color::Red);
 
-                                            sf::FloatRect messageRect = message.getLocalBounds();
-                                            message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
-                                            message.setPosition(messageWindow.getView().getCenter());
+                                            //sf::FloatRect messageRect = message.getLocalBounds();
+                                            //message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+                                            //message.setPosition(messageWindow.getView().getCenter());
 
-                                            while (messageWindow.isOpen()) {
-                                                sf::Event event;
-                                                while (messageWindow.pollEvent(event)) {
-                                                    if (event.type == sf::Event::Closed)
-                                                        messageWindow.close();
-                                                    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                                                        sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
-                                                        if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
-                                                            std::cout << "Close button clicked. Closing message window." << std::endl;
-                                                            closeMessageWindowClicked = true;
-                                                            messageWindow.close(); // Close the message window
-                                                        }
-                                                    }
-                                                }
-                                                if (closeMessageWindowClicked) {
-                                                    boardWindow.close(); // Închide fereastra de joc
-                                                    boardWindowOpen = false; // Setează starea ferestrei de joc pe închis
-                                                    window.create(sf::VideoMode(1920, 1080), "Twixt Game Menu"); // Recreează fereastra de meniu
-                                                    closeMessageWindowClicked = false; // Reset the flag
-                                                }
-                                                messageWindow.clear();
-                                                messageWindow.draw(message);
-                                                messageWindow.draw(closeButton);
-                                                messageWindow.draw(closeButtonText);
-                                                messageWindow.display();
+                                            //while (messageWindow.isOpen()) {
+                                            //    sf::Event event;
+                                            //    while (messageWindow.pollEvent(event)) {
+                                            //        if (event.type == sf::Event::Closed)
+                                            //            messageWindow.close();
+                                            //        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                                            //            sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
+                                            //            if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                                            //                std::cout << "Close button clicked. Closing message window." << std::endl;
+                                            //                closeMessageWindowClicked = true;
+                                            //                messageWindow.close(); // Close the message window
+                                            //            }
+                                            //        }
+                                            //    }
+                                            //    if (closeMessageWindowClicked) {
+                                            //        boardWindow.close(); // Închide fereastra de joc
+                                            //        boardWindowOpen = false; // Setează starea ferestrei de joc pe închis
+                                            //        window.create(sf::VideoMode(1920, 1080), "Twixt Game Menu"); // Recreează fereastra de meniu
+                                            //        closeMessageWindowClicked = false; // Reset the flag
+                                            //    }
+                                            //    messageWindow.clear();
+                                            //    messageWindow.draw(message);
+                                            //    messageWindow.draw(closeButton);
+                                            //    messageWindow.draw(closeButtonText);
+                                            //    messageWindow.display();
 
-                                            }
+                                            //}
                                             boardWindow.close();
                                             break;
 
@@ -400,37 +425,41 @@ U8 main() {
                                                 {
                                                     std::cout << "Black ";
                                                     board.PlacePillar(blackPillars, tempPillar, player, pillarAdded);
-                                                    board.PlaceBridge(tempPillar, blackPillars, blackBridges, player);
+                                                    if (!board.PlaceBridge(tempPillar, blackPillars, blackBridges, player)) {
+                                                        showMessage(BridgesLimit, boardWindow);
+                                                    }
                                                     player = sf::Color::Red;
                                                 }
                                                 else
                                                     std::cout << "There is already a pillar there.\n";
                                             }
                                             else {
-                                                std::cout << "error in base" << std::endl;
-                                                sf::RenderWindow errorMessageWindow(sf::VideoMode(500, 200), "Error: Wrong Base");
-                                                sf::Text errorMessage;
-                                                sf::Font font;
-                                                font.loadFromFile("ARIAL.TTF");
-                                                errorMessage.setFont(font);
-                                                errorMessage.setString("Error: Pillar placed in wrong base!");
-                                                errorMessage.setCharacterSize(24);
-                                                errorMessage.setFillColor(sf::Color::Red);
-                                                sf::FloatRect messageRect = errorMessage.getLocalBounds();
-                                                errorMessage.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
-                                                errorMessage.setPosition(errorMessageWindow.getView().getCenter());
+                                                showMessage(WrongBase, boardWindow);
 
-                                                while (errorMessageWindow.isOpen()) {
-                                                    sf::Event event;
-                                                    while (errorMessageWindow.pollEvent(event)) {
-                                                        if (event.type == sf::Event::Closed)
-                                                            errorMessageWindow.close();
-                                                    }
+                                                //std::cout << "error in base" << std::endl;
+                                                //sf::RenderWindow errorMessageWindow(sf::VideoMode(500, 200), "Error: Wrong Base");
+                                                //sf::Text errorMessage;
+                                                //sf::Font font;
+                                                //font.loadFromFile("ARIAL.TTF");
+                                                //errorMessage.setFont(font);
+                                                //errorMessage.setString("Error: Pillar placed in wrong base!");
+                                                //errorMessage.setCharacterSize(24);
+                                                //errorMessage.setFillColor(sf::Color::Red);
+                                                //sf::FloatRect messageRect = errorMessage.getLocalBounds();
+                                                //errorMessage.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+                                                //errorMessage.setPosition(errorMessageWindow.getView().getCenter());
 
-                                                    errorMessageWindow.clear();
-                                                    errorMessageWindow.draw(errorMessage);
-                                                    errorMessageWindow.display();
-                                                }
+                                                //while (errorMessageWindow.isOpen()) {
+                                                //    sf::Event event;
+                                                //    while (errorMessageWindow.pollEvent(event)) {
+                                                //        if (event.type == sf::Event::Closed)
+                                                //            errorMessageWindow.close();
+                                                //    }
+
+                                                //    errorMessageWindow.clear();
+                                                //    errorMessageWindow.draw(errorMessage);
+                                                //    errorMessageWindow.display();
+                                                //}
                                             }
                                             
                                             if (blackPillars.size() == redPillars.size() && pillarAdded == 2) //Allow the black side to choose to swap sides after the first turn
@@ -453,52 +482,53 @@ U8 main() {
                                         }
                                         else
                                         {//
-                                            std::cout << "Pillar limit reached!" << std::endl;
-                                            sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limit reached");
-                                            sf::Text message;
-                                            sf::Font font;
-                                            sf::RectangleShape closeButton(sf::Vector2f(200, 100));
-                                            closeButton.setFillColor(sf::Color::Red);
-                                            closeButton.setPosition(150, 100); // Position the button within the messageWindow
-                                            sf::Text closeButtonText("Close", font, 24);
-                                            closeButtonText.setFillColor(sf::Color::Blue);
-                                            closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
+                                            showMessage(PillarLimit, boardWindow);
+                                            //std::cout << "Pillar limit reached!" << std::endl;
+                                            //sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limit reached");
+                                            //sf::Text message;
+                                            //sf::Font font;
+                                            //sf::RectangleShape closeButton(sf::Vector2f(200, 100));
+                                            //closeButton.setFillColor(sf::Color::Red);
+                                            //closeButton.setPosition(150, 100); // Position the button within the messageWindow
+                                            //sf::Text closeButtonText("Close", font, 24);
+                                            //closeButtonText.setFillColor(sf::Color::Blue);
+                                            //closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10)); // Position the text on the button
 
-                                            font.loadFromFile("ARIAL.TTF");
-                                            message.setFont(font);
-                                            message.setString("Limit of pillars reached");
-                                            message.setCharacterSize(24);
-                                            message.setFillColor(sf::Color::Red);
+                                            //font.loadFromFile("ARIAL.TTF");
+                                            //message.setFont(font);
+                                            //message.setString("Limit of pillars reached");
+                                            //message.setCharacterSize(24);
+                                            //message.setFillColor(sf::Color::Red);
 
-                                            sf::FloatRect messageRect = message.getLocalBounds();
-                                            message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
-                                            message.setPosition(messageWindow.getView().getCenter());
+                                            //sf::FloatRect messageRect = message.getLocalBounds();
+                                            //message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+                                            //message.setPosition(messageWindow.getView().getCenter());
 
-                                            while (messageWindow.isOpen()) {
-                                                sf::Event event;
-                                                while (messageWindow.pollEvent(event)) {
-                                                    if (event.type == sf::Event::Closed)
-                                                        messageWindow.close();
-                                                    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-                                                        sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
-                                                        if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
-                                                            std::cout << "Close button clicked. Closing message window." << std::endl;
-                                                            closeMessageWindowClicked = true;
-                                                            messageWindow.close(); // Close the message window
-                                                        }
-                                                    }
-                                                } if (closeMessageWindowClicked) {
-                                                    boardWindow.close(); // Închide fereastra de joc
-                                                    boardWindowOpen = false; // Setează starea ferestrei de joc pe închis
-                                                    window.create(sf::VideoMode(1920, 1080), "Twixt Game Menu"); // Recreează fereastra de meniu
-                                                    closeMessageWindowClicked = false; // Reset the flag
-                                                }
-                                                messageWindow.clear();
-                                                messageWindow.draw(message);
-                                                messageWindow.draw(closeButton);
-                                                messageWindow.draw(closeButtonText);
-                                                messageWindow.display();
-                                            }
+                                            //while (messageWindow.isOpen()) {
+                                            //    sf::Event event;
+                                            //    while (messageWindow.pollEvent(event)) {
+                                            //        if (event.type == sf::Event::Closed)
+                                            //            messageWindow.close();
+                                            //        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                                            //            sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
+                                            //            if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+                                            //                std::cout << "Close button clicked. Closing message window." << std::endl;
+                                            //                closeMessageWindowClicked = true;
+                                            //                messageWindow.close(); // Close the message window
+                                            //            }
+                                            //        }
+                                            //    } if (closeMessageWindowClicked) {
+                                            //        boardWindow.close(); // Închide fereastra de joc
+                                            //        boardWindowOpen = false; // Setează starea ferestrei de joc pe închis
+                                            //        window.create(sf::VideoMode(1920, 1080), "Twixt Game Menu"); // Recreează fereastra de meniu
+                                            //        closeMessageWindowClicked = false; // Reset the flag
+                                            //    }
+                                            //    messageWindow.clear();
+                                            //    messageWindow.draw(message);
+                                            //    messageWindow.draw(closeButton);
+                                            //    messageWindow.draw(closeButtonText);
+                                            //    messageWindow.display();
+                                            //}
                                          
                                             std::cout << "Pillar Limit: " << board.m_pillarNumberDef << std::endl;
                                             std::cout << "Board Size: " << board.GetSize() << std::endl;

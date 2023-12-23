@@ -19,6 +19,48 @@ const std::map<ErrorMessages, std::pair<std::string, std::string>> message = {
     {BridgesLimit, {"Limit reached", "Limit of bridges reached"}}
 };
 
+void showMessage(ErrorMessages errorMessage) {
+    sf::RenderWindow messageWindow(sf::VideoMode(500, 300), "Message");
+
+    sf::Text messageText;
+    sf::Font font;
+    sf::RectangleShape closeButton(sf::Vector2f(70, 30));
+    closeButton.setFillColor(sf::Color::Red);
+    closeButton.setPosition(350, 240);
+
+    sf::Text closeButtonText("Close", font, 18);
+    closeButtonText.setFillColor(sf::Color::Blue);
+    closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10));
+
+    font.loadFromFile("ARIAL.TTF");
+    messageText.setFont(font);
+
+    messageText.setString(message.at(errorMessage).second);
+    messageWindow.setTitle(message.at(errorMessage).first);
+
+    messageText.setCharacterSize(24);
+    messageText.setFillColor(sf::Color::Red);
+
+    sf::FloatRect messageRect = messageText.getLocalBounds();
+    messageText.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+    messageText.setPosition(messageWindow.getView().getCenter());
+
+    while (messageWindow.isOpen()) {
+        sf::Event event;
+        while (messageWindow.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                messageWindow.close();
+            }
+        }
+
+        messageWindow.clear();
+        messageWindow.draw(messageText);
+        messageWindow.draw(closeButton);
+        messageWindow.draw(closeButtonText);
+        messageWindow.display();
+    }
+}
+
 //SFML sample code - try to run
 U8 main() {
    
@@ -410,7 +452,7 @@ U8 main() {
                                             }
                                         }
                                         else
-                                        {
+                                        {//
                                             std::cout << "Pillar limit reached!" << std::endl;
                                             sf::RenderWindow messageWindow(sf::VideoMode(300, 200), "Limit reached");
                                             sf::Text message;

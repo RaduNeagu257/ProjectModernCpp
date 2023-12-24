@@ -61,7 +61,7 @@ public:
     bool MaxNumberPillarsReached(std::vector<Pillar>& pillars);
 	bool MaxNumberBridgesReached(std::vector<Bridge>& bridges);
 	bool WinningChainCreated(std::vector<Bridge>& bridges);
-
+	bool PillarOnOppositeSides(const std::vector<Bridge> bridges, sf::Color player);
 
 private:
 	//std::vector<sf::CircleShape> m_tiles;

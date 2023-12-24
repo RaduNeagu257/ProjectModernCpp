@@ -553,6 +553,19 @@ bool Board::WinningChainCreated(std::vector<Bridge>& bridges)
 		return false;
 }
 
+bool Board::PillarOnOppositeSides(const std::vector<Bridge> bridges, sf::Color player)
+{
+	if (player == sf::Color::Red)
+	{
+
+	}
+	else if (player == sf::Color::Black)
+	{
+
+	}
+	return true;
+}
+
 void Board::SetPillarNumber(U8 pillarNumber)
 {
 	m_pillarNumberDef = pillarNumber;

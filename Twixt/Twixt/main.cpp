@@ -21,11 +21,11 @@ const std::map<ErrorMessages, std::tuple<std::string, std::string, bool>> messag
     {WrongBase, {"Wrong base", "Pillar placed in the wrong base", false}}
 
 };
+
 void showMessage(ErrorMessages errorMessage, sf::RenderWindow& gameWindow) {
-    bool closeGame = std::get<2>(message.at(errorMessage));
-      if (closeGame) {
-            gameWindow.close();
-      }
+    std::string windowTitle, windowMessage;
+    bool windowClosure;
+    std::tie(windowTitle, windowMessage, windowClosure) =  message.at(errorMessage);
     sf::RenderWindow messageWindow(sf::VideoMode(500, 300), "Message");
     sf::Text messageText;
     sf::Font font;
@@ -45,11 +45,8 @@ void showMessage(ErrorMessages errorMessage, sf::RenderWindow& gameWindow) {
 
     messageText.setFont(font);
    
-    messageText.setString(std::get<1>(message.at(errorMessage)));
-    messageWindow.setTitle(std::get<0>(message.at(errorMessage)));
-
-    //std::make_tuple(std::string text, std::string title);
-    //std::tie(messageText.setString(text), messageWindow.setTitle(title));
+    messageText.setString(windowMessage);
+    messageWindow.setTitle(windowTitle);
 
     messageText.setCharacterSize(24);
     messageText.setFillColor(sf::Color::Red);
@@ -63,11 +60,17 @@ void showMessage(ErrorMessages errorMessage, sf::RenderWindow& gameWindow) {
         while (messageWindow.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 messageWindow.close();
+                if (windowClosure) {
+                    gameWindow.close();
+                }
             }
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(messageWindow);
                 if (closeButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
                     messageWindow.close();
+                    if (windowClosure) {
+                        gameWindow.close();
+                    }
                 }
             }
         }
@@ -81,8 +84,7 @@ void showMessage(ErrorMessages errorMessage, sf::RenderWindow& gameWindow) {
 }
 
 
-//SFML sample code - try to run
-U8 main() {
+int main() {
    
     Board board;
     // Open the window
@@ -192,7 +194,6 @@ U8 main() {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePositionFloat(mousePosition.x, mousePosition.y);
 
-            
                 // Check if the "Instructions" button is clicked
                 if (instructionButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
                     instructionsWindowOpen = true;
@@ -409,7 +410,7 @@ U8 main() {
                                             //    messageWindow.display();
 
                                             //}
-                                            boardWindow.close();
+                                            //boardWindow.close();
                                             break;
 
                                         }
@@ -535,7 +536,7 @@ U8 main() {
                                             std::cout << "Red Pillars: " << redPillars.size() << std::endl;
                                             std::cout << "Black Pillars: " << blackPillars.size() << std::endl;
 
-                                            boardWindow.close();
+                                            //boardWindow.close();
                                             break;
 
                                         }

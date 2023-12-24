@@ -507,11 +507,14 @@ void Board::SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blac
 bool Board::PlacePillarInBase(Pillar& pillar)
 {
 	// check if a pillar is to be placed in one of the inaccessible four corners of the board
-	if ((pillar.m_col == 0 && (pillar.m_row == 0) || pillar.m_col == m_size - 1))
+	if (pillar.m_row == 0 && (pillar.m_col == 0 || pillar.m_col == m_size - 1))
+	{
 		return false;
-	if ((pillar.m_col == m_size - 1 && (pillar.m_row == 0) || pillar.m_col == m_size - 1))
+	}
+	if(pillar.m_row == m_size - 1 && (pillar.m_col == 0 || pillar.m_col == m_size - 1))
+	{
 		return false;
-
+	}
 	// check if pillar is to be placed in a base
 	if (pillar.m_col == 0 || pillar.m_col == m_size - 1) 
 		return (pillar.GetColor() == m_verticalLine1.getFillColor() || pillar.GetColor() == m_verticalLine2.getFillColor());
@@ -555,15 +558,36 @@ bool Board::WinningChainCreated(std::vector<Bridge>& bridges)
 
 bool Board::PillarOnOppositeSides(const std::vector<Bridge> bridges, sf::Color player)
 {
+	bool found1=false, found2 = false;
 	if (player == sf::Color::Red)
 	{
-
+		// search for at least one pillar on the first row and one pillar on the last row
+		for (auto& bridge : bridges)
+		{
+			if ((bridge.m_startPillar.m_row == 0 && bridge.m_startPillar.m_col > 0 && bridge.m_startPillar.m_col < m_size - 1) ||
+				(bridge.m_stopPillar.m_row == 0 && bridge.m_stopPillar.m_col > 0 && bridge.m_stopPillar.m_col < m_size - 1))
+				found1 = true;
+			if ((bridge.m_startPillar.m_row == m_size-1 && bridge.m_startPillar.m_col > 0 && bridge.m_startPillar.m_col < m_size - 1) ||
+				(bridge.m_stopPillar.m_row == m_size - 1 && bridge.m_stopPillar.m_col > 0 && bridge.m_stopPillar.m_col < m_size - 1))
+				found2 = true;
+			if (found1 && found2)
+				break;
+		}
 	}
 	else if (player == sf::Color::Black)
-	{
-
+	{	
+		//search for at least one pillar on the first column and one pillar on the last column
+		for (auto& bridge : bridges)
+		{
+			if ((bridge.m_startPillar.m_col == 0 && bridge.m_startPillar.m_row > 0 && bridge.m_startPillar.m_row < m_size - 1) ||
+				(bridge.m_stopPillar.m_col == 0 && bridge.m_stopPillar.m_row > 0 && bridge.m_stopPillar.m_row < m_size - 1))
+				found1 = true;
+			if ((bridge.m_startPillar.m_col == m_size - 1 && bridge.m_startPillar.m_row > 0 && bridge.m_startPillar.m_row < m_size - 1) ||
+				(bridge.m_stopPillar.m_col == m_size - 1 && bridge.m_stopPillar.m_row > 0 && bridge.m_stopPillar.m_row < m_size - 1))
+				found2 = true;
+		}
 	}
-	return true;
+	return found1 && found2;
 }
 
 void Board::SetPillarNumber(U8 pillarNumber)

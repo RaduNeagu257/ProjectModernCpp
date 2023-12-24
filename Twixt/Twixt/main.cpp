@@ -252,24 +252,6 @@ int main() {
 
         if (boardWindowOpen) {
             U16 pillarAdded = 0;
-            ////Testing error window
-            //std::string errorText = "An error occurred!";
-            //DrawErrorWindow(errorText);
-            
-            //Testing swap window
-
-           /* bool swapAnswer = false;
-            DrawSwapWindow(swapAnswer);
-
-            if (swapAnswer) {
-                std::cout << "Swapping sides..." << std::endl;
-
-            }
-            else {
-                std::cout << "Not swapping sides." << std::endl;
-
-            }*/
-
             if (!boardWindow.isOpen()) {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
                 boardWindow.setFramerateLimit(60);

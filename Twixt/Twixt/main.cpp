@@ -96,6 +96,16 @@ int main() {
     Pillar startPillar;
     Pillar stopPillar;
 
+    sf::Texture backgroundTexture;
+    if (!backgroundTexture.loadFromFile("../Images/banner.jpg")) {
+        //error loading image
+        std::cerr << "Failed to load background image!" << std::endl;
+        return -1;
+    }
+    sf::Sprite backgroundImage(backgroundTexture);
+    backgroundImage.setScale(static_cast<float>(window.getSize().x) / backgroundTexture.getSize().x,
+        static_cast<float>(window.getSize().y) / backgroundTexture.getSize().y);
+
     // Declare the "Start" button
     sf::RectangleShape startButton(sf::Vector2f(200, 50));
     startButton.setFillColor(sf::Color::Cyan);
@@ -166,12 +176,12 @@ int main() {
         settingsButton.getPosition().y + (settingsButton.getSize().y - settingsButtonText.getGlobalBounds().height) / 2);
 
 
-    // Set the title of the window
-    sf::Text titleText("Twixt Game", titleFont, 36); // You can adjust the font size
-    titleText.setFillColor(sf::Color::Black); // Set the color
-    titleText.setStyle(sf::Text::Bold); // Make it bold
-    // Center the title above the button
-    titleText.setPosition(860 + (startButton.getSize().x - titleText.getGlobalBounds().width) / 2, 440);
+    //// Set the title of the window
+    //sf::Text titleText("Twixt Game", titleFont, 36); // You can adjust the font size
+    //titleText.setFillColor(sf::Color::Black); // Set the color
+    //titleText.setStyle(sf::Text::Bold); // Make it bold
+    //// Center the title above the button
+    //titleText.setPosition(860 + (startButton.getSize().x - titleText.getGlobalBounds().width) / 2, 440);
 
     bool instructionsWindowOpen = false;
     bool boardWindowOpen = false;
@@ -708,10 +718,11 @@ int main() {
         }
        
         // Clear the window
-        window.clear(sf::Color::White);
+        //window.clear(sf::Color::White);
 
         // Add button
-        window.draw(titleText);
+        window.draw(backgroundImage);
+       // window.draw(titleText);
         window.draw(startButton);
         window.draw(instructionButton);
         window.draw(settingsButton);

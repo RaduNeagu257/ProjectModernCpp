@@ -82,12 +82,12 @@ void showMessage(ErrorMessages errorMessage, sf::RenderWindow& gameWindow) {
         messageWindow.display();
     }
 }
-void centerTextInButton(sf::Text& buttonText, sf::RectangleShape& button) {
-    buttonText.setPosition(
-        button.getPosition().x + (button.getSize().x - buttonText.getGlobalBounds().width) / 2,
-        button.getPosition().y + (button.getSize().y - buttonText.getGlobalBounds().height) / 2
-    );
-}
+    void centerTextInButton(sf::Text& buttonText, sf::RectangleShape& button) {
+        buttonText.setPosition(
+            button.getPosition().x + (button.getSize().x - buttonText.getGlobalBounds().width) / 2,
+            button.getPosition().y + (button.getSize().y - buttonText.getGlobalBounds().height) / 2
+        );
+    }
 
 int main() {
    
@@ -111,6 +111,8 @@ int main() {
     backgroundImage.setScale(static_cast<float>(window.getSize().x) / backgroundTexture.getSize().x,
         static_cast<float>(window.getSize().y) / backgroundTexture.getSize().y);
 
+
+  
 
     // Declare the "Start" button
     sf::RectangleShape startButton(sf::Vector2f(250, 70));
@@ -186,6 +188,7 @@ int main() {
     sf::RenderWindow boardWindow;
     bool closeMessageWindowClicked = false;
 
+
     // Main game loop
     while (window.isOpen()) {
         sf::Event event;
@@ -219,7 +222,7 @@ int main() {
         }
         if (instructionsWindowOpen) {
             if (!instructionsWindow.isOpen()) {
-                instructionsWindow.create(sf::VideoMode(1000, 500), "Instructions", sf::Style::Close);
+                instructionsWindow.create(sf::VideoMode(1100, 500), "Instructions", sf::Style::Close);
                 instructionsWindow.setFramerateLimit(60);
             }
 
@@ -230,8 +233,18 @@ int main() {
                     instructionsWindowOpen = false;
                 }
             }
-            instructionsWindow.clear(sf::Color::Cyan);
+            //instructionsWindow.clear(sf::Color::Cyan);
             sf::Font instructions2Font;
+
+            sf::Texture instructionsImageTexture;
+            if (!instructionsImageTexture.loadFromFile("../Images/page.jpg")) {
+                std::cerr << "Failed to load background image!" << std::endl;
+                return -1;
+            }
+            sf::Sprite instructionsImage(instructionsImageTexture);
+            instructionsImage.setScale(static_cast<float>(instructionsWindow.getSize().x) / instructionsImageTexture.getSize().x,
+                static_cast<float>(instructionsWindow.getSize().y) / instructionsImageTexture.getSize().y);
+
             instructions2Font.loadFromFile("ARIAL.TTF");
             sf::Text instructions2Text("Welcome to the Twixt Game!\n"
                 "\n"
@@ -246,6 +259,7 @@ int main() {
                 "Your goal is to connect a peg in one of your border rows to a peg in your other border row, with a \n continuous chain of linked pegs. If neither side can achieve this, the game is a draw.\n",
 
                 instructions2Font, 20);
+            instructionsWindow.draw(instructionsImage);
             instructions2Text.setFillColor(sf::Color::Black);
             instructions2Text.setPosition(50, 50);
             instructionsWindow.draw(instructions2Text);

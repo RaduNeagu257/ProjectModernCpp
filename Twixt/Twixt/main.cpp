@@ -82,7 +82,12 @@ void showMessage(ErrorMessages errorMessage, sf::RenderWindow& gameWindow) {
         messageWindow.display();
     }
 }
-
+void centerTextInButton(sf::Text& buttonText, sf::RectangleShape& button) {
+    buttonText.setPosition(
+        button.getPosition().x + (button.getSize().x - buttonText.getGlobalBounds().width) / 2,
+        button.getPosition().y + (button.getSize().y - buttonText.getGlobalBounds().height) / 2
+    );
+}
 
 int main() {
    
@@ -96,82 +101,81 @@ int main() {
     Pillar startPillar;
     Pillar stopPillar;
 
-    // Declare the "Start" button
-    sf::RectangleShape startButton(sf::Vector2f(200, 50));
-    startButton.setFillColor(sf::Color::Cyan);
-    startButton.setPosition(860, 490);
-    startButton.setOutlineColor(sf::Color::Black);
-    startButton.setOutlineThickness(5);
+    sf::Texture backgroundTexture;
+    if (!backgroundTexture.loadFromFile("../Images/banner.jpg")) {
+        //error loading image
+        std::cerr << "Failed to load background image!" << std::endl;
+        return -1;
+    }
+    sf::Sprite backgroundImage(backgroundTexture);
+    backgroundImage.setScale(static_cast<float>(window.getSize().x) / backgroundTexture.getSize().x,
+        static_cast<float>(window.getSize().y) / backgroundTexture.getSize().y);
 
-    ///Declare the "Instructions" button
-    sf::RectangleShape instructionButton(sf::Vector2f(200, 50));
-    instructionButton.setFillColor(sf::Color::Red);
-    instructionButton.setOutlineColor(sf::Color::Black);
-    instructionButton.setOutlineThickness(5);
-    instructionButton.setPosition(860, 650);
+
+    // Declare the "Start" button
+    sf::RectangleShape startButton(sf::Vector2f(250, 70));
+    startButton.setFillColor(sf::Color::Black);
+    startButton.setPosition(860, 520);
+    startButton.setOutlineThickness(0);  
 
     // Declare the "Settings" button
-    sf::RectangleShape settingsButton(sf::Vector2f(200, 50));
-    settingsButton.setFillColor(sf::Color::Green);
-    settingsButton.setPosition(860, 570);
-    settingsButton.setOutlineColor(sf::Color::Black);
-    settingsButton.setOutlineThickness(5);
-    //Declare the "Ok' button
-    sf::RectangleShape okButton(sf::Vector2f(200, 50));
-    okButton.setFillColor(sf::Color::Blue); 
-    okButton.setPosition(50, 300); 
-    okButton.setOutlineColor(sf::Color::Black);
-    okButton.setOutlineThickness(5);
+    sf::RectangleShape settingsButton(sf::Vector2f(250, 70));
+    settingsButton.setFillColor(sf::Color::Black);
+    settingsButton.setPosition(860, 630);
+    settingsButton.setOutlineThickness(0);
 
-    //Declare the text for the "ok" button
+    // Declare the "Instructions" button
+    sf::RectangleShape instructionButton(sf::Vector2f(250, 70));
+    instructionButton.setFillColor(sf::Color::Black);
+    instructionButton.setPosition(860, 730);
+    instructionButton.setOutlineThickness(0);
+
+ 
+
+    // Declare the "Ok" button
+    sf::RectangleShape okButton(sf::Vector2f(250, 70));
+    okButton.setFillColor(sf::Color::Black);
+    okButton.setPosition(50, 300);
+    okButton.setOutlineThickness(0);
+
+    // Declare the text for the "ok" button
     sf::Font buttonFont;
     buttonFont.loadFromFile("ARIAL.TTF");
-    sf::Text okButtonText("OK", buttonFont, 24);
+    sf::Text okButtonText("OK", buttonFont, 40);
     okButtonText.setFillColor(sf::Color::White);
-    okButtonText.setPosition(okButton.getPosition().x + (okButton.getSize().x - okButtonText.getGlobalBounds().width) / 2,
-        okButton.getPosition().y + (okButton.getSize().y - okButtonText.getGlobalBounds().height) / 2);
-
+    okButtonText.setStyle(sf::Text::Bold);
+    centerTextInButton(okButtonText, okButton);
 
     // Declare the text for the "Start" button
     sf::Font font;
     font.loadFromFile("ARIAL.TTF");
-    sf::Font titleFont;
-    titleFont.loadFromFile("TitleText.ttf");
-    sf::Text startButtonText("Play!", font, 24);
-    startButtonText.setFillColor(sf::Color::Blue);
-    // Center the text on the button
-    startButtonText.setPosition(startButton.getPosition().x + (startButton.getSize().x - startButtonText.getGlobalBounds().width) / 2,
-        startButton.getPosition().y + (startButton.getSize().y - startButtonText.getGlobalBounds().height) / 2);
+    sf::Font fontButtons;
+    fontButtons.loadFromFile("WEST____.TTF");
+    sf::Text startButtonText("Play!", fontButtons, 40);
+    startButtonText.setFillColor(sf::Color(255, 215, 0));
+    startButtonText.setStyle(sf::Text::Bold);
+    centerTextInButton(startButtonText, startButton);
 
     // Declare the text for the "Instructions" button
-    sf::Font instructionsFont;
-    instructionsFont.loadFromFile("ARIAL.TTF");
-    sf::Font instructionsTitleFont;
-    instructionsTitleFont.loadFromFile("TitleText.ttf");
-    sf::Text instructionsButtonText("Instructions", font, 24);
-    instructionsButtonText.setFillColor(sf::Color::Black);
-    // Center the text on the button
-    instructionsButtonText.setPosition(instructionButton.getPosition().x + (instructionButton.getSize().x - instructionsButtonText.getGlobalBounds().width) / 2,
-        instructionButton.getPosition().y + (instructionButton.getSize().y - instructionsButtonText.getGlobalBounds().height) / 2);
+    sf::Text instructionsButtonText("Instructions", fontButtons, 40);
+    instructionsButtonText.setFillColor(sf::Color(255, 215, 0));
+    instructionsButtonText.setStyle(sf::Text::Bold);
+    centerTextInButton(instructionsButtonText, instructionButton);
 
     // Declare the text for the "Settings" button
-    sf::Font settingsFont;
-    settingsFont.loadFromFile("ARIAL.TTF");
-    sf::Font settingsTitleFont;
-    settingsTitleFont.loadFromFile("TitleText.ttf");
-    sf::Text settingsButtonText("Settings", font, 24);
-    settingsButtonText.setFillColor(sf::Color::Black);
-    // Center the text on the button
-    settingsButtonText.setPosition(settingsButton.getPosition().x + (settingsButton.getSize().x - settingsButtonText.getGlobalBounds().width) / 2,
-        settingsButton.getPosition().y + (settingsButton.getSize().y - settingsButtonText.getGlobalBounds().height) / 2);
+    sf::Text settingsButtonText("Settings", fontButtons, 40);
+    settingsButtonText.setFillColor(sf::Color(255, 215, 0));
+    settingsButtonText.setStyle(sf::Text::Bold);
+    centerTextInButton(settingsButtonText, settingsButton);
 
 
-    // Set the title of the window
-    sf::Text titleText("Twixt Game", titleFont, 36); // You can adjust the font size
-    titleText.setFillColor(sf::Color::Black); // Set the color
-    titleText.setStyle(sf::Text::Bold); // Make it bold
-    // Center the title above the button
-    titleText.setPosition(860 + (startButton.getSize().x - titleText.getGlobalBounds().width) / 2, 440);
+
+    //// Set the title of the window
+    //sf::Text titleText("Twixt Game", titleFont, 36); // You can adjust the font size
+    //titleText.setFillColor(sf::Color::Black); // Set the color
+    //titleText.setStyle(sf::Text::Bold); // Make it bold
+    //// Center the title above the button
+    //titleText.setPosition(860 + (startButton.getSize().x - titleText.getGlobalBounds().width) / 2, 440);
 
     bool instructionsWindowOpen = false;
     bool boardWindowOpen = false;
@@ -708,10 +712,11 @@ int main() {
         }
        
         // Clear the window
-        window.clear(sf::Color::White);
+        //window.clear(sf::Color::White);
 
         // Add button
-        window.draw(titleText);
+        window.draw(backgroundImage);
+       // window.draw(titleText);
         window.draw(startButton);
         window.draw(instructionButton);
         window.draw(settingsButton);

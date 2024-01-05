@@ -574,6 +574,17 @@ int main() {
                     boardWindow.close(); // Închide fereastra jocului
                     //break;  // Ieși din bucla jocului
                     sf::RenderWindow winMessageWindow(sf::VideoMode(500, 200), "Congratulations!");
+                    sf::Text winMessage;
+                    sf::Font font;
+                    font.loadFromFile("ARIAL.TTF");
+                    winMessage.setFont(font);
+                    winMessage.setString("Congratulations!");
+                    winMessage.setCharacterSize(24);
+                    winMessage.setFillColor(sf::Color::Green);
+                    sf::FloatRect messageRect = winMessage.getLocalBounds();
+                    winMessage.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
+                    winMessage.setPosition(winMessageWindow.getView().getCenter());
+
                     while (winMessageWindow.isOpen()) {
                         sf::Event event;
                         while (winMessageWindow.pollEvent(event)) {
@@ -581,7 +592,7 @@ int main() {
                                 winMessageWindow.close();
                         }
                         winMessageWindow.clear();
-
+                        winMessageWindow.draw(winMessage);
                         winMessageWindow.display();
                     }
                 }

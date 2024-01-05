@@ -195,62 +195,14 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 {
 	if (MaxNumberBridgesReached(existingBridges))
 	{
-		//// Afiseaza fereastra atunci cand se atinge limita de poduri
-		//sf::RenderWindow limitWindow(sf::VideoMode(500, 300), "Limita de Poduri Atinsa", sf::Style::Close);
-
-		//sf::Font font;
-		//font.loadFromFile("arial.ttf");
-		//sf::Text text("Limita de poduri a fost atinsa!", font, 16);
-		//text.setPosition(10, 20);
-
-		//sf::RectangleShape closeButton(sf::Vector2f(80, 30));
-		//closeButton.setPosition(350, 240);
-		//closeButton.setFillColor(sf::Color::Red);
-
-		//sf::Text messageText("Bridges limit reached", font, 16);
-		//messageText.setPosition(10, 60);
-		//messageText.setFillColor(sf::Color::Black);
-
-		//sf::Text closeButtonText("Close", font, 18);
-		//closeButtonText.setPosition(350, 240);
-		//closeButtonText.setFillColor(sf::Color::White);
-
-		//limitWindow.clear(sf::Color::White);
-		//limitWindow.draw(text);
-		//limitWindow.draw(messageText);
-		//limitWindow.draw(closeButton);
-		//limitWindow.draw(closeButtonText);
-		//limitWindow.display();
-
-		//sf::Event event;
-		//while (limitWindow.isOpen())
-		//{
-		//	while (limitWindow.pollEvent(event))
-		//	{
-		//		if (event.type == sf::Event::Closed)
-		//			limitWindow.close();
-		//		else if (event.type == sf::Event::MouseButtonPressed)
-		//		{
-		//			if (event.mouseButton.button == sf::Mouse::Left)
-		//			{
-		//				sf::Vector2f mousePosition = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
-		//				if (closeButton.getGlobalBounds().contains(mousePosition))
-		//				{
-		//					limitWindow.close();
-		//					// Închide jocul
-		//					exit(0);
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
-	
 		return false;
 	}
 	bool found = false;
+	
 	for (auto& pillar : existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
 		if (selectedPillar.GetPosition() != pillar.GetPosition()) // avoid checking the same pillar
 		{
+			bool bridgeExists = false;
 			U8 dx = std::abs(pillar.m_col - selectedPillar.m_col);
 			U8 dy = std::abs(pillar.m_row - selectedPillar.m_row);
 			std::cout << unsigned(dx) << " " << unsigned(dy) << "\n";
@@ -259,30 +211,6 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 				if (existingBridges.empty()) // check if there are no bridges for optimization purposes
 				{
 					std::cout << "No existing Bridges\n";
-
-					//// Create a pop-up window indicating that there are no pillars to place a bridge between
-					//sf::RenderWindow noBridgeWindow(sf::VideoMode(300, 100), "No Pillars for Bridge", sf::Style::Close);
-
-					//// Create a text message
-					//sf::Font font;
-					//font.loadFromFile("arial.ttf");
-					//sf::Text text("No pillars found to place a bridge.", font, 16);
-					//text.setPosition(10, 20);
-
-					//// Draw the text
-					//noBridgeWindow.clear(sf::Color::White);
-					//noBridgeWindow.draw(text);
-					//noBridgeWindow.display();
-
-					//sf::Event event;
-					//while (noBridgeWindow.isOpen())
-					//{
-					//	while (noBridgeWindow.pollEvent(event))
-					//	{
-					//		if (event.type == sf::Event::Closed)
-					//			noBridgeWindow.close();
-					//	}
-					//}
 					found = true;
 					existingBridges.emplace_back(selectedPillar, pillar, player);
 					if (MaxNumberBridgesReached(existingBridges)) // check if number of maximum allowed bridges has been reached
@@ -292,8 +220,15 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 				}
 				else
 				for (auto& bridge : existingBridges) // check all existing bridges in order to make sure that a bridge doesn't already exist between 2 pillars
-					if (!((bridge.m_startPillar.GetPosition() == selectedPillar.GetPosition() && bridge.m_stopPillar.GetPosition() == pillar.GetPosition()) ||
-						(bridge.m_startPillar.GetPosition() == pillar.GetPosition() && bridge.m_stopPillar.GetPosition() == selectedPillar.GetPosition())))
+					//if (!((bridge.m_startPillar.GetPosition() == selectedPillar.GetPosition() && bridge.m_stopPillar.GetPosition() == pillar.GetPosition()) ||
+						//(bridge.m_startPillar.GetPosition() == pillar.GetPosition() && bridge.m_stopPillar.GetPosition() == selectedPillar.GetPosition())))
+					if((bridge.m_startPillar.GetPosition() == selectedPillar.GetPosition() && bridge.m_stopPillar.GetPosition() == pillar.GetPosition()) ||
+					   (bridge.m_startPillar.GetPosition() == pillar.GetPosition() && bridge.m_stopPillar.GetPosition() == selectedPillar.GetPosition()))
+					{
+							bridgeExists = true;
+							break;
+					}
+				if(bridgeExists == false)
 					{
 						found = true;
 						existingBridges.emplace_back(selectedPillar, pillar, player);
@@ -309,23 +244,6 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 		std::cout << "Placed bridge\n";
 	else
 		std::cout << "Did not find any pillar to place a bridge between\n";
-	//if (!found)
-	//{
-	//	sf::RenderWindow messageWindow2(sf::VideoMode(500, 300), "limit of bridges reached");
-	//	sf::Text message;
-	//	sf::Font font;
-	//	font.loadFromFile("ARIAL.TFF");
-	//	message.setFont(font);
-	//	message.setString("Limit of pillars reached");
-	//	message.setCharacterSize(24);
-	//	message.setFillColor(sf::Color::Red);
-	//	sf::FloatRect messageRect = message.getLocalBounds();
-	//	 message.setOrigin(messageRect.left + messageRect.width / 2.0f, messageRect.top + messageRect.height / 2.0f);
-	//	 message.setPosition(messageWindow2.getView().getCenter());
-	//	 messageWindow2.clear();
-	//	 messageWindow2.draw(message);
- //                                  
-	//}
 	return true;
 }
 

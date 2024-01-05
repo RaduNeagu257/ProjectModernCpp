@@ -553,16 +553,7 @@ int main() {
 
                     }
                 }
-                if ((player == sf::Color::Red && board.PillarOnOppositeSides(redBridges, player)) ||
-                    (player == sf::Color::Black && board.PillarOnOppositeSides(blackBridges, player))) {
-                    // Câștigă jucătorul corespunzător
-                    // Afișează un mesaj de câștig sau efectuează alte acțiuni corespunzătoare
-                    board.ShowWinningMessage(player);
-                    boardWindow.close();  // Închide fereastra jocului
-                    break;  // Ieși din bucla jocului
-                }
-
-
+               
 
                 //boardWindow.clear(sf::Color::White);
                 board.Draw(boardWindow);
@@ -575,7 +566,28 @@ int main() {
                 for (const auto& bridge : blackBridges)
                     bridge.draw(boardWindow);
                 boardWindow.display();
+                if ((player == sf::Color::Red && board.PillarOnOppositeSides(redBridges, player)) ||
+                    (player == sf::Color::Black && board.PillarOnOppositeSides(blackBridges, player))) {
+                    // Câștigă jucătorul corespunzător
+                    // Afișează un mesaj de câștig sau efectuează alte acțiuni corespunzătoare
+                    board.ShowWinningMessage(player);
+                    boardWindow.close(); // Închide fereastra jocului
+                    //break;  // Ieși din bucla jocului
+                    sf::RenderWindow winMessageWindow(sf::VideoMode(500, 200), "Congratulations!");
+                    while (winMessageWindow.isOpen()) {
+                        sf::Event event;
+                        while (winMessageWindow.pollEvent(event)) {
+                            if (event.type == sf::Event::Closed)
+                                winMessageWindow.close();
+                        }
+                        winMessageWindow.clear();
+
+                        winMessageWindow.display();
+                    }
+                }
+
             }
+
           
             std::cout << pillarAdded;//checks how many pillars we have(duplicate or unique pillars)
 

@@ -553,6 +553,15 @@ int main() {
 
                     }
                 }
+                if ((player == sf::Color::Red && board.PillarOnOppositeSides(redBridges, player)) ||
+                    (player == sf::Color::Black && board.PillarOnOppositeSides(blackBridges, player))) {
+                    // Câștigă jucătorul corespunzător
+                    // Afișează un mesaj de câștig sau efectuează alte acțiuni corespunzătoare
+                    board.ShowWinningMessage(player);
+                    boardWindow.close();  // Închide fereastra jocului
+                    break;  // Ieși din bucla jocului
+                }
+
 
 
                 //boardWindow.clear(sf::Color::White);
@@ -569,6 +578,7 @@ int main() {
             }
           
             std::cout << pillarAdded;//checks how many pillars we have(duplicate or unique pillars)
+
         }
 
         if (settingsWindowOpen) {

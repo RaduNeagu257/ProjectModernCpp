@@ -16,7 +16,7 @@ public:
 	void SetBoardSize(U8 size);
 	void SetPillarNumber(U8 pillarNumber);
 	bool PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
-	
+	void ShowWinningMessage(sf::Color player);
 
 	U8 m_boardSize1;
 	U8 m_boardSize2;
@@ -26,7 +26,7 @@ public:
 	U8 m_pillarNumber2;
 	U8 m_pillarNumber3;
 
-	U8 m_bridgesNumberDef;
+	U8 m_bridgesNumberDef=50;
 	U8 m_bridgesNumber1;
 	U8 m_bridgesNumber2;
 	U8 m_bridgesNumber3;

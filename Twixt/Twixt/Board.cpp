@@ -473,7 +473,10 @@ bool Board::WinningChainCreated(std::vector<Bridge>& bridges)
 	if (bridges.size() < minimumBridgesNumber) // check if the number of placed bridges is lower than the minimum required to create a chain from one border to the next
 		return false;
 }
-
+void Board::ShowWinningMessage(sf::Color player)
+{
+	std::cout << "Player " << (player == sf::Color::Red ? "Red" : "Black") << " has won!" << std::endl;
+}
 bool Board::PillarOnOppositeSides(const std::vector<Bridge> bridges, sf::Color player)
 {
 	bool found1=false, found2 = false;
@@ -505,8 +508,15 @@ bool Board::PillarOnOppositeSides(const std::vector<Bridge> bridges, sf::Color p
 				found2 = true;
 		}
 	}
-	return found1 && found2;
+	bool winningCondition= found1 && found2;
+	if (winningCondition)
+	{
+		ShowWinningMessage(player);
+	}
+
+	return winningCondition;
 }
+
 
 void Board::SetPillarNumber(U8 pillarNumber)
 {

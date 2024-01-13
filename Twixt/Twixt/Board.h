@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <tuple>
+#include <queue>
+//#include <unordered_set>
 #include "Pillar.h"
 #include "Bridge.h"
 #define DOT_RADIUS 10
@@ -16,7 +18,6 @@ public:
 	void SetBoardSize(U8 size);
 	void SetPillarNumber(U8 pillarNumber);
 	bool PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
-	void ShowWinningMessage(sf::Color player);
 
 	U8 m_boardSize1;
 	U8 m_boardSize2;
@@ -60,8 +61,8 @@ public:
     void SetMaxBridgeNumber(U8 bridgeNumber);
     bool MaxNumberPillarsReached(std::vector<Pillar>& pillars);
 	bool MaxNumberBridgesReached(std::vector<Bridge>& bridges);
-	bool WinningChainCreated(std::vector<Bridge>& bridges);
-	bool PillarOnOppositeSides(const std::vector<Bridge> bridges, sf::Color player);
+	bool WinningChainCreated(std::vector<Bridge>& bridges, const std::vector<Pillar> pillars, sf::Color player);
+	bool PillarOnOppositeSides(const std::vector<Pillar> pillars, sf::Color player);
 
 private:
 	//std::vector<sf::CircleShape> m_tiles;

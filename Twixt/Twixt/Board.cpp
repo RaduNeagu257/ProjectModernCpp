@@ -200,7 +200,7 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 	bool found = false;
 	
 	for (auto& pillar : existingPillars) // check every pillar other than the previously selected one if a bridge can be placed
-		if (selectedPillar.GetPosition() != pillar.GetPosition()) // avoid checking the same pillar
+		if (selectedPillar != pillar) // avoid checking the same pillar
 		{
 			bool bridgeExists = false;
 			U8 dx = std::abs(pillar.m_col - selectedPillar.m_col);
@@ -220,10 +220,8 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 				}
 				else
 				for (auto& bridge : existingBridges) // check all existing bridges in order to make sure that a bridge doesn't already exist between 2 pillars
-					//if (!((bridge.m_startPillar.GetPosition() == selectedPillar.GetPosition() && bridge.m_stopPillar.GetPosition() == pillar.GetPosition()) ||
-						//(bridge.m_startPillar.GetPosition() == pillar.GetPosition() && bridge.m_stopPillar.GetPosition() == selectedPillar.GetPosition())))
-					if((bridge.m_startPillar.GetPosition() == selectedPillar.GetPosition() && bridge.m_stopPillar.GetPosition() == pillar.GetPosition()) ||
-					   (bridge.m_startPillar.GetPosition() == pillar.GetPosition() && bridge.m_stopPillar.GetPosition() == selectedPillar.GetPosition()))
+					if((bridge.m_startPillar == selectedPillar && bridge.m_stopPillar == pillar) ||
+					   (bridge.m_startPillar == pillar && bridge.m_stopPillar == selectedPillar))
 					{
 							bridgeExists = true;
 							break;
@@ -388,7 +386,7 @@ bool Board::IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& temp
 {
 	//each existing pillar is checked in case the new pillar would be placed on a position which already has a pillar on it
 	for (const auto& pillar : pillars) {
-		if (pillar.GetPosition() == tempPillar.GetPosition())
+		if (pillar == tempPillar)
 			return true;
 	}
 	return false;
@@ -467,54 +465,92 @@ bool Board::MaxNumberBridgesReached(std::vector<Bridge>& bridges)
 	return bridges.size() >= m_bridgesNumberDef;
 }
 
-bool Board::WinningChainCreated(std::vector<Bridge>& bridges)
+bool Board::WinningChainCreated(std::vector<Bridge>& bridges, const std::vector<Pillar> pillars, sf::Color player)
 {
 	U8 minimumBridgesNumber = m_size / 2 + m_size % 2;
 	if (bridges.size() < minimumBridgesNumber) // check if the number of placed bridges is lower than the minimum required to create a chain from one border to the next
 		return false;
+	if (!PillarOnOppositeSides(pillars, player))
+		return false;
+
+	std::queue<Pillar> queue;
+	std::vector<Pillar> visited;
+
+	// initialize the queue with the pillars placed on the first border depending on the player color
+	if (player == sf::Color::Red)
+	{
+		for (auto& pillar : pillars)
+			if (pillar.m_row == 0)
+				queue.push(pillar);
+	}
+	else if (player == sf::Color::Black)
+	{
+		for (auto& pillar : pillars)
+			if (pillar.m_col == 0)
+				queue.push(pillar);
+	}
+
+	// BFS algorithm
+	while (!queue.empty())
+	{
+		Pillar current = queue.front();
+		queue.pop();
+
+		// check if the opposite border was reached depending on the player color
+		if((player == sf::Color::Red && current.m_row == m_size -1) || (player == sf::Color::Black && current.m_col == m_size - 1))
+			return true;
+
+		for (auto& bridge : bridges)
+		{
+			Pillar connectedPillar;
+		
+			// find the connected pillar to the currently selected one
+			if(current == bridge.m_startPillar)
+				connectedPillar = bridge.m_stopPillar;
+			else if (current == bridge.m_stopPillar)
+				connectedPillar = bridge.m_startPillar;
+
+			// check if the found connected pillar has been previously found
+			if(std::find(visited.begin(),visited.end(), connectedPillar) == visited.end())
+			{
+				queue.push(connectedPillar);
+				visited.push_back(connectedPillar);
+			}
+		}
+	}
+	return false;
+
 }
-void Board::ShowWinningMessage(sf::Color player)
-{
-	std::cout << "Player " << (player == sf::Color::Red ? "Red" : "Black") << " has won!" << std::endl;
-}
-bool Board::PillarOnOppositeSides(const std::vector<Bridge> bridges, sf::Color player)
+bool Board::PillarOnOppositeSides(const std::vector<Pillar> pillars, sf::Color player)
 {
 	bool found1=false, found2 = false;
 	if (player == sf::Color::Red)
 	{
 		// search for at least one pillar on the first row and one pillar on the last row
-		for (auto& bridge : bridges)
+		for (auto& pillar : pillars)
 		{
-			if ((bridge.m_startPillar.m_row == 0 && bridge.m_startPillar.m_col > 0 && bridge.m_startPillar.m_col < m_size - 1) ||
-				(bridge.m_stopPillar.m_row == 0 && bridge.m_stopPillar.m_col > 0 && bridge.m_stopPillar.m_col < m_size - 1))
+			if ((pillar.m_row == 0 && pillar.m_col > 0 && pillar.m_col < m_size - 1))
 				found1 = true;
-			if ((bridge.m_startPillar.m_row == m_size-1 && bridge.m_startPillar.m_col > 0 && bridge.m_startPillar.m_col < m_size - 1) ||
-				(bridge.m_stopPillar.m_row == m_size - 1 && bridge.m_stopPillar.m_col > 0 && bridge.m_stopPillar.m_col < m_size - 1))
+			if ((pillar.m_row == m_size-1 && pillar.m_col > 0 && pillar.m_col < m_size - 1))
 				found2 = true;
 			if (found1 && found2)
-				break;
+				return true;
 		}
 	}
 	else if (player == sf::Color::Black)
 	{	
 		//search for at least one pillar on the first column and one pillar on the last column
-		for (auto& bridge : bridges)
+		for (auto& pillar : pillars)
 		{
-			if ((bridge.m_startPillar.m_col == 0 && bridge.m_startPillar.m_row > 0 && bridge.m_startPillar.m_row < m_size - 1) ||
-				(bridge.m_stopPillar.m_col == 0 && bridge.m_stopPillar.m_row > 0 && bridge.m_stopPillar.m_row < m_size - 1))
+			if ((pillar.m_col == 0 && pillar.m_row > 0 && pillar.m_row < m_size - 1))
 				found1 = true;
-			if ((bridge.m_startPillar.m_col == m_size - 1 && bridge.m_startPillar.m_row > 0 && bridge.m_startPillar.m_row < m_size - 1) ||
-				(bridge.m_stopPillar.m_col == m_size - 1 && bridge.m_stopPillar.m_row > 0 && bridge.m_stopPillar.m_row < m_size - 1))
+			if ((pillar.m_col == m_size - 1 && pillar.m_row > 0 && pillar.m_row < m_size - 1))
 				found2 = true;
+			if (found1 && found2)
+				return true;
 		}
 	}
-	bool winningCondition= found1 && found2;
-	if (winningCondition)
-	{
-		ShowWinningMessage(player);
-	}
-
-	return winningCondition;
+	return false;
 }
 
 

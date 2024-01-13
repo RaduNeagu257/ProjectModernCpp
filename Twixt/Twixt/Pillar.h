@@ -23,6 +23,9 @@ public:
 	void SetColor(sf::Color color);
 	U8 m_row;
 	U8 m_col;
+
+	friend bool operator==(const Pillar& lhs, const Pillar& rhs);
+	friend bool operator!=(const Pillar& lhs, const Pillar& rhs);
 	
 	
 

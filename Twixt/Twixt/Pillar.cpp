@@ -44,3 +44,15 @@ void Pillar::Draw(sf::RenderWindow& boardWindow)
 {
 	boardWindow.draw(shape);
 }
+
+bool operator==(const Pillar& lhs, const Pillar& rhs)
+{
+	// 2 pillars are "equal" when they have the same position on the board, i.e. same row and column index
+	return lhs.m_row == rhs.m_row && lhs.m_col == rhs.m_col;
+}
+
+bool operator!=(const Pillar& lhs, const Pillar& rhs)
+{
+	// 2 pillars are "equal" when they have the same position on the board, i.e. same row and column index
+	return lhs.m_row != rhs.m_row || lhs.m_col != rhs.m_col;
+}

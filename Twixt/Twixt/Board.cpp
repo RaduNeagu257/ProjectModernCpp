@@ -191,7 +191,7 @@ void Board::SetBoardSize(U8 size)
 	m_verticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
-bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player)
+bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player, std::vector<Bridge>& otherBridges)
 {
 	if (MaxNumberBridgesReached(existingBridges))
 	{
@@ -212,6 +212,7 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 				{
 					std::cout << "No existing Bridges\n";
 					found = true;
+					std::cout << "intersection: " << checkIntersection(Bridge(selectedPillar, pillar, player), existingBridges, otherBridges) << "\n";
 					existingBridges.emplace_back(selectedPillar, pillar, player);
 					if (MaxNumberBridgesReached(existingBridges)) // check if number of maximum allowed bridges has been reached
 					{
@@ -229,6 +230,7 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 				if(bridgeExists == false)
 					{
 						found = true;
+						std::cout << "intersection: " << checkIntersection(Bridge(selectedPillar, pillar, player), existingBridges, otherBridges) << "\n";
 						existingBridges.emplace_back(selectedPillar, pillar, player);
 						if (MaxNumberBridgesReached(existingBridges))// check if number of maximum allowed bridges has been reached
 						{
@@ -559,3 +561,60 @@ void Board::SetPillarNumber(U8 pillarNumber)
 	m_pillarNumberDef = pillarNumber;
 }
 
+
+
+enum Orientation { COLLINEAR, CLOCKWISE, COUNTERCLOCKWISE };
+
+Orientation getOrientation(const sf::Vector2f& p, const sf::Vector2f& q, const sf::Vector2f& r) {
+	float val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+	if (val == 0) return COLLINEAR;
+	return (val > 0) ? CLOCKWISE : COUNTERCLOCKWISE;
+}
+
+bool onSegment(const sf::Vector2f& p, const sf::Vector2f& q, const sf::Vector2f& r) {
+	return q.x <= std::max(p.x, r.x) && q.x >= std::min(p.x, r.x) &&
+		q.y <= std::max(p.y, r.y) && q.y >= std::min(p.y, r.y);
+}
+
+bool linesIntersect(const sf::Vector2f& p1, const sf::Vector2f& q1, const sf::Vector2f& p2, const sf::Vector2f& q2) {
+	Orientation o1 = getOrientation(p1, q1, p2);
+	Orientation o2 = getOrientation(p1, q1, q2);
+	Orientation o3 = getOrientation(p2, q2, p1);
+	Orientation o4 = getOrientation(p2, q2, q1);
+
+	if (o1 != o2 && o3 != o4) return true;
+
+	if (o1 == COLLINEAR && onSegment(p1, p2, q1)) return true;
+	if (o2 == COLLINEAR && onSegment(p1, q2, q1)) return true;
+	if (o3 == COLLINEAR && onSegment(p2, p1, q2)) return true;
+	if (o4 == COLLINEAR && onSegment(p2, q1, q2)) return true;
+
+	return false;
+}
+
+bool Board::checkIntersection(Bridge newBridge, std::vector<Bridge> bridges1, std::vector<Bridge> bridges2)
+{
+	sf::Vector2f newStart = newBridge.m_startPillar.GetPosition();
+	sf::Vector2f newEnd = newBridge.m_stopPillar.GetPosition();
+
+	for (const auto& existingBridge : bridges1) {
+		sf::Vector2f existingStart = existingBridge.getStartPosition();
+		sf::Vector2f existingEnd = existingBridge.getEndPosition();
+
+		if (linesIntersect(newStart, newEnd, existingStart, existingEnd)) {
+			return true; // Intersection found
+		}
+	}
+
+	for (const auto& existingBridge : bridges2) {
+		sf::Vector2f existingStart = existingBridge.getStartPosition();
+		sf::Vector2f existingEnd = existingBridge.getEndPosition();
+
+		if (linesIntersect(newStart, newEnd, existingStart, existingEnd)) {
+			return true; // Intersection found
+		}
+	}
+
+	return false;
+
+}

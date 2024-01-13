@@ -18,7 +18,7 @@ enum ErrorMessages{
 const std::map<ErrorMessages, std::tuple<std::string, std::string, bool>> message = {
     {PillarLimit, {"Limit reached", "Limit of pillars reached", true}},
     {BridgesLimit, {"Limit reached", "Limit of bridges reached", true}},
-    {WrongBase, {"Wrong base", "Pillar placed in the wrong base", false}}
+    {WrongBase, {"Wrong base", "Pillar placed in the wrong base", false}},
 
 };
 
@@ -320,7 +320,7 @@ int main() {
                                                 {
                                                     std::cout << "Red ";
                                                     board.PlacePillar(redPillars, tempPillar, player, pillarAdded);
-                                                    if (!board.PlaceBridge(tempPillar, redPillars, redBridges, player)) {
+                                                    if (!board.PlaceBridge(tempPillar, redPillars, redBridges, player,blackBridges)) {
                                                         showMessage(BridgesLimit, boardWindow);
                                                     }
                                                     std::cout << "winning chain created red: " << board.WinningChainCreated(redBridges, redPillars, player) << "\n";
@@ -353,7 +353,7 @@ int main() {
                                                 {
                                                     std::cout << "Black ";
                                                     board.PlacePillar(blackPillars, tempPillar, player, pillarAdded);
-                                                    if (!board.PlaceBridge(tempPillar, blackPillars, blackBridges, player)) {
+                                                    if (!board.PlaceBridge(tempPillar, blackPillars, blackBridges, player,redBridges)) {
                                                         showMessage(BridgesLimit, boardWindow);
                                                     }
                                                     std::cout << "winning chain created black: " << board.WinningChainCreated(blackBridges, blackPillars, player) << "\n";

@@ -17,7 +17,7 @@ public:
 	void Draw(sf::RenderWindow& BoardWndow);
 	void SetBoardSize(U8 size);
 	void SetPillarNumber(U8 pillarNumber);
-	bool PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player);
+	bool PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges, sf::Color player, std::vector<Bridge>& otherBridges);
 
 	U8 m_boardSize1;
 	U8 m_boardSize2;
@@ -63,7 +63,7 @@ public:
 	bool MaxNumberBridgesReached(std::vector<Bridge>& bridges);
 	bool WinningChainCreated(std::vector<Bridge>& bridges, const std::vector<Pillar> pillars, sf::Color player);
 	bool PillarOnOppositeSides(const std::vector<Pillar> pillars, sf::Color player);
-
+	bool checkIntersection(Bridge newBridge, std::vector<Bridge> bridges1, std::vector<Bridge> bridges2);
 private:
 	//std::vector<sf::CircleShape> m_tiles;
 	std::vector<std::tuple<sf::CircleShape, U8, U8>> m_tiles;

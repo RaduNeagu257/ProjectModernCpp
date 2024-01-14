@@ -1,28 +1,28 @@
 ﻿#include "Board.h"
 #include <iostream>
 Board::Board()
-	:m_size(24),
-	m_tileSize(30),
-	m_boardSize1(18),
-	m_boardSize2(24),
-	m_boardSize3(30),
-	m_pillarNumberDef(50),
-	m_pillarNumber1(28),
-	m_pillarNumber2(50),
-	m_pillarNumber3(78),
-	m_bridgesNumberDef(50),
-	m_bridgesNumber1(2),
-	m_bridgesNumber2(50),
-	m_bridgesNumber3(75),
-	button18x18({ 100, 50 }),
-	button24x24({ 100, 50 }),
-	button30x30({ 100, 50 }),
-	button28pillars({ 100, 50 }),
-	button50pillars({ 100, 50 }),
-	button78pillars({ 100, 50 }),
-	button25bridges({ 120,50 }),
-	button50bridges({ 120,50 }),
-	button75bridges({ 120, 50 })
+	:m_tileSize{ 30 },
+	m_size{ 24 },
+	m_boardSize1{ 18 },
+	m_boardSize2{ 24 },
+	m_boardSize3{ 30 },
+	m_pillarNumberDef{ 50 },
+	m_pillarNumber1{ 25 },
+	m_pillarNumber2{ 50 },
+	m_pillarNumber3{ 75 },
+	m_bridgesNumberDef{ 50 },
+	m_bridgesNumber1{ 25 },
+	m_bridgesNumber2{ 50 },
+	m_bridgesNumber3{ 75 },
+	button18x18{ { 100, 50 } },
+	button24x24{ { 100, 50 } },
+	button30x30{ { 100, 50 } },
+	button28pillars{ { 100, 50 } },
+	button50pillars{ { 100, 50 } },
+	button78pillars{ { 100, 50 } },
+	button25bridges{ { 120,50 } },
+	button50bridges{ { 120,50 } },
+	button75bridges{ { 120, 50 } }
 
 
 {
@@ -58,28 +58,21 @@ Board::Board()
 	float lineWidth = (m_tileSize + 1) * m_size;
 	m_horizontalLine1.setSize({ lineWidth, LINE_THICKNESS });
 	m_horizontalLine1.setFillColor(sf::Color::Red);
-	//m_horizontalLine1.setPosition(0, m_tileSize);
 
 	m_horizontalLine2.setSize({ lineWidth, LINE_THICKNESS });
 	m_horizontalLine2.setFillColor(sf::Color::Red);
-	//m_horizontalLine2.setPosition(0, (m_size - 1) * m_tileSize - 2);
 
 	// Create the black vertical lines
 	float lineHeight = (m_tileSize + 1) * m_size;
 	m_verticalLine1.setSize({ LINE_THICKNESS, lineHeight });
 	m_verticalLine1.setFillColor(sf::Color::Black);
-	//m_verticalLine1.setPosition(m_tileSize, 0);
 
 	m_verticalLine2.setSize({ LINE_THICKNESS, lineHeight });
 	m_verticalLine2.setFillColor(sf::Color::Black);
-	//m_verticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
 void Board::Draw(sf::RenderWindow& BoardWindow)
 {
-	//Pillar blackPillar(100.0f, 100.0f, sf::Color::Black);
-	//Pillar redPillar(150.0f, 150.0f, sf::Color::Red);
-	// Calculate the dimensions of the array
 	float totalBoardWidth = m_size * m_tileSize;
 	float totalBoardHeight = m_size * m_tileSize;
 
@@ -146,13 +139,11 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	BoardWindow.draw(m_horizontalLine2);
 	BoardWindow.draw(m_verticalLine1);
 	BoardWindow.draw(m_verticalLine2);
-	//blackPillar.draw(BoardWindow);
-	//redPillar.draw(BoardWindow);
 	BoardWindow.draw(button18x18);
 	BoardWindow.draw(button24x24);
 	BoardWindow.draw(button30x30);
-	}
-void Board::SetBoardSize(U8 size)
+}
+void Board::SetBoardSize(const U8& size)
 {
 	m_size = size;
 	m_tiles.clear(); // clean the tiles vector to add new tiles
@@ -191,7 +182,7 @@ void Board::SetBoardSize(U8 size)
 	m_verticalLine2.setPosition((m_size - 1) * m_tileSize - 2, 0);
 }
 
-bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,sf::Color player, std::vector<Bridge>& otherBridges)
+bool Board::PlaceBridge(const Pillar& selectedPillar, const std::vector<Pillar>& existingPillars, std::vector<Bridge>& existingBridges,const sf::Color& player,const std::vector<Bridge>& otherBridges)
 {
 	if (MaxNumberBridgesReached(existingBridges))
 	{
@@ -203,23 +194,13 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 		if (selectedPillar != pillar) // avoid checking the same pillar
 		{
 			bool bridgeExists = false;
+
 			U8 dx = std::abs(pillar.m_col - selectedPillar.m_col);
 			U8 dy = std::abs(pillar.m_row - selectedPillar.m_row);
 			std::cout << unsigned(dx) << " " << unsigned(dy) << "\n";
+
 			if (((dx == 2 && dy == 1) || (dx == 1 && dy == 2))) // check if pillars are in an L shape
 			{
-				if (existingBridges.empty()) // check if there are no bridges for optimization purposes
-				{
-					std::cout << "No existing Bridges\n";
-					found = true;
-					std::cout << "intersection: " << checkIntersection(Bridge(selectedPillar, pillar, player), existingBridges, otherBridges) << "\n";
-					existingBridges.emplace_back(selectedPillar, pillar, player);
-					if (MaxNumberBridgesReached(existingBridges)) // check if number of maximum allowed bridges has been reached
-					{
-						return false;
-					}
-				}
-				else
 				for (auto& bridge : existingBridges) // check all existing bridges in order to make sure that a bridge doesn't already exist between 2 pillars
 					if((bridge.m_startPillar == selectedPillar && bridge.m_stopPillar == pillar) ||
 					   (bridge.m_startPillar == pillar && bridge.m_stopPillar == selectedPillar))
@@ -231,11 +212,12 @@ bool Board::PlaceBridge(Pillar& selectedPillar, const std::vector<Pillar>& exist
 					{
 						found = true;
 						std::cout << "intersection: " << checkIntersection(Bridge(selectedPillar, pillar, player), existingBridges, otherBridges) << "\n";
-						existingBridges.emplace_back(selectedPillar, pillar, player);
-						if (MaxNumberBridgesReached(existingBridges))// check if number of maximum allowed bridges has been reached
+						if(!checkIntersection(Bridge(selectedPillar, pillar, player), existingBridges, otherBridges))
+							existingBridges.emplace_back(selectedPillar, pillar, player);
+						if (MaxNumberBridgesReached(existingBridges)) // check if number of maximum allowed bridges has been reached
 						{
 							
-							return false; //expand outcome later
+							return false;
 						}
 					}
 			}
@@ -394,7 +376,7 @@ bool Board::IsPillarThere(const std::vector<Pillar>& pillars, const Pillar& temp
 	return false;
 }
 
-void Board::PlacePillar(std::vector<Pillar>& pillars, Pillar& tempPillar, sf::Color& player, U16& pillarAdded)
+void Board::PlacePillar(std::vector<Pillar>& pillars,const Pillar& tempPillar, U16& pillarAdded)
 {
 	if(!MaxNumberPillarsReached(pillars))
 	{
@@ -415,29 +397,31 @@ void Board::SwapSides(std::vector<Pillar>& redPillars, std::vector<Pillar>& blac
 {
 	// swap the pillars
 	std::swap(redPillars, blackPillars);
+
 	// swap the color of the pillars
 	for (auto& pillar : redPillars)
-		pillar.SetColor(sf::Color::Red);
+		pillar.setColor(sf::Color::Red);
 	for (auto& pillar : blackPillars)
-		pillar.SetColor(sf::Color::Black);
+		pillar.setColor(sf::Color::Black);
 }
 
-bool Board::PlacePillarInBase(Pillar& pillar)
+bool Board::PlacePillarInBase(const Pillar& tempPillar)
 {
 	// check if a pillar is to be placed in one of the inaccessible four corners of the board
-	if (pillar.m_row == 0 && (pillar.m_col == 0 || pillar.m_col == m_size - 1))
+	if (tempPillar.m_row == 0 && (tempPillar.m_col == 0 || tempPillar.m_col == m_size - 1))
 	{
 		return false;
 	}
-	if(pillar.m_row == m_size - 1 && (pillar.m_col == 0 || pillar.m_col == m_size - 1))
+	if(tempPillar.m_row == m_size - 1 && (tempPillar.m_col == 0 || tempPillar.m_col == m_size - 1))
 	{
 		return false;
 	}
+
 	// check if pillar is to be placed in a base
-	if (pillar.m_col == 0 || pillar.m_col == m_size - 1) 
-		return (pillar.GetColor() == m_verticalLine1.getFillColor() || pillar.GetColor() == m_verticalLine2.getFillColor());
-	if (pillar.m_row == 0 || pillar.m_row == m_size - 1)
-		return (pillar.GetColor() == m_horizontalLine1.getFillColor() || pillar.GetColor() == m_horizontalLine2.getFillColor());
+	if (tempPillar.m_col == 0 || tempPillar.m_col == m_size - 1)
+		return (tempPillar.GetColor() == m_verticalLine1.getFillColor() || tempPillar.GetColor() == m_verticalLine2.getFillColor());
+	if (tempPillar.m_row == 0 || tempPillar.m_row == m_size - 1)
+		return (tempPillar.GetColor() == m_horizontalLine1.getFillColor() || tempPillar.GetColor() == m_horizontalLine2.getFillColor());
 
 	return true;
 }
@@ -452,22 +436,22 @@ U8 Board::GetMaxBridgeNumber() const
 	return m_bridgesNumberDef;
 }
 
-void Board::SetMaxBridgeNumber(U8 bridgeNumber) 
+void Board::SetMaxBridgeNumber(const U8& bridgeNumber) 
 {
 	m_bridgesNumberDef = bridgeNumber;
 }
 
-bool Board::MaxNumberPillarsReached(std::vector<Pillar>& pillars)
+bool Board::MaxNumberPillarsReached(const std::vector<Pillar>& pillars)
 {
 	return pillars.size() >= m_pillarNumberDef;
 }
 
-bool Board::MaxNumberBridgesReached(std::vector<Bridge>& bridges)
+bool Board::MaxNumberBridgesReached(const std::vector<Bridge>& bridges)
 {
 	return bridges.size() >= m_bridgesNumberDef;
 }
 
-bool Board::WinningChainCreated(std::vector<Bridge>& bridges, const std::vector<Pillar> pillars, sf::Color player)
+bool Board::WinningChainCreated(const std::vector<Bridge>& bridges, const std::vector<Pillar> pillars, const sf::Color player)
 {
 	U8 minimumBridgesNumber = m_size / 2 + m_size % 2;
 	if (bridges.size() < minimumBridgesNumber) // check if the number of placed bridges is lower than the minimum required to create a chain from one border to the next
@@ -523,7 +507,7 @@ bool Board::WinningChainCreated(std::vector<Bridge>& bridges, const std::vector<
 	return false;
 
 }
-bool Board::PillarOnOppositeSides(const std::vector<Pillar> pillars, sf::Color player)
+bool Board::PillarOnOppositeSides(const std::vector<Pillar>& pillars,const sf::Color& player)
 {
 	bool found1=false, found2 = false;
 	if (player == sf::Color::Red)
@@ -556,7 +540,7 @@ bool Board::PillarOnOppositeSides(const std::vector<Pillar> pillars, sf::Color p
 }
 
 
-void Board::SetPillarNumber(U8 pillarNumber)
+void Board::SetPillarNumber(const U8& pillarNumber)
 {
 	m_pillarNumberDef = pillarNumber;
 }
@@ -592,26 +576,49 @@ bool linesIntersect(const sf::Vector2f& p1, const sf::Vector2f& q1, const sf::Ve
 	return false;
 }
 
-bool Board::checkIntersection(Bridge newBridge, std::vector<Bridge> bridges1, std::vector<Bridge> bridges2)
+bool Board::checkIntersection(const Bridge& newBridge, const std::vector<Bridge>& bridges1,const std::vector<Bridge>& bridges2)
 {
 	sf::Vector2f newStart = newBridge.m_startPillar.GetPosition();
+	newStart.y = m_size - 1 - newBridge.m_startPillar.m_row;
+	newStart.x = newBridge.m_startPillar.m_col;
+
 	sf::Vector2f newEnd = newBridge.m_stopPillar.GetPosition();
+	newEnd.y = m_size - 1 - newBridge.m_stopPillar.m_row;
+	newEnd.x = newBridge.m_stopPillar.m_col;
 
-	for (const auto& existingBridge : bridges1) {
-		sf::Vector2f existingStart = existingBridge.getStartPosition();
-		sf::Vector2f existingEnd = existingBridge.getEndPosition();
+	if(!bridges1.empty())
+	for (const auto& existingBridge : bridges1) 
+	{
+		if (newBridge.m_startPillar != existingBridge.m_stopPillar && newBridge.m_stopPillar != existingBridge.m_startPillar &&
+			newBridge.m_startPillar != existingBridge.m_startPillar && newBridge.m_stopPillar != existingBridge.m_stopPillar)
+		{
+			sf::Vector2f existingStart = existingBridge.m_startPillar.GetPosition();
+			existingStart.y = m_size - 1 - existingBridge.m_startPillar.m_row;
+			existingStart.x = existingBridge.m_startPillar.m_col;
 
-		if (linesIntersect(newStart, newEnd, existingStart, existingEnd)) {
-			return true; // Intersection found
+			sf::Vector2f existingEnd = existingBridge.m_stopPillar.GetPosition();
+			existingEnd.y = m_size - 1 - existingBridge.m_stopPillar.m_row;
+			existingEnd.x = existingBridge.m_stopPillar.m_col;
+
+			if (linesIntersect(newStart, newEnd, existingStart, existingEnd)) 
+				return true; // Intersection found
 		}
 	}
-
+	if(!bridges2.empty())
 	for (const auto& existingBridge : bridges2) {
-		sf::Vector2f existingStart = existingBridge.getStartPosition();
-		sf::Vector2f existingEnd = existingBridge.getEndPosition();
+		if (newBridge.m_startPillar != existingBridge.m_stopPillar && newBridge.m_stopPillar != existingBridge.m_startPillar &&
+			newBridge.m_startPillar != existingBridge.m_startPillar && newBridge.m_stopPillar != existingBridge.m_stopPillar)
+		{
+			sf::Vector2f existingStart = existingBridge.m_startPillar.GetPosition();
+			existingStart.y = m_size - 1 - existingBridge.m_startPillar.m_row;
+			existingStart.x = existingBridge.m_startPillar.m_col;
 
-		if (linesIntersect(newStart, newEnd, existingStart, existingEnd)) {
-			return true; // Intersection found
+			sf::Vector2f existingEnd = existingBridge.m_stopPillar.GetPosition();
+			existingEnd.y = m_size - 1 - existingBridge.m_stopPillar.m_row;
+			existingEnd.x = existingBridge.m_stopPillar.m_col;
+
+			if (linesIntersect(newStart, newEnd, existingStart, existingEnd)) 
+				return true; // Intersection found
 		}
 	}
 

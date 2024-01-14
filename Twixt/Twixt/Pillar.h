@@ -7,26 +7,24 @@
 #define U16 uint16_t
 
 class Pillar {
-private:
-	sf::CircleShape shape; //forma pilonului
-	sf::Color color; // culoarea
-	sf::Vector2f m_position;
 public:
-	Pillar(float x, float y, sf::Color c,U8 row,U8 col);
+	Pillar(const float& x,const float& y, const sf::Color& c,const U8& row,const U8& col);
 	Pillar() = default;
 	sf::Vector2f GetPosition() const;
 	sf::Vector2f GetCenter() const;
 	sf::Color GetColor() const;
 	float GetRadius() const;
-	void Draw(sf::RenderWindow& boardWindow);// desenare pilon U8r-o fereastra
-	void SetPosition(const sf::Vector2f& position);
-	void SetColor(sf::Color color);
+	void Draw(sf::RenderWindow& boardWindow);
+	void setPosition(const sf::Vector2f& position);
+	void setColor(const sf::Color& color);
+
 	U8 m_row;
 	U8 m_col;
-
+	
 	friend bool operator==(const Pillar& lhs, const Pillar& rhs);
 	friend bool operator!=(const Pillar& lhs, const Pillar& rhs);
-	
-	
-
+private:
+	sf::CircleShape shape;
+	sf::Color color;
+	sf::Vector2f m_position;
 };

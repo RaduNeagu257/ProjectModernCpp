@@ -9,20 +9,25 @@ float BRIDGE_LINE_THICKNESS = 5.0f;
 void DrawErrorWindow(const std::string& errorText);
 void DrawSwapWindow(bool& answer);
 
-enum ErrorMessages{
+enum Messages{
     PillarLimit,
     BridgesLimit,
-    WrongBase
+    RedPlayerWon,
+    BlackPlayerWon,
+    WrongBase,
+    PillarColision
 };
 
-const std::map<ErrorMessages, std::tuple<std::string, std::string, bool>> message = {
+const std::map<Messages, std::tuple<std::string, std::string, bool>> message = {
     {PillarLimit, {"Limit reached", "Limit of pillars reached", true}},
     {BridgesLimit, {"Limit reached", "Limit of bridges reached", true}},
+    {RedPlayerWon, {"Red player has won", "The Red player has won", true}},
+    {BlackPlayerWon, {"Black player has won", "The Black player has won", true}},
     {WrongBase, {"Wrong base", "Pillar placed in the wrong base", false}},
-
+    {PillarColision, {"Pillar Collision", "There already is a pillar in this position", false}},
 };
 
-void showMessage(ErrorMessages errorMessage, sf::RenderWindow& gameWindow) {
+void showMessage(Messages errorMessage, sf::RenderWindow& gameWindow) {
     std::string windowTitle, windowMessage;
     bool windowClosure;
     std::tie(windowTitle, windowMessage, windowClosure) =  message.at(errorMessage);
@@ -38,7 +43,7 @@ void showMessage(ErrorMessages errorMessage, sf::RenderWindow& gameWindow) {
     closeButtonText.setPosition(closeButton.getPosition() + sf::Vector2f(10, 10));
 
     if (!font.loadFromFile("ARIAL.TTF")) {
-        // Tratarea cazului în care încărcarea fontului a eșuat
+        // Failure to load font
         std::cerr << "Failed to load font!" << std::endl;
         return;
     }
@@ -102,17 +107,15 @@ int main() {
     Pillar stopPillar;
 
     sf::Texture backgroundTexture;
-    if (!backgroundTexture.loadFromFile("../Images/banner.jpg")) {
-        //error loading image
+    if (!backgroundTexture.loadFromFile("../Images/banner.jpg")) 
+    {
+        //Error loading image
         std::cerr << "Failed to load background image!" << std::endl;
         return -1;
     }
     sf::Sprite backgroundImage(backgroundTexture);
-    backgroundImage.setScale(static_cast<float>(window.getSize().x) / backgroundTexture.getSize().x,
-        static_cast<float>(window.getSize().y) / backgroundTexture.getSize().y);
-
-
-  
+    backgroundImage.setScale(static_cast<float>(window.getSize().x) / backgroundTexture.getSize().x, 
+                             static_cast<float>(window.getSize().y) / backgroundTexture.getSize().y);
 
     // Declare the "Start" button
     sf::RectangleShape startButton(sf::Vector2f(250, 70));
@@ -131,8 +134,6 @@ int main() {
     instructionButton.setFillColor(sf::Color::Black);
     instructionButton.setPosition(860, 730);
     instructionButton.setOutlineThickness(0);
-
- 
 
     // Declare the "Ok" button
     sf::RectangleShape okButton(sf::Vector2f(250, 70));
@@ -170,15 +171,6 @@ int main() {
     settingsButtonText.setStyle(sf::Text::Bold);
     centerTextInButton(settingsButtonText, settingsButton);
 
-
-
-    //// Set the title of the window
-    //sf::Text titleText("Twixt Game", titleFont, 36); // You can adjust the font size
-    //titleText.setFillColor(sf::Color::Black); // Set the color
-    //titleText.setStyle(sf::Text::Bold); // Make it bold
-    //// Center the title above the button
-    //titleText.setPosition(860 + (startButton.getSize().x - titleText.getGlobalBounds().width) / 2, 440);
-
     bool instructionsWindowOpen = false;
     bool boardWindowOpen = false;
     bool settingsWindowOpen = false;
@@ -190,29 +182,35 @@ int main() {
 
 
     // Main game loop
-    while (window.isOpen()) {
+    while (window.isOpen()) 
+    {
         sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+        while (window.pollEvent(event)) 
+        {
+            if (event.type == sf::Event::Closed) 
                 window.close();
-            }
+
             // Check if the left mouse click is pressed
-            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) 
+            {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
                 sf::Vector2f mousePositionFloat(mousePosition.x, mousePosition.y);
 
                 // Check if the "Instructions" button is clicked
-                if (instructionButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
+                if (instructionButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) 
+                {
                     instructionsWindowOpen = true;
                     std::cout << "Instructions button clicked!" << std::endl; // Debug message
                 }
                 // Check if the "Board game" button is clicked
-                else if (startButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
+                else if (startButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) 
+                {
                     boardWindowOpen = true;
                     std::cout << "Board Game button clicked!" << std::endl; //Debug message
                 }
                 //Check if the "Settings" button is clicked
-                else  if (settingsButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
+                else  if (settingsButton.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) 
+                {
                     settingsWindowOpen = true;
                     std::cout << "Settings button clicked!" << std::endl; // Debug message
                 }
@@ -220,15 +218,19 @@ int main() {
             }
 
         }
-        if (instructionsWindowOpen) {
-            if (!instructionsWindow.isOpen()) {
+        if (instructionsWindowOpen) 
+        {
+            if (!instructionsWindow.isOpen()) 
+            {
                 instructionsWindow.create(sf::VideoMode(1100, 500), "Instructions", sf::Style::Close);
                 instructionsWindow.setFramerateLimit(60);
             }
 
             sf::Event instructionsEvent;
-            while (instructionsWindow.pollEvent(instructionsEvent)) {
-                if (instructionsEvent.type == sf::Event::Closed) {
+            while (instructionsWindow.pollEvent(instructionsEvent)) 
+            {
+                if (instructionsEvent.type == sf::Event::Closed) 
+                {
                     instructionsWindow.close();
                     instructionsWindowOpen = false;
                 }
@@ -237,13 +239,15 @@ int main() {
             sf::Font instructions2Font;
 
             sf::Texture instructionsImageTexture;
-            if (!instructionsImageTexture.loadFromFile("../Images/page.jpg")) {
+            if (!instructionsImageTexture.loadFromFile("../Images/page.jpg")) 
+            {
                 std::cerr << "Failed to load background image!" << std::endl;
                 return -1;
             }
+
             sf::Sprite instructionsImage(instructionsImageTexture);
             instructionsImage.setScale(static_cast<float>(instructionsWindow.getSize().x) / instructionsImageTexture.getSize().x,
-                static_cast<float>(instructionsWindow.getSize().y) / instructionsImageTexture.getSize().y);
+                                       static_cast<float>(instructionsWindow.getSize().y) / instructionsImageTexture.getSize().y);
 
             instructions2Font.loadFromFile("ARIAL.TTF");
             sf::Text instructions2Text("Welcome to the Twixt Game!\n"
@@ -257,30 +261,30 @@ int main() {
                 "6. Add or remove as many legal links between pegs of your color as you wish. A link is legal when \n the two pegs are at opposite corners of a six-hole rectangle (like a knight's move in chess), and \n no other link crosses the linking path, not even one of your own.\n"
                 "\n"
                 "Your goal is to connect a peg in one of your border rows to a peg in your other border row, with a \n continuous chain of linked pegs. If neither side can achieve this, the game is a draw.\n",
-
                 instructions2Font, 20);
+
             instructionsWindow.draw(instructionsImage);
             instructions2Text.setFillColor(sf::Color::Black);
             instructions2Text.setPosition(50, 50);
             instructionsWindow.draw(instructions2Text);
 
-
             instructionsWindow.display();
         }
 
-        if (boardWindowOpen) {
+        if (boardWindowOpen) 
+        {
             U16 pillarAdded = 0;
-            if (!boardWindow.isOpen()) {
+            if (!boardWindow.isOpen()) 
+            {
                 boardWindow.create(sf::VideoMode(1920, 1080), "Game Window", sf::Style::Close);
                 boardWindow.setFramerateLimit(60);
-
             }
             std::vector<Pillar> redPillars, blackPillars;
             std::vector<Bridge> redBridges, blackBridges;
             std::cout << unsigned(board.m_bridgesNumber1)<<" "<<unsigned(board.m_bridgesNumber2)<<" "<<unsigned(board.m_bridgesNumber3)<<" " << unsigned(board.m_bridgesNumberDef) << "\n";
             sf::Color player = sf::Color::Red;
-            while (boardWindow.isOpen()) {
-
+            while (boardWindow.isOpen()) 
+            {
                 sf::Event boardEvent;
                 boardWindow.clear(sf::Color::White);
                 while (boardWindow.pollEvent(boardEvent)) {
@@ -307,7 +311,7 @@ int main() {
                             {
                                 //Create a new pillar and check its position before adding it to the vector
                                 Pillar tempPillar(x * board.getTileSize(), y * board.getTileSize(), player, std::get<1>(tile), std::get<2>(tile));
-                                tempPillar.SetPosition(std::get<0>(tile).getPosition());
+                                tempPillar.setPosition(std::get<0>(tile).getPosition());
                                   if (player == sf::Color::Red) // Red side's turn
                                   {
 
@@ -319,16 +323,23 @@ int main() {
                                                 if (!board.IsPillarThere(redPillars, tempPillar) && !board.IsPillarThere(blackPillars, tempPillar))
                                                 {
                                                     std::cout << "Red ";
-                                                    board.PlacePillar(redPillars, tempPillar, player, pillarAdded);
+                                                    board.PlacePillar(redPillars, tempPillar, pillarAdded);
                                                     if (!board.PlaceBridge(tempPillar, redPillars, redBridges, player,blackBridges)) {
                                                         showMessage(BridgesLimit, boardWindow);
                                                     }
-                                                    std::cout << "winning chain created red: " << board.WinningChainCreated(redBridges, redPillars, player) << "\n";
+                                                    std::cout << "winning chain: " << board.WinningChainCreated(redBridges, redPillars, player) << "\n";
+                                                    if (board.WinningChainCreated(redBridges, redPillars, player))
+                                                    {
+                                                        showMessage(RedPlayerWon, boardWindow);
+                                                        break;
+                                                    }
                                                     player = sf::Color::Black;
                                                     
                                                 }
                                                 else
-                                                    std::cout << "There is already a pillar there.\n";
+                                                {
+                                                    showMessage(PillarColision, boardWindow);
+                                                }
 
                                             }
                                             else {
@@ -352,15 +363,23 @@ int main() {
                                                 if (!board.IsPillarThere(blackPillars, tempPillar) && !board.IsPillarThere(redPillars, tempPillar))
                                                 {
                                                     std::cout << "Black ";
-                                                    board.PlacePillar(blackPillars, tempPillar, player, pillarAdded);
+                                                    board.PlacePillar(blackPillars, tempPillar, pillarAdded);
                                                     if (!board.PlaceBridge(tempPillar, blackPillars, blackBridges, player,redBridges)) {
                                                         showMessage(BridgesLimit, boardWindow);
                                                     }
-                                                    std::cout << "winning chain created black: " << board.WinningChainCreated(blackBridges, blackPillars, player) << "\n";
+                                                    std::cout << "winning chain: " << board.WinningChainCreated(blackBridges, blackPillars, player) << "\n";
+                                                    if (board.WinningChainCreated(blackBridges, blackPillars, player))
+                                                    {
+                                                        showMessage(BlackPlayerWon, boardWindow);
+                                                        break;
+                                                    }
                                                     player = sf::Color::Red;
+                                                    
                                                 }
                                                 else
-                                                    std::cout << "There is already a pillar there.\n";
+                                                {
+                                                    showMessage(PillarColision, boardWindow);
+                                                }
                                             }
                                             else {
                                                 showMessage(WrongBase, boardWindow);

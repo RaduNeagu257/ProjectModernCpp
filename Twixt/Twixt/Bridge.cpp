@@ -5,8 +5,8 @@ const float PI = 3.14159265358979323846f;
 const float BRIDGE_LINE_THICKNESS = 5.0f;
 
 Bridge::Bridge(const Pillar& startPillar, const Pillar& stopPillar, sf::Color color)
-    :m_startPillar(startPillar),
-    m_stopPillar(stopPillar)
+    :m_startPillar{ startPillar },
+    m_stopPillar{ stopPillar }
 {
     sf::Vector2f direction = stopPillar.GetCenter() - startPillar.GetCenter();
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
@@ -39,16 +39,12 @@ bool linesU8ersect(const sf::Vector2f& p0, const sf::Vector2f& p1, const sf::Vec
     return s >= 0 && s <= 1 && t >= 0 && t <= 1;
 }
 
-sf::Vector2f Bridge::getStartPosition() const {
-    return shape.getPosition();
+sf::Vector2f Bridge::getStartPosition() const 
+{
+    return m_startPillar.GetPosition();
 }
 
 sf::Vector2f Bridge::getEndPosition() const {
-    // Calculează poziția de sfârșit bazată pe poziția de început și dimensiunea formei
-    sf::Vector2f size = shape.getSize();
-    float rotation = shape.getRotation() / 180 * PI; // Convertește înapoi în radiani
-    return sf::Vector2f(
-        shape.getPosition().x + cos(rotation) * size.x,
-        shape.getPosition().y + sin(rotation) * size.y
-    );
+
+    return m_stopPillar.GetPosition();
 }

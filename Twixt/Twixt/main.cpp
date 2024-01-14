@@ -145,7 +145,7 @@ int main() {
     sf::Font buttonFont;
     buttonFont.loadFromFile("ARIAL.TTF");
     sf::Text okButtonText("OK", buttonFont, 40);
-    okButtonText.setFillColor(sf::Color::White);
+    okButtonText.setFillColor(sf::Color(255, 215, 0));
     okButtonText.setStyle(sf::Text::Bold);
     centerTextInButton(okButtonText, okButton);
 
@@ -474,9 +474,31 @@ int main() {
 
             if (!settingsWindow.isOpen()) {
                 settingsWindow.create(sf::VideoMode(1100, 500), "Settings", sf::Style::Close);
+                sf::Texture settingsImageTexture;
+                if (!settingsImageTexture.loadFromFile("../Images/page.jpg"))
+                {
+                    std::cerr << "Failed to load background image!" << std::endl;
+                    return -1;
+                }
+
+                sf::Sprite settingsImage(settingsImageTexture);
+                settingsImage.setScale(static_cast<float>(settingsWindow.getSize().x) / settingsImageTexture.getSize().x,
+                    static_cast<float>(settingsWindow.getSize().y) / settingsImageTexture.getSize().y);
                 settingsWindow.setFramerateLimit(60);
 
             }
+            sf::Texture settingsImageTexture;
+            if (!settingsImageTexture.loadFromFile("../Images/page.jpg"))
+            {
+                std::cerr << "Failed to load background image!" << std::endl;
+                return -1;
+            }
+
+            sf::Sprite settingsImage(settingsImageTexture);
+            settingsImage.setScale(static_cast<float>(settingsWindow.getSize().x) / settingsImageTexture.getSize().x,
+                static_cast<float>(settingsWindow.getSize().y) / settingsImageTexture.getSize().y);
+           
+
             while (settingsWindow.isOpen()) {
                 sf::Event settingsEvent;
                 while (settingsWindow.pollEvent(settingsEvent)) {
@@ -570,7 +592,9 @@ int main() {
                     }
                     
                 }
-                settingsWindow.clear(sf::Color::Red);
+                settingsWindow.clear();
+                settingsWindow.draw(settingsImage);
+
                 if (selectedButtonShadow != nullptr)
                 {
                     shadow.setPosition(selectedButtonShadow->getPosition().x - 5, selectedButtonShadow->getPosition().y - 5);

@@ -26,31 +26,31 @@ Board::Board()
 
 
 {
-	button18x18.setFillColor(sf::Color::White);
-	button18x18.setPosition(50, 80); 
+	button18x18.setFillColor(sf::Color::Black);
+	button18x18.setPosition(50, 80);
 
-	button24x24.setFillColor(sf::Color::White);
-	button24x24.setPosition(50, 140); 
+	button24x24.setFillColor(sf::Color::Black);
+	button24x24.setPosition(50, 140);
 
-	button30x30.setFillColor(sf::Color::White);
+	button30x30.setFillColor(sf::Color::Black);
 	button30x30.setPosition(50, 200);
 
-	button28pillars.setFillColor(sf::Color::White);
+	button28pillars.setFillColor(sf::Color::Black);
 	button28pillars.setPosition(450, 80);
 
-	button50pillars.setFillColor(sf::Color::White);
+	button50pillars.setFillColor(sf::Color::Black);
 	button50pillars.setPosition(450, 140);
 
-	button78pillars.setFillColor(sf::Color::White);
+	button78pillars.setFillColor(sf::Color::Black);
 	button78pillars.setPosition(450, 200);
 
-	button25bridges.setFillColor(sf::Color::White);
+	button25bridges.setFillColor(sf::Color::Black);
 	button25bridges.setPosition(800, 80);
 
-	button50bridges.setFillColor(sf::Color::White);
+	button50bridges.setFillColor(sf::Color::Black);
 	button50bridges.setPosition(800, 140);
 
-	button75bridges.setFillColor(sf::Color::White);
+	button75bridges.setFillColor(sf::Color::Black);
 	button75bridges.setPosition(800, 200);
 
 
@@ -139,9 +139,7 @@ void Board::Draw(sf::RenderWindow& BoardWindow)
 	BoardWindow.draw(m_horizontalLine2);
 	BoardWindow.draw(m_verticalLine1);
 	BoardWindow.draw(m_verticalLine2);
-	BoardWindow.draw(button18x18);
-	BoardWindow.draw(button24x24);
-	BoardWindow.draw(button30x30);
+
 }
 void Board::SetBoardSize(const U8& size)
 {
@@ -249,12 +247,13 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 	//text for board buttons
 	sf::Text text18x18;
 	sf::Font settingsfont;
+	sf::Color textColor(255, 215, 0);
 
 	settingsfont.loadFromFile("ARIAL.TTF");
 	text18x18.setFont(settingsfont); // Set the font to our text
 	text18x18.setString("18x18"); // Set the button label text
 	text18x18.setCharacterSize(24); // Set the text size
-	text18x18.setFillColor(sf::Color::Black); // Set the text color
+	text18x18.setFillColor(textColor); // Set the text color
 
 	sf::FloatRect textRectBoard = text18x18.getLocalBounds();
 
@@ -281,7 +280,7 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 	text28Pillars.setFont(settingsfont); // Set the font to our text
 	text28Pillars.setString("28 pillars"); // Set the button label text
 	text28Pillars.setCharacterSize(24); // Set the text size
-	text28Pillars.setFillColor(sf::Color::Black); // Set the text color
+	text28Pillars.setFillColor(textColor); // Set the text color
 
 	sf::FloatRect textRectPillars = text28Pillars.getLocalBounds();
 
@@ -308,7 +307,7 @@ void Board::DrawSettingsButtons(sf::RenderWindow& settingsWindow)
 	text25bridges.setFont(settingsfont); // Set the font to our text
 	text25bridges.setString("25 bridges"); // Set the button label text
 	text25bridges.setCharacterSize(24); // Set the text size
-	text25bridges.setFillColor(sf::Color::Black); // Set the text color
+	text25bridges.setFillColor(textColor); // Set the text color
 
 	sf::FloatRect textRectBridges = text25bridges.getLocalBounds();
 
